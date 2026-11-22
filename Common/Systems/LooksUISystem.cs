@@ -22,8 +22,6 @@ namespace Terraria_Beatiful_Looks.Common.Systems
 		public override void Load()
 		{
 			_interface = new UserInterface();
-			_panel = new LooksPanel();
-			_panel.Activate();
 		}
 
 		public override void Unload()
@@ -42,6 +40,13 @@ namespace Terraria_Beatiful_Looks.Common.Systems
 
 		public void Show()
 		{
+			// Меню создаётся при первом открытии, когда персонаж уже загружен
+			if (_panel == null)
+			{
+				_panel = new LooksPanel();
+				_panel.Activate();
+			}
+
 			_interface.SetState(_panel);
 			_panel.OnShow();
 			SoundEngine.PlaySound(SoundID.MenuOpen);

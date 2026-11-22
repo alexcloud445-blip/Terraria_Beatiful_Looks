@@ -77,10 +77,11 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		public Func<bool> IsSelected;
 
 		public LooksButton(Func<string> text, float width, float height = 30f, float textScale = 0.85f)
-			: base(text(), textScale)
+			: base("", textScale)
 		{
+			// Текст берём только в Update: при создании меню персонажа может ещё не быть
 			_textProvider = text;
-			_lastText = text();
+			_lastText = null;
 			Width.Set(width, 0f);
 			Height.Set(height, 0f);
 			SetPadding(0f);
