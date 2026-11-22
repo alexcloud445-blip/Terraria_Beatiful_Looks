@@ -1,0 +1,42 @@
+Items: {
+	StarlightWings: {
+		DisplayName: Звёздные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Оставляют за собой звёздную пыль
+			'''
+	}
+
+	StarlightCrown: {
+		DisplayName: Звёздная корона
+		Tooltip: Корона, сияющая как ночное небо
+	}
+}
+
+Keybinds: {
+	ToggleLooksUI.DisplayName: Открыть меню Beautiful Looks
+}
+
+Configs: {
+	LooksClientConfig: {
+		DisplayName: Beautiful Looks
+		AuraIntensity: {
+			Label: Яркость ауры
+			Tooltip: Насколько яркие и густые частицы ауры
+		}
+	}
+}
+
+UI: {
+	Title: Beautiful Looks
+	Aura: Аура
+	Color: Цвет
+	Hint: Крылья и корона крафтятся у наковальни
+	Styles: {
+		None: Выкл
+		Glow: Свечение
+		Sparkles: Искры
+		Orbit: Орбита
+	}
+}

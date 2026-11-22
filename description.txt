@@ -1,0 +1,3 @@
+Beautiful Looks — a purely cosmetic mod: wings, auras and vanity outfits.
+
+Press K (rebindable in Controls) to open the Looks menu and pick an aura style and color.

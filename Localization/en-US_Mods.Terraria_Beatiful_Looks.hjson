@@ -1,0 +1,42 @@
+Items: {
+	StarlightWings: {
+		DisplayName: Starlight Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Sheds glittering stardust
+			'''
+	}
+
+	StarlightCrown: {
+		DisplayName: Starlight Crown
+		Tooltip: A crown that shines like the night sky
+	}
+}
+
+Keybinds: {
+	ToggleLooksUI.DisplayName: Open Beautiful Looks menu
+}
+
+Configs: {
+	LooksClientConfig: {
+		DisplayName: Beautiful Looks
+		AuraIntensity: {
+			Label: Aura intensity
+			Tooltip: How bright and dense the aura particles are
+		}
+	}
+}
+
+UI: {
+	Title: Beautiful Looks
+	Aura: Aura
+	Color: Color
+	Hint: Wings & crown are crafted at an anvil
+	Styles: {
+		None: Off
+		Glow: Glow
+		Sparkles: Sparkles
+		Orbit: Orbit
+	}
+}
