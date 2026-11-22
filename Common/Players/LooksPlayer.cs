@@ -2,60 +2,91 @@ using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria_Beatiful_Looks.Common.Configs;
+using Terraria_Beatiful_Looks.Common.Effects;
+using Terraria_Beatiful_Looks.Common.Looks;
 using Terraria_Beatiful_Looks.Common.Systems;
 
 namespace Terraria_Beatiful_Looks.Common.Players
 {
-	/// <summary>Стили ауры. Новый стиль: добавить сюда + case в PostUpdate + строку в локализации.</summary>
-	public enum AuraStyle
-	{
-		None,
-		Glow,
-		Sparkles,
-		Orbit
-	}
-
-	/// <summary>Хранит косметические настройки персонажа и рисует ауру.</summary>
+	/// <summary>Хранит образ персонажа, пресеты, синхронизирует их и запускает эффекты.</summary>
 	public class LooksPlayer : ModPlayer
 	{
-		public static readonly Color[] Palette =
+		public const int PresetCount = 3;
+
+		public LookSettings Look = new LookSettings();
+		public LookSettings[] Presets = new LookSettings[PresetCount];
+
+		public override void Initialize()
 		{
-			new Color(120, 200, 255), // голубой
-			new Color(255, 120, 200), // розовый
-			new Color(255, 190, 80),  // золотой
-			new Color(130, 255, 140), // зелёный
-			new Color(190, 130, 255), // фиолетовый
-			new Color(255, 255, 255)  // белый
-		};
-
-		public static readonly int StyleCount = Enum.GetValues(typeof(AuraStyle)).Length;
-
-		public AuraStyle Style = AuraStyle.None;
-		public int ColorIndex;
-
-		public Color AuraColor => Palette[Math.Clamp(ColorIndex, 0, Palette.Length - 1)];
-
-		public void CycleStyle(int dir)
-		{
-			Style = (AuraStyle)(((int)Style + dir + StyleCount) % StyleCount);
+			Look = new LookSettings();
+			Presets = new LookSettings[PresetCount];
 		}
 
 		// ---------- сохранение вместе с персонажем ----------
 		public override void SaveData(TagCompound tag)
 		{
-			tag["auraStyle"] = (int)Style;
-			tag["auraColor"] = ColorIndex;
+			tag["look"] = Look.Save();
+			for (int i = 0; i < PresetCount; i++)
+			{
+				if (Presets[i] != null)
+					tag["preset" + i] = Presets[i].Save();
+			}
 		}
 
 		public override void LoadData(TagCompound tag)
 		{
-			int style = tag.GetInt("auraStyle");
-			Style = style >= 0 && style < StyleCount ? (AuraStyle)style : AuraStyle.None;
-			ColorIndex = Math.Clamp(tag.GetInt("auraColor"), 0, Palette.Length - 1);
+			if (tag.TryGet("look", out TagCompound look))
+			{
+				Look = LookSettings.Load(look);
+			}
+			else if (tag.TryGet("auraStyle", out int oldStyle))
+			{
+				// Перенос настроек из v0.1
+				Look = new LookSettings { Aura = (AuraStyle)Math.Clamp(oldStyle, 0, 3) };
+				Color[] oldPalette = { new(120, 200, 255), new(255, 120, 200), new(255, 190, 80), new(130, 255, 140), new(190, 130, 255), Color.White };
+				int oldColor = tag.GetInt("auraColor");
+				Look.AuraColor.SetFromColor(oldPalette[Math.Clamp(oldColor, 0, oldPalette.Length - 1)]);
+			}
+
+			for (int i = 0; i < PresetCount; i++)
+			{
+				if (tag.TryGet("preset" + i, out TagCompound p))
+					Presets[i] = LookSettings.Load(p);
+			}
+		}
+
+		// ---------- пресеты ----------
+		public void SavePreset(int slot) => Presets[slot] = Look.Clone();
+
+		public bool LoadPreset(int slot)
+		{
+			if (Presets[slot] == null)
+				return false;
+			Look.CopyFrom(Presets[slot]);
+			return true;
+		}
+
+		// ---------- мультиплеер ----------
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+		{
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)BeautifulLooksMod.PacketType.SyncLook);
+			packet.Write((byte)Player.whoAmI);
+			Look.Write(packet);
+			packet.Send(toWho, fromWho);
+		}
+
+		public override void CopyClientState(ModPlayer targetCopy)
+		{
+			((LooksPlayer)targetCopy).Look.CopyFrom(Look);
+		}
+
+		public override void SendClientChanges(ModPlayer clientPlayer)
+		{
+			if (!((LooksPlayer)clientPlayer).Look.SameAs(Look))
+				SyncPlayer(-1, Main.myPlayer, false);
 		}
 
 		// ---------- горячая клавиша ----------
@@ -65,51 +96,14 @@ namespace Terraria_Beatiful_Looks.Common.Players
 				ModContent.GetInstance<LooksUISystem>().Toggle();
 		}
 
-		// ---------- аура ----------
+		// ---------- эффекты ----------
 		public override void PostUpdate()
 		{
-			if (Main.dedServ || Style == AuraStyle.None || Player.dead || Player.invis)
+			if (Main.dedServ || Player.dead || Player.invis || Player.ghost)
 				return;
 
-			float intensity = ModContent.GetInstance<LooksClientConfig>().AuraIntensity;
-			Color color = AuraColor;
-
-			Lighting.AddLight(Player.Center, color.ToVector3() * 0.5f * intensity);
-
-			switch (Style)
-			{
-				case AuraStyle.Glow:
-					// Мягкое свечение + редкие поднимающиеся искры
-					if (Main.rand.NextFloat() < 0.12f * intensity)
-						SpawnDust(Player.Bottom + new Vector2(Main.rand.NextFloat(-12f, 12f), -4f),
-							new Vector2(0f, -Main.rand.NextFloat(0.6f, 1.4f)), color, 0.9f);
-					break;
-
-				case AuraStyle.Sparkles:
-					// Искры по всему телу
-					if (Main.rand.NextFloat() < 0.5f * intensity)
-						SpawnDust(Player.Center + Main.rand.NextVector2Circular(Player.width, Player.height * 0.6f),
-							Main.rand.NextVector2Circular(0.5f, 0.5f) + new Vector2(0f, -0.4f), color, 0.8f);
-					break;
-
-				case AuraStyle.Orbit:
-					// Три огонька, кружащие вокруг персонажа
-					for (int i = 0; i < 3; i++)
-					{
-						if (Main.rand.NextFloat() > intensity)
-							continue;
-						float angle = Main.GameUpdateCount * 0.07f + i * MathHelper.TwoPi / 3f;
-						Vector2 offset = angle.ToRotationVector2() * new Vector2(30f, 20f);
-						SpawnDust(Player.Center + offset, Vector2.Zero, color, 1.0f);
-					}
-					break;
-			}
-		}
-
-		private static void SpawnDust(Vector2 position, Vector2 velocity, Color color, float scale)
-		{
-			Dust d = Dust.NewDustPerfect(position, DustID.RainbowMk2, velocity, 0, color, scale);
-			d.noGravity = true;
+			AuraEffects.Update(Player, Look);
+			TrailEffects.Update(Player, Look);
 		}
 	}
 }

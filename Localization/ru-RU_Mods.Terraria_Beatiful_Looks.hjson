@@ -8,9 +8,89 @@ Items: {
 			'''
 	}
 
+	EmberWings: {
+		DisplayName: Пламенные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Рассыпают искры живого огня
+			'''
+	}
+
+	FrostWings: {
+		DisplayName: Морозные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			С каждым взмахом летят снежинки
+			'''
+	}
+
+	SakuraWings: {
+		DisplayName: Крылья сакуры
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Осыпают лепестками вишни
+			'''
+	}
+
+	VoidWings: {
+		DisplayName: Крылья пустоты
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Сотканы из ночи между звёздами
+			'''
+	}
+
+	FairyWings: {
+		DisplayName: Крылья феи
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Лёгкие, как весенний ветер
+			'''
+	}
+
 	StarlightCrown: {
 		DisplayName: Звёздная корона
 		Tooltip: Корона, сияющая как ночное небо
+	}
+
+	CatEars: {
+		DisplayName: Кошачьи ушки
+		Tooltip: Ня~
+	}
+
+	DemonHorns: {
+		DisplayName: Демонические рожки
+		Tooltip: Совсем чуть-чуть злой
+	}
+
+	FlowerWreath: {
+		DisplayName: Цветочный венок
+		Tooltip: Пахнет летним лугом
+	}
+
+	FrostTiara: {
+		DisplayName: Ледяная тиара
+		Tooltip: Никогда не тает
+	}
+
+	StarlightCape: {
+		DisplayName: Звёздный плащ
+		Tooltip: Сшит из ночного неба
+	}
+
+	RoyalCape: {
+		DisplayName: Королевский плащ
+		Tooltip: Достоин короля
+	}
+
+	ShadowCape: {
+		DisplayName: Теневой плащ
+		Tooltip: Загадочно и драматично
 	}
 }
 
@@ -22,21 +102,63 @@ Configs: {
 	LooksClientConfig: {
 		DisplayName: Beautiful Looks
 		AuraIntensity: {
-			Label: Яркость ауры
-			Tooltip: Насколько яркие и густые частицы ауры
+			Label: Сила эффектов
+			Tooltip: Общий множитель для всех частиц и свечения этого мода
 		}
 	}
 }
 
 UI: {
 	Title: Beautiful Looks
-	Aura: Аура
+	DragHint: тащи меня
+	Presets: Пресеты
+	Save: Сохр.
+	Load: Загр.
+	PresetSaved: Пресет {0} сохранён!
+	PresetEmpty: Этот слот пресета пуст
+	Random: Случайно
+	Reset: Сброс
+	TabAura: Аура
+	TabTrail: След
+	TabEffects: Эффекты
+	TabWardrobe: Гардероб
+	Style: Стиль
+	Density: Плотность
 	Color: Цвет
-	Hint: Крылья и корона крафтятся у наковальни
-	Styles: {
+	EffectColor: Цвет эффектов
+	Hue: Оттенок
+	Saturation: Насыщенность
+	Lightness: Яркость
+	Rainbow: Радуга
+	On: вкл
+	Off: выкл
+	TrailHint: Появляется позади тебя при движении
+	Halo: Нимб
+	BackGlow: Сияние
+	GroundRing: Круг
+	EffectsHint: Рисуются прямо на персонаже, видны в превью
+	WardrobeHint: Наведи на предмет. Рецепты: Recipe Browser или Гид
+	Aura: {
 		None: Выкл
 		Glow: Свечение
 		Sparkles: Искры
 		Orbit: Орбита
+		Flames: Пламя
+		Stars: Звёзды
+		Snow: Снегопад
+		Petals: Лепестки
+		Hearts: Сердечки
+		Vortex: Вихрь
+		Ring: Кольцо
+	}
+
+	Trail: {
+		None: Выкл
+		Sparkles: Искры
+		Stars: Звёзды
+		Flames: Пламя
+		Hearts: Сердечки
+		Petals: Лепестки
+		Snow: Снег
 	}
 }

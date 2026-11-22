@@ -8,9 +8,89 @@ Items: {
 			'''
 	}
 
+	EmberWings: {
+		DisplayName: Ember Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Trails sparks of living flame
+			'''
+	}
+
+	FrostWings: {
+		DisplayName: Frost Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Snowflakes drift from every flap
+			'''
+	}
+
+	SakuraWings: {
+		DisplayName: Sakura Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Scatters cherry blossom petals
+			'''
+	}
+
+	VoidWings: {
+		DisplayName: Void Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Woven from the night between stars
+			'''
+	}
+
+	FairyWings: {
+		DisplayName: Fairy Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Light as a spring breeze
+			'''
+	}
+
 	StarlightCrown: {
 		DisplayName: Starlight Crown
 		Tooltip: A crown that shines like the night sky
+	}
+
+	CatEars: {
+		DisplayName: Cat Ears
+		Tooltip: Nya~
+	}
+
+	DemonHorns: {
+		DisplayName: Demon Horns
+		Tooltip: Just a little bit evil
+	}
+
+	FlowerWreath: {
+		DisplayName: Flower Wreath
+		Tooltip: Smells like a summer meadow
+	}
+
+	FrostTiara: {
+		DisplayName: Frost Tiara
+		Tooltip: Never melts
+	}
+
+	StarlightCape: {
+		DisplayName: Starlight Cape
+		Tooltip: A cape sewn from the night sky
+	}
+
+	RoyalCape: {
+		DisplayName: Royal Cape
+		Tooltip: Fit for a king
+	}
+
+	ShadowCape: {
+		DisplayName: Shadow Cape
+		Tooltip: Mysterious and dramatic
 	}
 }
 
@@ -22,21 +102,63 @@ Configs: {
 	LooksClientConfig: {
 		DisplayName: Beautiful Looks
 		AuraIntensity: {
-			Label: Aura intensity
-			Tooltip: How bright and dense the aura particles are
+			Label: Effects intensity
+			Tooltip: Global multiplier for all particles and glow from this mod
 		}
 	}
 }
 
 UI: {
 	Title: Beautiful Looks
-	Aura: Aura
+	DragHint: drag me
+	Presets: Presets
+	Save: Save
+	Load: Load
+	PresetSaved: Preset {0} saved!
+	PresetEmpty: This preset slot is empty
+	Random: Random
+	Reset: Reset
+	TabAura: Aura
+	TabTrail: Trail
+	TabEffects: Effects
+	TabWardrobe: Wardrobe
+	Style: Style
+	Density: Density
 	Color: Color
-	Hint: Wings & crown are crafted at an anvil
-	Styles: {
+	EffectColor: Effects color
+	Hue: Hue
+	Saturation: Saturation
+	Lightness: Brightness
+	Rainbow: Rainbow
+	On: on
+	Off: off
+	TrailHint: Appears behind you while moving
+	Halo: Halo
+	BackGlow: Back glow
+	GroundRing: Ground ring
+	EffectsHint: Drawn right on your character, visible in the preview
+	WardrobeHint: Hover an item to see it. Recipes: Recipe Browser or the Guide
+	Aura: {
 		None: Off
 		Glow: Glow
 		Sparkles: Sparkles
 		Orbit: Orbit
+		Flames: Flames
+		Stars: Stars
+		Snow: Snowfall
+		Petals: Petals
+		Hearts: Hearts
+		Vortex: Vortex
+		Ring: Ring
+	}
+
+	Trail: {
+		None: Off
+		Sparkles: Sparkles
+		Stars: Stars
+		Flames: Flames
+		Hearts: Hearts
+		Petals: Petals
+		Snow: Snow
 	}
 }

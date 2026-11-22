@@ -1,3 +1,9 @@
-Beautiful Looks — a purely cosmetic mod: wings, auras and vanity outfits.
+Beautiful Looks — a purely cosmetic mod: wings, auras, trails, halos and vanity outfits.
 
-Press K (rebindable in Controls) to open the Looks menu and pick an aura style and color.
+Press K (rebindable in Controls) to open the Looks menu:
+- Aura: 10 styles with density, custom color (hue / saturation / brightness) and rainbow mode
+- Trail: 6 movement trail styles
+- Effects: halo, back glow and ground ring drawn on your character
+- Wardrobe: 6 wings, 5 hats and 3 capes
+- 3 preset slots, randomize and reset
+Looks are saved per character and synced in multiplayer.

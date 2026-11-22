@@ -42,8 +42,8 @@ namespace Terraria_Beatiful_Looks.Common.Systems
 
 		public void Show()
 		{
-			_panel.Refresh();
 			_interface.SetState(_panel);
+			_panel.OnShow();
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 		}
 
