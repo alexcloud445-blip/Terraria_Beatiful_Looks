@@ -30,8 +30,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			ItemID.PhaseDye,
 			ItemID.ReflectiveGoldDye,
 			ItemID.TwilightDye,
-			ItemID.VoidDye,
-			ItemID.PrismaticDye
+			ItemID.VoidDye
 		};
 
 		public static int Count => Items.Length;

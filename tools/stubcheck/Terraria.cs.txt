@@ -298,6 +298,6 @@ namespace Terraria.ID
 			RainbowDye = 1066, IntenseRainbowDye = 1067, LivingRainbowDye = 2878, MidnightRainbowDye = 3040, LivingFlameDye = 2869,
 			LivingOceanDye = 2873, HadesDye = 2883, BurningHadesDye = 2884, ShadowflameHadesDye = 2885, NebulaDye = 3533,
 			SolarDye = 3534, VortexDye = 3535, StardustDye = 3536, PhaseDye = 2877, ReflectiveGoldDye = 3027, TwilightDye = 3550,
-			VoidDye = 3561, PrismaticDye = 3598;
+			VoidDye = 3561;
 	}
 }

@@ -14,7 +14,7 @@
 - Лог сборки и ошибок: `C:\Program Files (x86)\Steam\steamapps\common\tModLoader\tModLoader-Logs\client.log`.
 - У пользователя также стоят Calamity, MagicStorage, RecipeBrowser, BossChecklist.
 
-## Архитектура (v0.3, написана, в игре ещё не проверена)
+## Архитектура (v0.3, компилируется в игре, работа эффектов ещё не проверена)
 ```
 BeautifulLooksMod.cs            Mod: сетевые пакеты (SyncLook)
 Common/Looks/                   LookSettings (весь образ: сохранение, сеть, пресеты), ColorSetting (HSL + радуга),
@@ -63,7 +63,7 @@ tools/stubcheck/check.sh        # должно быть "0 Error(s)"
   ставится вручную = `GameViewMatrix.TransformationMatrix * Ortho(viewport)`. Если ленты не видны/съехали — выключить
   в конфиге «Шейдерные ленты» и разбираться.
 - Призрачные копии: `Main.PlayerRenderer.DrawPlayer` из `ModPlayer.DrawPlayer`, перекраска в `TransformDrawData`.
-- Имена ItemID красок в `EffectDyes` (PhaseDye, PrismaticDye, VoidDye, TwilightDye...).
+- Имена ItemID красок в `EffectDyes`: `ItemID.PrismaticDye` НЕ существует (сборка упала). Остальные прошли компиляцию.
 - Все ошибки отрисовки ловятся и пишутся в client.log один раз: строка `Beautiful Looks VFX error (...)`.
 
 ## Грабли, на которые уже наступили
