@@ -22,6 +22,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		{
 			if (info.shadow != 0f || info.drawPlayer.dead)
 				return false;
+			VfxAssets.Prepare();
 			LooksPlayer mp = Mp(info);
 			return mp.EffectsVisibleInDraw;
 		}
@@ -85,9 +86,9 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				Texture2D bloom = VfxAssets.Bloom;
 				float pulse = LayerUtils.Pulse();
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.45f * pulse), 0f,
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.32f * pulse), 0f,
 					bloom.Size() / 2f, new Vector2(0.7f, 0.85f) * pulse);
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.45f), 0f,
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.3f), 0f,
 					bloom.Size() / 2f, new Vector2(0.38f, 0.5f));
 			}
 
@@ -150,7 +151,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Color c2 = look.AuraColor2.Get();
 
 			// мягкое свечение вокруг тела
-			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c2, 0.22f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
+			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c2, 0.15f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
 				bloom.Size() / 2f, new Vector2(0.6f, 0.75f) * s);
 
 			switch (look.Aura)

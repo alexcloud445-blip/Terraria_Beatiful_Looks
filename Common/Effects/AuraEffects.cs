@@ -590,7 +590,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		/// <summary>Призма: осколки с радужными хвостами на орбитах, вращающиеся грани и радужные блики.</summary>
 		private static void Prism(Ctx c)
 		{
-			const int shards = 5;
+			const int shards = 4;
 			EnsureOrbiters(c, shards, i => new OrbitParticle(c.P.whoAmI, MathHelper.TwoPi * i / shards, 22)
 			{
 				RadiusX = R(40f, 50f),
@@ -608,27 +608,27 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					o.SpeedMul = l.AuraSpeed;
 					o.Scale = l.AuraSize;
 					float hue = VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.3f + o.Angle / MathHelper.TwoPi);
-					Color rainbow = Main.hslToRgb(hue, 1f, 0.7f);
+					Color rainbow = Main.hslToRgb(hue, 0.8f, 0.75f);
 					o.Color = VfxMath.LerpVivid(rainbow, l.AuraColor.Get(), 0.25f);
-					o.Color2 = Main.hslToRgb(VfxMath.Frac(hue + 0.3f), 1f, 0.6f);
+					o.Color2 = Main.hslToRgb(VfxMath.Frac(hue + 0.3f), 0.75f, 0.68f);
 					o.TrailColor = Color.White;
 					o.TrailColor2 = rainbow;
 				}
 			});
 
-			for (int i = Fx.Rolls(0.15f * c.D); i > 0; i--)
+			for (int i = Fx.Rolls(0.08f * c.D); i > 0; i--)
 			{
 				float hue = Main.rand.NextFloat();
-				Color a = Main.hslToRgb(hue, 1f, 0.75f);
-				Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.25f), 1f, 0.6f);
+				Color a = Main.hslToRgb(hue, 0.8f, 0.78f);
+				Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.25f), 0.75f, 0.68f);
 				ParticleSystem.Spawn(new FlareParticle(AroundBody(c, 1.5f), Vector2.Zero, new Ramp(Color.White, a, b), R(0.3f, 0.6f) * c.S, 30) { Front = Coin });
 			}
 
-			for (int i = Fx.Rolls(0.06f * c.D); i > 0; i--)
+			for (int i = Fx.Rolls(0.035f * c.D); i > 0; i--)
 			{
 				float hue = Main.rand.NextFloat();
-				Color a = Main.hslToRgb(hue, 1f, 0.75f);
-				Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.35f), 1f, 0.6f);
+				Color a = Main.hslToRgb(hue, 0.8f, 0.78f);
+				Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.35f), 0.75f, 0.68f);
 				ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool() ? Shape.Diamond : Shape.ShardB, SpriteMotion.Spin, AroundBody(c, 1.4f), Main.rand.NextVector2Circular(0.6f, 0.6f),
 					new Ramp(Color.White, a, b), R(0.4f, 0.6f) * c.S, 45)
 				{

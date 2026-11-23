@@ -21,7 +21,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Случайное блуждание (светлячки).</summary>
 		public float Wander;
 		/// <summary>Сила ореола (0..1).</summary>
-		public float Halo = 0.42f;
+		public float Halo = 0.28f;
 		private readonly float _phase = Main.rand.NextFloat(MathHelper.TwoPi);
 
 		public GlowParticle(Vector2 position, Vector2 velocity, Ramp ramp, float scale = 1f, int lifetime = 40)
@@ -56,11 +56,11 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			Texture2D orb = VfxAssets.Orb;
 
 			sb.Draw(bloom, pos, null, VfxMath.Additive(Ramp.At(Math.Min(1f, t + 0.35f)), Halo * alpha), 0f, bloom.Size() / 2f, s * 0.5f, SpriteEffects.None, 0f);
-			sb.Draw(orb, pos, null, VfxMath.Additive(Ramp.At(t), alpha), 0f, orb.Size() / 2f, s * 0.28f, SpriteEffects.None, 0f);
+			sb.Draw(orb, pos, null, VfxMath.Additive(Ramp.At(t), 0.9f * alpha), 0f, orb.Size() / 2f, s * 0.28f, SpriteEffects.None, 0f);
 			if (Core)
 			{
 				Color core = Color.Lerp(Ramp.At(Math.Max(0f, t - 0.3f)), Color.White, 0.5f);
-				sb.Draw(orb, pos, null, VfxMath.Additive(core, 0.6f * alpha), 0f, orb.Size() / 2f, s * 0.12f, SpriteEffects.None, 0f);
+				sb.Draw(orb, pos, null, VfxMath.Additive(core, 0.45f * alpha), 0f, orb.Size() / 2f, s * 0.12f, SpriteEffects.None, 0f);
 			}
 		}
 	}
@@ -100,9 +100,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			Texture2D flare = VfxAssets.Flare;
 			Texture2D bloom = VfxAssets.Bloom;
 			Texture2D glint = VfxAssets.Glint;
-			sb.Draw(bloom, pos, null, VfxMath.Additive(Ramp.At(Math.Min(1f, 0.5f + t)), 0.3f * k), 0f, bloom.Size() / 2f, s * 0.32f, SpriteEffects.None, 0f);
-			sb.Draw(flare, pos, null, VfxMath.Additive(Ramp.At(t), k), Rotation, flare.Size() / 2f, s * 0.36f, SpriteEffects.None, 0f);
-			sb.Draw(glint, pos, null, VfxMath.Additive(Color.White, 0.85f * k), Rotation, glint.Size() / 2f, s * 0.55f, SpriteEffects.None, 0f);
+			sb.Draw(bloom, pos, null, VfxMath.Additive(Ramp.At(Math.Min(1f, 0.5f + t)), 0.16f * k), 0f, bloom.Size() / 2f, s * 0.3f, SpriteEffects.None, 0f);
+			sb.Draw(flare, pos, null, VfxMath.Additive(Ramp.At(t), 0.85f * k), Rotation, flare.Size() / 2f, s * 0.36f, SpriteEffects.None, 0f);
+			sb.Draw(glint, pos, null, VfxMath.Additive(Color.White, 0.65f * k), Rotation, glint.Size() / 2f, s * 0.55f, SpriteEffects.None, 0f);
 		}
 	}
 
@@ -148,7 +148,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 
 			sb.Draw(tex, pos, null, VfxMath.Additive(Ramp.At(t), alpha), Rotation, origin,
 				new Vector2(length / tex.Width, width / tex.Height), SpriteEffects.None, 0f);
-			sb.Draw(tex, pos, null, VfxMath.Additive(Color.Lerp(Ramp.At(0f), Color.White, 0.6f), 0.7f * alpha), Rotation, origin,
+			sb.Draw(tex, pos, null, VfxMath.Additive(Color.Lerp(Ramp.At(0f), Color.White, 0.6f), 0.55f * alpha), Rotation, origin,
 				new Vector2(length * 0.7f / tex.Width, width * 0.35f / tex.Height), SpriteEffects.None, 0f);
 		}
 	}
@@ -424,7 +424,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			if (GlowStrength > 0f)
 			{
 				Color glow = GlowRamp.HasValue ? GlowRamp.Value.At(t) : Ramp.At(Math.Min(1f, t + 0.45f));
-				sb.Draw(VfxAssets.ShapesGlow, pos, frame, VfxMath.Additive(glow, GlowStrength * alpha), Rotation, Shapes.Origin, s * 1.15f, fx, 0f);
+				sb.Draw(VfxAssets.ShapesGlow, pos, frame, VfxMath.Additive(glow, 0.75f * GlowStrength * alpha), Rotation, Shapes.Origin, s * 1.15f, fx, 0f);
 			}
 
 			Color fill = Ramp.At(t);
@@ -509,7 +509,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			Texture2D flare = VfxAssets.Flare;
 			Texture2D bloom = VfxAssets.Bloom;
 			Texture2D glint = VfxAssets.Glint;
-			sb.Draw(bloom, pos, null, VfxMath.Additive(TrailColor2, 0.4f * alpha), 0f, bloom.Size() / 2f, Scale * 0.35f, SpriteEffects.None, 0f);
+			sb.Draw(bloom, pos, null, VfxMath.Additive(TrailColor2, 0.25f * alpha), 0f, bloom.Size() / 2f, Scale * 0.3f, SpriteEffects.None, 0f);
 			sb.Draw(flare, pos, null, VfxMath.Additive(Ramp.At(t), alpha), Rotation, flare.Size() / 2f, Scale * 0.28f, SpriteEffects.None, 0f);
 			sb.Draw(glint, pos, null, VfxMath.Additive(Color.White, alpha), Rotation * 0.5f, glint.Size() / 2f, Scale * 0.5f, SpriteEffects.None, 0f);
 		}
@@ -602,7 +602,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			float s = Scale * depth;
 			Vector2 pos = Screen(Position);
 			Texture2D bloom = VfxAssets.Bloom;
-			sb.Draw(bloom, pos, null, VfxMath.Additive(Color2, 0.5f * alpha), 0f, bloom.Size() / 2f, s * 0.45f, SpriteEffects.None, 0f);
+			sb.Draw(bloom, pos, null, VfxMath.Additive(Color2, 0.22f * alpha), 0f, bloom.Size() / 2f, s * 0.35f, SpriteEffects.None, 0f);
 
 			if (RuneHead >= 0)
 			{
@@ -614,7 +614,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			{
 				Rectangle frame = Shapes.Frame(HeadShape.Value);
 				float rot = OldRot[0] + MathHelper.PiOver2;
-				sb.Draw(VfxAssets.ShapesGlow, pos, frame, VfxMath.Additive(Color2, 0.6f * alpha), rot, Shapes.Origin, s * 0.85f, SpriteEffects.None, 0f);
+				sb.Draw(VfxAssets.ShapesGlow, pos, frame, VfxMath.Additive(Color2, 0.45f * alpha), rot, Shapes.Origin, s * 0.85f, SpriteEffects.None, 0f);
 				sb.Draw(VfxAssets.Shapes, pos, frame, VfxMath.Additive(Color, alpha), rot, Shapes.Origin, s * 0.7f, SpriteEffects.None, 0f);
 				sb.Draw(VfxAssets.Shapes, pos, frame, VfxMath.Additive(Color.White, 0.5f * alpha), rot, Shapes.Origin, s * 0.4f, SpriteEffects.None, 0f);
 			}

@@ -117,8 +117,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						break;
 					case TrailStyle.Prism:
 						float hue = VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.5f + Main.rand.NextFloat(0.3f));
-						Color a = Main.hslToRgb(hue, 1f, 0.75f);
-						Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.3f), 1f, 0.6f);
+						Color a = Main.hslToRgb(hue, 0.8f, 0.78f);
+						Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.3f), 0.75f, 0.68f);
 						if (Main.rand.NextBool(2))
 							ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool() ? Shape.ShardA : Shape.Diamond, SpriteMotion.Spin, pos, vel + Main.rand.NextVector2Circular(0.8f, 0.8f),
 								new Ramp(Color.White, a, b), Main.rand.NextFloat(0.5f, 0.8f), 40)
@@ -206,7 +206,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				case RibbonStyle.Rainbow:
 					Ribbons.Draw(positions, rotations,
-						p => VfxMath.Additive(Color.Lerp(Color.White, Main.hslToRgb(VfxMath.Frac(p * 1.6f - Main.GlobalTimeWrappedHourly), 1f, 0.5f), VfxMath.Ease(p * 3f)),
+						p => VfxMath.Additive(Color.Lerp(Color.White, Main.hslToRgb(VfxMath.Frac(p * 1.6f - Main.GlobalTimeWrappedHourly), 0.85f, 0.62f), VfxMath.Ease(p * 3f)),
 							opacity * (1f - p)),
 						widthFn, RibbonStyle.Rainbow);
 					break;
@@ -215,7 +215,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					Ribbons.Draw(positions, rotations,
 						p =>
 						{
-							Color prism = Main.hslToRgb(VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.4f + p), 1f, 0.75f);
+							Color prism = Main.hslToRgb(VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.4f + p), 0.8f, 0.78f);
 							Color baseColor = Color.Lerp(c1.Get(), prism, 0.5f);
 							return VfxMath.Additive(Color.Lerp(Color.White, baseColor, VfxMath.Ease(p * 4f)), opacity * (1f - p));
 						},

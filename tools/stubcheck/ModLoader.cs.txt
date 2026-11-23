@@ -17,6 +17,7 @@ namespace ReLogic.Content
 	{
 		public T Value => null;
 		public bool IsLoaded => true;
+		public string Name => null;
 	}
 }
 

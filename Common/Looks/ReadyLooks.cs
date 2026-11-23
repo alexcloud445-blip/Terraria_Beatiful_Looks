@@ -35,113 +35,96 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			theme.ApplyToAll(l);
 		}
 
+		// В каждом образе 4–5 эффектов, которые дополняют друг друга: больше — и всё сливается в пятно.
 		public static readonly Entry[] All =
 		{
 			new Entry("Seraph", new Color(255, 214, 110), l =>
 			{
 				Colors(l, new Color(255, 214, 110), new Color(255, 150, 90));
 				l.Aura = AuraStyle.Divine;
+				l.AuraDensity = 0.8f;
 				l.Halo = HaloStyle.Radiant;
 				l.GodRays = true;
-				l.BackGlow = true;
-				l.Ribbon = RibbonStyle.Soft;
-				l.Trail = TrailStyle.Feathers;
 				l.Wings = WingStyle.Seraph;
+				l.Ribbon = RibbonStyle.Soft;
+				l.RibbonWidth = 0.8f;
 			}),
-			new Entry("Inferno", new Color(255, 110, 30), l =>
+			new Entry("Inferno", new Color(255, 160, 40), l =>
 			{
 				Colors(l, new Color(255, 160, 40), new Color(235, 40, 40));
 				l.Aura = AuraStyle.Flames;
-				l.AuraDensity = 1.3f;
 				l.Halo = HaloStyle.Thorns;
-				l.Ribbon = RibbonStyle.Flame;
-				l.Trail = TrailStyle.Flames;
-				l.PulseRing = true;
-				l.EffectDye = 5; // Living Flame
 				l.Wings = WingStyle.Flame;
-				l.Outline = true;
+				l.Ribbon = RibbonStyle.Flame;
 			}),
-			new Entry("Frost", new Color(110, 205, 255), l =>
+			new Entry("Frost", new Color(120, 210, 255), l =>
 			{
 				Colors(l, new Color(120, 210, 255), new Color(130, 130, 255));
 				l.Aura = AuraStyle.Frost;
+				l.AuraDensity = 0.8f;
 				l.Halo = HaloStyle.Starry;
-				l.Ribbon = RibbonStyle.Soft;
-				l.Trail = TrailStyle.Snow;
-				l.Echo = EchoStyle.Ghost;
-				l.GroundRing = true;
 				l.Wings = WingStyle.Crystal;
+				l.Echo = EchoStyle.Ghost;
 			}),
 			new Entry("Sakura", new Color(255, 140, 200), l =>
 			{
 				Colors(l, new Color(255, 140, 200), new Color(190, 140, 255));
 				l.Aura = AuraStyle.Sakura;
-				l.AuraDensity = 1.2f;
-				l.Trail = TrailStyle.Petals;
-				l.Ribbon = RibbonStyle.Twin;
-				l.BackGlow = true;
 				l.Wings = WingStyle.Butterfly;
+				l.Ribbon = RibbonStyle.Twin;
+				l.RibbonWidth = 0.8f;
 			}),
 			new Entry("Void", new Color(150, 70, 255), l =>
 			{
 				Colors(l, new Color(150, 70, 255), new Color(255, 80, 200));
 				l.Aura = AuraStyle.Void;
+				l.AuraDensity = 0.8f;
+				l.Wings = WingStyle.Demon;
 				l.Sigil = true;
 				l.Echo = EchoStyle.Phantom;
-				l.Trail = TrailStyle.Smoke;
-				l.Halo = HaloStyle.Double;
-				l.Wings = WingStyle.Demon;
 				l.Outline = true;
 			}),
 			new Entry("Empress", new Color(255, 120, 220), l =>
 			{
-				Colors(l, new Color(255, 120, 220), new Color(130, 230, 255), rainbow: true);
+				Colors(l, new Color(255, 150, 220), new Color(140, 220, 255), rainbow: true);
 				l.Aura = AuraStyle.Prism;
-				l.Ribbon = RibbonStyle.Empress;
-				l.Trail = TrailStyle.Prism;
-				l.Halo = HaloStyle.Radiant;
-				l.BackGlow = true;
-				l.EffectDye = 3; // Living Rainbow
+				l.AuraDensity = 0.8f;
 				l.Wings = WingStyle.Light;
+				l.Halo = HaloStyle.Radiant;
+				l.Ribbon = RibbonStyle.Empress;
+				l.RibbonWidth = 0.8f;
 			}),
-			new Entry("Storm", new Color(130, 165, 255), l =>
+			new Entry("Storm", new Color(130, 170, 255), l =>
 			{
 				Colors(l, new Color(130, 170, 255), new Color(190, 120, 255));
 				l.Aura = AuraStyle.Storm;
-				l.Echo = EchoStyle.Afterimage;
-				l.Ribbon = RibbonStyle.Soft;
-				l.RibbonWidth = 0.7f;
-				l.PulseRing = true;
 				l.Wings = WingStyle.Spirit;
+				l.Echo = EchoStyle.Afterimage;
 				l.Outline = true;
 			}),
 			new Entry("Celestial", new Color(120, 150, 255), l =>
 			{
 				Colors(l, new Color(120, 150, 255), new Color(255, 220, 150));
 				l.Aura = AuraStyle.CelestialRing;
-				l.Sigil = true;
-				l.Halo = HaloStyle.Ring;
-				l.Trail = TrailStyle.Stars;
-				l.Ribbon = RibbonStyle.Rainbow;
 				l.Wings = WingStyle.Constellation;
+				l.Halo = HaloStyle.Ring;
+				l.Sigil = true;
 			}),
 			new Entry("Fairy", new Color(120, 255, 180), l =>
 			{
 				Colors(l, new Color(120, 255, 180), new Color(255, 240, 140));
 				l.Aura = AuraStyle.Butterflies;
-				l.Trail = TrailStyle.Sparkles;
+				l.Wings = WingStyle.Spirit;
 				l.Halo = HaloStyle.Starry;
-				l.BackGlow = true;
-				l.Wings = WingStyle.Butterfly;
+				l.Trail = TrailStyle.Sparkles;
 			}),
 			new Entry("Comet", new Color(80, 230, 255), l =>
 			{
 				Colors(l, new Color(80, 230, 255), new Color(160, 110, 255));
 				l.Aura = AuraStyle.Comets;
 				l.Ribbon = RibbonStyle.Rainbow;
+				l.RibbonWidth = 0.8f;
 				l.Echo = EchoStyle.Ghost;
-				l.GroundRing = true;
-				l.Wings = WingStyle.Spirit;
 			})
 		};
 	}

@@ -1,16 +1,21 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ModLoader;
+using Terraria_Beatiful_Looks.Common.Configs;
 
 namespace Terraria_Beatiful_Looks.Common.VFX
 {
 	/// <summary>Мелкие помощники для эффектов.</summary>
 	public static class VfxMath
 	{
-		/// <summary>Цвет «как свет»: при обычном смешивании складывается с фоном (A = 0).</summary>
+		/// <summary>Яркость свечений из настроек мода.</summary>
+		public static float Brightness => ModContent.GetInstance<LooksClientConfig>()?.EffectBrightness ?? 0.8f;
+
+		/// <summary>Цвет «как свет»: при обычном смешивании складывается с фоном (A = 0). Учитывает яркость из настроек.</summary>
 		public static Color Additive(Color c, float opacity = 1f)
 		{
-			Color r = c * opacity;
+			Color r = c * (opacity * Brightness);
 			r.A = 0;
 			return r;
 		}

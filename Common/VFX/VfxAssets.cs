@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Terraria_Beatiful_Looks.Common.VFX
@@ -66,6 +69,74 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Кольца магического круга в перспективе 128x40 (внешний эллипс 124x37).</summary>
 		public static Texture2D SigilRings => _sigilRings.Value;
 
+		private static readonly List<Asset<Texture2D>> All = new List<Asset<Texture2D>>();
+		private static bool _prepared;
+
+		/// <summary>
+		/// Один раз (в главном потоке, перед первой отрисовкой) проверяет текстуры эффектов:
+		/// цвет должен быть умножен на прозрачность (premultiplied). Если это не так
+		/// (например, в папке мода остались старые PNG), исправляет прямо в памяти и пишет об этом в лог.
+		/// Без этого мягкое свечение рисуется ровными кругами с резким краем.
+		/// </summary>
+		public static void Prepare()
+		{
+			if (_prepared || Main.dedServ)
+				return;
+			_prepared = true;
+
+			int fixedCount = 0;
+			var names = new List<string>();
+			try
+			{
+				foreach (Asset<Texture2D> asset in All)
+				{
+					if (Premultiply(asset.Value))
+					{
+						fixedCount++;
+						names.Add(asset.Name);
+					}
+				}
+				ModContent.GetInstance<BeautifulLooksMod>().Logger.Info(fixedCount == 0
+					? "Beautiful Looks: VFX textures are premultiplied, OK"
+					: $"Beautiful Looks: fixed {fixedCount} non-premultiplied VFX textures at runtime: {string.Join(", ", names)}");
+			}
+			catch (Exception e)
+			{
+				VfxRenderer.LogOnce("prepare textures", e);
+			}
+		}
+
+		/// <summary>Умножает цвет на прозрачность, если текстура ещё не в таком виде. true — была исправлена.</summary>
+		private static bool Premultiply(Texture2D tex)
+		{
+			if (tex == null || tex.Width <= 1)
+				return false;
+			var data = new Color[tex.Width * tex.Height];
+			tex.GetData(data);
+
+			bool needed = false;
+			for (int i = 0; i < data.Length; i++)
+			{
+				Color c = data[i];
+				if (c.R > c.A + 2 || c.G > c.A + 2 || c.B > c.A + 2)
+				{
+					needed = true;
+					break;
+				}
+			}
+			if (!needed)
+				return false;
+
+			for (int i = 0; i < data.Length; i++)
+			{
+				Color c = data[i];
+				int a = c.A;
+				data[i] = new Color(c.R * a / 255, c.G * a / 255, c.B * a / 255, a);
+			}
+			tex.SetData(data);
+			return true;
+		}
+
 		public static Rectangle FlameFrame(int index) => new Rectangle((index & 3) * 32, 0, 32, 48);
 
 		public static Rectangle RuneFrame(int index) => new Rectangle((index & 7) * 32, 0, 32, 32);
@@ -103,12 +174,19 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 
 		public override void Unload()
 		{
+			All.Clear();
+			_prepared = false;
 			_bloom = _orb = _flare = _streak = _line = _ringWave = _godRay = null;
 			_smoke = _runes = _haloRing = _groundRing = _thornHalo = _sigilRings = null;
 			_shapes = _shapesGlow = _feather = _featherGlow = _butterflyWing = _butterflyPattern = _butterflyGlow = null;
 			_batWing = _batBones = _flame = _blade = _glint = null;
 		}
 
-		private static Asset<Texture2D> Request(string name) => ModContent.Request<Texture2D>(Folder + name);
+		private static Asset<Texture2D> Request(string name)
+		{
+			Asset<Texture2D> asset = ModContent.Request<Texture2D>(Folder + name);
+			All.Add(asset);
+			return asset;
+		}
 	}
 }

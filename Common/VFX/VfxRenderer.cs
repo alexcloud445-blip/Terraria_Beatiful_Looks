@@ -62,6 +62,8 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			if (SpriteBatchActive(sb))
 				return; // кто-то оставил SpriteBatch открытым — не вмешиваемся
 
+			VfxAssets.Prepare();
+
 			LooksClientConfig config = ModContent.GetInstance<LooksClientConfig>();
 			if (config == null || config.ShaderRibbons)
 			{

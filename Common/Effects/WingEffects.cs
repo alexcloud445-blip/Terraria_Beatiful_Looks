@@ -164,7 +164,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				case WingStyle.Light:
 					if (Main.rand.NextFloat() < 0.2f * intensity)
 					{
-						Color c = wl.Rainbow ? Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.7f) : pal.Mix(Main.rand.NextFloat());
+						Color c = wl.Rainbow ? Main.hslToRgb(Main.rand.NextFloat(), 0.8f, 0.75f) : pal.Mix(Main.rand.NextFloat());
 						ParticleSystem.Spawn(new FlareParticle(spot, Main.rand.NextVector2Circular(0.4f, 0.4f), new Ramp(Color.White, c), Main.rand.NextFloat(0.35f, 0.6f), 28) { Front = front });
 					}
 					break;
@@ -416,7 +416,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				float angle = MathHelper.Lerp(-1.05f, 0.75f, k) - sweep * (1f - k * 0.5f) + angleOffset;
 				float len = (22f + 24f * (float)Math.Pow(1f - k, 0.8f) + 3f * (float)Math.Sin(time * 3f + i)) * size;
 				Color c = wl.Rainbow
-					? Main.hslToRgb(VfxMath.Frac(time * 0.25f + k * 0.8f), 1f, 0.65f)
+					? Main.hslToRgb(VfxMath.Frac(time * 0.25f + k * 0.8f), 0.8f, 0.72f)
 					: VfxMath.LerpVivid(pal.A, pal.B, k);
 				// клинки начинаются чуть в стороне от плеча, чтобы у основания не было белого пятна
 				Vector2 dir = angle.ToRotationVector2();

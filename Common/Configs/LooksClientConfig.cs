@@ -13,6 +13,12 @@ namespace Terraria_Beatiful_Looks.Common.Configs
 		[Increment(0.1f)]
 		public float AuraIntensity;
 
+		/// <summary>Яркость всех свечений мода (не влияет на количество частиц).</summary>
+		[DefaultValue(0.8f)]
+		[Range(0.2f, 1.5f)]
+		[Increment(0.05f)]
+		public float EffectBrightness;
+
 		/// <summary>Сколько частиц мода может быть на экране одновременно.</summary>
 		[DefaultValue(2500)]
 		[Range(300, 8000)]
