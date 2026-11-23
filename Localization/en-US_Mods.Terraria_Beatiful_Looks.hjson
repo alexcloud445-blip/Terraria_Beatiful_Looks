@@ -94,13 +94,12 @@ Items: {
 	}
 }
 
-Keybinds: {
-	ToggleLooksUI.DisplayName: Open Beautiful Looks menu
-}
+Keybinds.ToggleLooksUI.DisplayName: Open Beautiful Looks menu
 
 Configs: {
 	LooksClientConfig: {
 		DisplayName: Beautiful Looks
+
 		AuraIntensity: {
 			Label: Effects intensity
 			Tooltip: Global multiplier for all particles and glow from this mod
@@ -138,6 +137,7 @@ UI: {
 	GroundRing: Ground ring
 	EffectsHint: Drawn right on your character, visible in the preview
 	WardrobeHint: Hover an item to see it. Recipes: Recipe Browser or the Guide
+
 	Aura: {
 		None: Off
 		Glow: Glow

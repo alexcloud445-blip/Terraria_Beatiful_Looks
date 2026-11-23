@@ -94,13 +94,12 @@ Items: {
 	}
 }
 
-Keybinds: {
-	ToggleLooksUI.DisplayName: Открыть меню Beautiful Looks
-}
+Keybinds.ToggleLooksUI.DisplayName: Открыть меню Beautiful Looks
 
 Configs: {
 	LooksClientConfig: {
 		DisplayName: Beautiful Looks
+
 		AuraIntensity: {
 			Label: Сила эффектов
 			Tooltip: Общий множитель для всех частиц и свечения этого мода
@@ -138,6 +137,7 @@ UI: {
 	GroundRing: Круг
 	EffectsHint: Рисуются прямо на персонаже, видны в превью
 	WardrobeHint: Наведи на предмет. Рецепты: Recipe Browser или Гид
+
 	Aura: {
 		None: Выкл
 		Glow: Свечение
