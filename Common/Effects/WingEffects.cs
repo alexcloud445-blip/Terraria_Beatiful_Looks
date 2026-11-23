@@ -153,7 +153,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 	}
 
 	/// <summary>Крылья из эффектов: отрисовка (слой игрока) и частицы.</summary>
-	public static class WingEffects
+	public static partial class WingEffects
 	{
 		private static readonly WingElement[] Buffer = new WingElement[WingRig.MaxElements];
 
@@ -229,7 +229,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				case WingStyle.Seraph:
 					if (Main.rand.NextBool(6))
-						ParticleSystem.Spawn(new ShapeParticle(Shape.Feather, SpriteMotion.Sway, spot, push, new Ramp(pal.Hi, pal.A), 0.8f, 120) { GlowRamp = pal.B, Front = front });
+						ParticleSystem.Spawn(new ShapeParticle(Shape.Feather, SpriteMotion.Sway, spot, push, new Ramp(pal.Hi, pal.A), 0.8f, 120) { GlowRamp = pal.B, Settle = true, Front = front });
 					else
 						ParticleSystem.Spawn(new GlowParticle(spot, push + new Vector2(0f, 0.3f), pal.Glow, Main.rand.NextFloat(0.25f, 0.4f) * power, 40) { Front = front });
 					break;
@@ -262,6 +262,43 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					break;
 				case WingStyle.Spirit:
 					ParticleSystem.Spawn(new GlowParticle(spot, push - p.velocity * 0.1f + new Vector2(0f, -0.3f * p.gravDir), pal.Glow, Main.rand.NextFloat(0.3f, 0.45f) * power, 50) { Drag = 0.97f, Core = false, Halo = 0.4f, Front = front });
+					break;
+				case WingStyle.Phoenix:
+					if (Main.rand.NextBool(4))
+						ParticleSystem.Spawn(new SparkParticle(spot, push + new Vector2(Main.rand.NextFloat(-1.5f, 1.5f), Main.rand.NextFloat(-1f, 0.5f) * p.gravDir), pal.Hot, 0.45f * power, 50)
+						{
+							Gravity = new Vector2(0f, 0.12f * p.gravDir),
+							Drag = 0.98f,
+							Bounce = true,
+							Front = front
+						});
+					else if (Main.rand.NextBool(12))
+						ParticleSystem.Spawn(new ShapeParticle(Shape.Feather, SpriteMotion.Sway, spot, push, new Ramp(pal.Hi, pal.A, pal.B), 0.75f, 110) { Glowing = true, GlowRamp = pal.B, Settle = true, Front = front });
+					else
+						ParticleSystem.Spawn(new GlowParticle(spot, push + new Vector2(Main.rand.NextFloat(-0.4f, 0.4f), -Main.rand.NextFloat(0.6f, 1.5f) * p.gravDir), pal.Hot, Main.rand.NextFloat(0.2f, 0.36f) * power, 45) { Wander = 0.06f, Front = front });
+					break;
+				case WingStyle.Aurora:
+					if (Main.rand.NextBool(5))
+						ParticleSystem.Spawn(new FlareParticle(spot, push, new Ramp(Color.White, pal.A, pal.B), 0.32f * power, 30) { Front = front });
+					else
+						ParticleSystem.Spawn(new GlowParticle(spot, push + new Vector2(0f, 0.25f * p.gravDir), wl.Rainbow ? new Ramp(Main.hslToRgb(Main.rand.NextFloat(), 0.8f, 0.75f), pal.B) : pal.Soft,
+							Main.rand.NextFloat(0.15f, 0.28f) * power, 55) { Blink = 0.2f, Drag = 0.98f, Front = front });
+					break;
+				case WingStyle.Nebula:
+					if (Main.rand.NextBool(3))
+						ParticleSystem.Spawn(new ShapeParticle(Shape.Star4, SpriteMotion.Spin, spot, push + Main.rand.NextVector2Circular(0.3f, 0.3f), new Ramp(Color.White, pal.Hi, pal.A), 0.3f * power, 45)
+						{ Glowing = true, Spin = 0.06f, Front = front });
+					else
+						ParticleSystem.Spawn(new GlowParticle(spot, push + Main.rand.NextVector2Circular(0.3f, 0.3f), new Ramp(pal.A, pal.B, pal.Lo), Main.rand.NextFloat(0.25f, 0.4f) * power, 50)
+						{ Core = false, Halo = 0.45f, Drag = 0.97f, Front = front });
+					break;
+				case WingStyle.Floral:
+					if (Main.rand.NextBool(4))
+						ParticleSystem.Spawn(new ShapeParticle(Shape.Leaf, SpriteMotion.Fall, spot, push, new Ramp(pal.B, VfxMath.LerpVivid(pal.B, pal.Lo, 0.4f)), 0.65f, 120)
+						{ GlowStrength = 0.25f, GlowRamp = pal.B, Settle = true, Front = front });
+					else
+						ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool(3) ? Shape.PetalRound : Shape.Petal, SpriteMotion.Fall, spot, push, new Ramp(pal.Hi, pal.A, pal.B), Main.rand.NextFloat(0.6f, 0.85f), 120)
+						{ GlowStrength = 0.35f, GlowRamp = pal.B, Settle = true, Front = front });
 					break;
 			}
 		}
@@ -310,6 +347,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			};
 			var near = new WingPass { F = f, S = st, Size = wl.Size, AngleOffset = 0f, Far = false };
 
+			if (wl.Style == WingStyle.Phoenix)
+				DrawPhoenixTail(ref info, wl, f, st, shader);
 			DrawWing(ref info, wl, far, shader);
 			DrawWing(ref info, wl, near, shader);
 		}
@@ -327,6 +366,12 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				case WingStyle.Light:
 					DrawLightBlades(ref info, wl, w, shader);
 					return;
+				case WingStyle.Aurora:
+					DrawAuroraWing(ref info, wl, w, shader);
+					return;
+				case WingStyle.Nebula:
+					DrawNebula(ref info, wl, w, shader);
+					return;
 			}
 
 			float time = Main.GlobalTimeWrappedHourly;
@@ -340,7 +385,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				WingElement e = Buffer[i];
 				// у дальнего крыла кроющие перья не видны — силуэт чище
-				if (w.Far && e.Layer == 2 && wl.Style != WingStyle.Constellation)
+				if (w.Far && e.Layer == 2 && wl.Style != WingStyle.Constellation && wl.Style != WingStyle.Floral)
 					continue;
 				e.Angle += w.AngleOffset;
 				e.Base = e.Base.RotatedBy(w.AngleOffset);
@@ -407,6 +452,46 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 								VfxMath.Additive(Color.Lerp(c, Color.White, 0.4f), 0.3f), wf);
 						break;
 					}
+					case WingStyle.Phoenix:
+					{
+						bool covert = e.Layer == 2;
+						Texture2D tex = covert ? VfxAssets.Covert : VfxAssets.Feather;
+						Texture2D glow = covert ? VfxAssets.CovertGlow : VfxAssets.FeatherGlow;
+						float texLen = covert ? 30f : 60f;
+						var scale = new Vector2(e.Length / texLen, (covert ? 0.62f : 0.9f) * size);
+						// огонь: у тела светлый, к кончикам маховых — второй и тёмный цвет
+						float heat = e.Layer == 0 ? 0.3f + 0.55f * e.K : e.Layer == 1 ? 0.18f + 0.35f * e.K : 0.08f + 0.2f * e.K;
+						Color fill = Depth(pal.Hot.At(heat), pal, w.Far);
+						float flicker = 0.85f + 0.15f * (float)Math.Sin(time * 9f + e.Index * 1.7f + e.Layer);
+						Anchored(ref info, shader, glow, null, basePos, new Vector2(2f, 8f), e.Angle, scale * new Vector2(1.08f, 1.5f),
+							VfxMath.Additive(pal.B, 0.45f * glowMul * flicker), wf);
+						Anchored(ref info, shader, tex, null, basePos, new Vector2(2f, 8f), e.Angle, scale, fill * 0.5f, wf);
+						Anchored(ref info, shader, tex, null, basePos, new Vector2(2f, 8f), e.Angle, scale, VfxMath.Additive(fill, 0.55f * glowMul + 0.2f), wf);
+						if (!w.Far && e.Layer == 0)
+						{
+							Rectangle frame = VfxAssets.FlameFrame((int)(time * 12f) + e.Index);
+							Anchored(ref info, shader, VfxAssets.Flame, frame, wf.ToWorld(e.Base + e.Angle.ToRotationVector2() * e.Length * 0.8f), new Vector2(16f, 46f),
+								e.Angle + MathHelper.PiOver2, new Vector2(0.32f * size, 0.38f * size * flicker), VfxMath.Additive(pal.Hot.At(0.45f + 0.3f * e.K), 0.55f), wf);
+						}
+						break;
+					}
+					case WingStyle.Floral:
+					{
+						Shape shape = e.Layer == 0 ? Shape.Petal : e.Layer == 1 ? Shape.Leaf : Shape.PetalRound;
+						Rectangle frame = Shapes.Frame(shape);
+						float flutter = (float)Math.Sin(time * 3f + e.Index * 1.3f + e.Layer) * 0.05f;
+						float rot = e.Angle + MathHelper.PiOver2 + flutter;
+						var scale = new Vector2((e.Layer == 1 ? 0.7f : e.Layer == 2 ? 0.75f : 0.95f) * size, e.Length / 24f);
+						Color fill = e.Layer == 1
+							? VfxMath.LerpVivid(pal.B, pal.Hi, 0.08f + 0.15f * e.K)
+							: VfxMath.LerpVivid(pal.A, pal.Hi, k);
+						if (w.Far)
+							fill = VfxMath.Shade(fill, 0.68f); // у цветов дальнее крыло только темнее, без смешения оттенков
+						Anchored(ref info, shader, VfxAssets.ShapesGlow, frame, basePos, new Vector2(16f, 28f), rot, scale * 1.12f,
+							VfxMath.Additive(e.Layer == 1 ? pal.B : pal.A, 0.3f * glowMul), wf);
+						Anchored(ref info, shader, VfxAssets.Shapes, frame, basePos, new Vector2(16f, 28f), rot, scale, fill * 0.95f, wf);
+						break;
+					}
 					case WingStyle.Constellation:
 					{
 						if (e.Layer == 2)
@@ -432,6 +517,15 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						break;
 					}
 				}
+			}
+
+			if (wl.Style == WingStyle.Floral && !w.Far)
+			{
+				// цветок у плеча
+				Rectangle lotus = Shapes.Frame(Shape.Lotus);
+				float spin = (float)Math.Sin(time * 1.2f) * 0.15f;
+				Anchored(ref info, shader, VfxAssets.ShapesGlow, lotus, wf.Shoulder, Shapes.Origin, spin, new Vector2(0.85f * size), VfxMath.Additive(pal.B, 0.5f), wf);
+				Anchored(ref info, shader, VfxAssets.Shapes, lotus, wf.Shoulder, Shapes.Origin, spin, new Vector2(0.7f * size), pal.Hi, wf);
 			}
 
 			if (wl.Style == WingStyle.Constellation)
@@ -536,6 +630,142 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				Texture2D bloom = VfxAssets.Bloom;
 				info.DrawDataCache.Add(new DrawData(bloom, w.F.Shoulder, null, VfxMath.Additive(pal.A, 0.28f), 0f, bloom.Size() / 2f, 0.26f * size, SpriteEffects.None, 0) { shader = shader });
 			}
+		}
+	}
+
+	/// <summary>Крылья v0.6, которые не строятся из перьев WingRig.</summary>
+	public static partial class WingEffects
+	{
+		/// <summary>
+		/// Хвост феникса: три огненных шлейфа от поясницы, по ним вниз бежит волна; при беге отклоняются назад.
+		/// Рисуется позади обоих крыльев.
+		/// </summary>
+		private static void DrawPhoenixTail(ref PlayerDrawSet info, WingLook wl, Frame f, WingState st, int shader)
+		{
+			Palette pal = wl.Pal;
+			float time = Main.GlobalTimeWrappedHourly;
+			float size = wl.Size;
+			Texture2D streak = VfxAssets.Streak;
+			Texture2D flame = VfxAssets.Flame;
+			Vector2 root = new Vector2(3f, 15f) * size;
+			for (int s = 0; s < 3; s++)
+			{
+				Vector2 pos = root;
+				float ang = 1.15f + (s - 1) * 0.3f - st.Lean * 0.6f + (1f - st.Spread) * 0.15f;
+				const int n = 10;
+				float segLen = (4.6f + 0.5f * (s == 1 ? 1 : 0)) * size;
+				Vector2 lastDir = Vector2.UnitY;
+				for (int i = 0; i < n; i++)
+				{
+					float t = i / (float)(n - 1);
+					ang += (float)Math.Sin(time * 2.6f - i * 0.55f + s * 1.3f) * 0.09f;
+					Vector2 next = pos + ang.ToRotationVector2() * segLen;
+					Vector2 a = f.ToWorld(pos);
+					Vector2 b = f.ToWorld(next);
+					Vector2 d = b - a;
+					lastDir = d;
+					float width = (1f - t * 0.7f) * (s == 1 ? 1f : 0.8f);
+					Color col = pal.Hot.At(0.12f + 0.7f * t);
+					info.DrawDataCache.Add(new DrawData(streak, (a + b) / 2f, null, VfxMath.Additive(col, 0.6f * (1f - t * 0.45f)), d.ToRotation(), streak.Size() / 2f,
+						new Vector2(d.Length() * 2f / streak.Width, 0.5f * width * size), SpriteEffects.None, 0) { shader = shader });
+					pos = next;
+				}
+				Rectangle frame = VfxAssets.FlameFrame((int)(time * 11f) + s * 2);
+				float flicker = 0.8f + 0.2f * (float)Math.Sin(time * 8f + s * 2f);
+				info.DrawDataCache.Add(new DrawData(flame, f.ToWorld(pos), frame, VfxMath.Additive(pal.Hot.At(0.6f), 0.6f), lastDir.ToRotation() + MathHelper.PiOver2,
+					new Vector2(16f, 46f), new Vector2(0.4f, 0.4f * flicker) * size, SpriteEffects.None, 0) { shader = shader });
+			}
+		}
+
+		/// <summary>
+		/// Крылья-аврора: веер колышущихся лент света. По каждой ленте бежит волна, цвет переливается,
+		/// над лентами ближнего крыла встают мягкие «занавеси» сияния.
+		/// </summary>
+		private static void DrawAuroraWing(ref PlayerDrawSet info, WingLook wl, WingPass w, int shader)
+		{
+			Palette pal = wl.Pal;
+			float time = Main.GlobalTimeWrappedHourly;
+			float size = w.Size;
+			float glowMul = w.Far ? 0.5f : 1f;
+			Texture2D strip = VfxAssets.AuroraStrip;
+			const int bands = 7;
+			const int segs = 9;
+			for (int b = 0; b < bands; b++)
+			{
+				float k = b / (float)(bands - 1);
+				WingState d = w.S.Delayed((1f - k) * 0.6f);
+				float sweep = WingRig.Wave(d.Phase) * d.Amp * 0.35f;
+				float fan = MathHelper.Lerp(MathHelper.Lerp(0.55f, 1.15f, k), MathHelper.Lerp(-1.0f, 0.8f, k), w.S.Spread);
+				float angle = fan + sweep * (1f - k * 0.5f) + w.AngleOffset + w.S.Lean * 0.25f;
+				float len = (24f + 22f * (float)Math.Pow(1f - k, 0.8f)) * size * MathHelper.Lerp(0.8f, 1f, w.S.Spread);
+				Vector2 dir = angle.ToRotationVector2();
+				var normal = new Vector2(-dir.Y, dir.X);
+				Vector2 prev = w.F.ToWorld(dir * 4f * size);
+				for (int i = 1; i <= segs; i++)
+				{
+					float t = i / (float)segs;
+					float wave = (float)Math.Sin(time * 2.4f - t * 4f + b * 0.9f) * 4f * size * t;
+					Vector2 cur = w.F.ToWorld(dir * (4f * size + len * t) + normal * wave);
+					float hue = 0.5f + 0.5f * (float)Math.Sin(time * 0.9f + t * 2.2f + k * 2.5f);
+					Color c = wl.Rainbow
+						? Main.hslToRgb(VfxMath.Frac(time * 0.2f + k * 0.6f + t * 0.3f), 0.8f, 0.72f)
+						: VfxMath.LerpVivid(pal.A, pal.B, hue);
+					c = Depth(c, pal, w.Far);
+					float fade = (float)Math.Sin(t * MathHelper.Pi * 0.9f + 0.1f);
+					LayerUtils.Line(ref info, shader, prev, cur, VfxMath.Additive(c, 0.16f * glowMul * fade), 18f * size);
+					LayerUtils.Line(ref info, shader, prev, cur, VfxMath.Additive(c, 0.3f * glowMul * fade), 7f * size);
+					LayerUtils.Line(ref info, shader, prev, cur, VfxMath.Additive(Color.Lerp(c, Color.White, 0.35f), 0.45f * glowMul * fade), 2.8f);
+
+					if (!w.Far && i % 2 == 0)
+					{
+						// занавесь сияния, поднимающаяся от ленты
+						Vector2 up = new Vector2(-(cur - prev).Y, (cur - prev).X).SafeNormalize(-Vector2.UnitY);
+						if (up.Y > 0f)
+							up = -up;
+						info.DrawDataCache.Add(new DrawData(strip, cur, null, VfxMath.Additive(c, 0.12f * fade), up.ToRotation() + MathHelper.PiOver2,
+							new Vector2(16f, 118f), new Vector2(0.35f * size, 0.16f * size), SpriteEffects.None, 0) { shader = shader });
+					}
+					prev = cur;
+				}
+
+				if (!w.Far)
+				{
+					float twinkle = 0.5f + 0.5f * (float)Math.Sin(time * 3.6f + b * 1.9f);
+					info.DrawDataCache.Add(new DrawData(VfxAssets.Glint, prev, null, VfxMath.Additive(Color.White, 0.5f * twinkle), 0f, new Vector2(32f, 32f),
+						0.16f * size * (0.6f + twinkle), SpriteEffects.None, 0) { shader = shader });
+				}
+			}
+
+			if (!w.Far)
+			{
+				Texture2D bloom = VfxAssets.Bloom;
+				info.DrawDataCache.Add(new DrawData(bloom, w.F.Shoulder, null, VfxMath.Additive(pal.A, 0.25f), 0f, bloom.Size() / 2f, 0.26f * size, SpriteEffects.None, 0) { shader = shader });
+			}
+		}
+
+		/// <summary>
+		/// Крылья-туманность: тёмная подложка, облачная перепонка двух цветов, светлая кромка и два набора
+		/// звёзд, мерцающих по очереди. Складываются и машут как перепончатые крылья.
+		/// </summary>
+		private static void DrawNebula(ref PlayerDrawSet info, WingLook wl, WingPass w, int shader)
+		{
+			Palette pal = wl.Pal;
+			WingState s = w.S;
+			float time = Main.GlobalTimeWrappedHourly;
+			float wave = WingRig.Wave(s.Phase);
+			float rot = -0.2f + w.AngleOffset + wave * s.Amp * 0.5f + (1f - s.Spread) * 0.8f + s.Lean * 0.25f;
+			float fold = MathHelper.Lerp(0.5f, 1f, s.Spread);
+			var scale = new Vector2(0.58f * w.Size * MathHelper.Lerp(0.7f, 1f, s.Spread), 0.58f * w.Size * fold * (0.9f + 0.1f * wave * s.Amp));
+			var anchor = new Vector2(6f, 40f);
+			float glowMul = w.Far ? 0.5f : 1f;
+			float twinkle = 0.5f + 0.5f * (float)Math.Sin(time * 2.2f);
+
+			Anchored(ref info, shader, VfxAssets.NebulaWing, null, w.F.Shoulder, anchor, rot, scale, Color.Black * (w.Far ? 0.25f : 0.35f), w.F);
+			Anchored(ref info, shader, VfxAssets.NebulaWing, null, w.F.Shoulder, anchor, rot, scale, VfxMath.Additive(Depth(pal.B, pal, w.Far), 0.5f * glowMul + 0.1f), w.F);
+			Anchored(ref info, shader, VfxAssets.NebulaWing, null, w.F.Shoulder, anchor, rot + 0.05f, scale * 0.95f, VfxMath.Additive(Depth(pal.A, pal, w.Far), 0.3f * glowMul), w.F);
+			Anchored(ref info, shader, VfxAssets.NebulaRim, null, w.F.Shoulder, anchor, rot, scale, VfxMath.Additive(Depth(pal.Hi, pal, w.Far), 0.65f * glowMul + 0.1f), w.F);
+			Anchored(ref info, shader, VfxAssets.NebulaStarsA, null, w.F.Shoulder, anchor, rot, scale, VfxMath.Additive(Color.White, 0.95f * glowMul * twinkle), w.F);
+			Anchored(ref info, shader, VfxAssets.NebulaStarsB, null, w.F.Shoulder, anchor, rot, scale, VfxMath.Additive(Color.White, 0.95f * glowMul * (1f - twinkle)), w.F);
 		}
 	}
 

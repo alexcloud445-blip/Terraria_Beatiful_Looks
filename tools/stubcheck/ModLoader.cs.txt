@@ -62,12 +62,30 @@ namespace Terraria.ModLoader
 	public class Mod
 	{
 		public log4net.ILog Logger => null;
+		public object Call(params object[] args) => null;
 		public virtual void HandlePacket(BinaryReader reader, int whoAmI) { }
 		public ModPacket GetPacket(int capacity = 256) => null;
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => null;
 	}
 
 	public interface ILoadable { }
+
+	public static class ModLoader
+	{
+		public static bool TryGetMod(string name, out Mod result) { result = null; return false; }
+	}
+
+	public abstract class DamageClass : ModType
+	{
+		public static DamageClass Throwing => null;
+		public static DamageClass Generic => null;
+	}
+
+	public abstract class GlobalProjectile : ModType
+	{
+		public virtual bool InstancePerEntity => false;
+		public virtual void PostAI(Projectile projectile) { }
+	}
 
 	public sealed class ModPacket : BinaryWriter
 	{
@@ -148,7 +166,8 @@ namespace Terraria.ModLoader
 
 	public static class PlayerDrawLayers
 	{
-		public static readonly PlayerDrawLayer JimsCloak, MountBack, Head, Torso, Wings, HairBack, Tails, BackAcc, FrontAccFront;
+		public static readonly PlayerDrawLayer JimsCloak, MountBack, Carpet, Head, Torso, Wings, HairBack, Tails, BackAcc, FrontAccFront,
+			Leggings, Robe, Shoes, BeetleBuff, EyebrellaCloud;
 	}
 
 	public class ModKeybind

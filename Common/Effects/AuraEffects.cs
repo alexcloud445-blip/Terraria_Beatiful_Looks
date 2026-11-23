@@ -12,7 +12,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 	/// основа (то, что задаёт характер), акценты (блики, искры) и редкие события (вспышки, волны).
 	/// Цвета берутся из палитры (блик → основной → второй → тёмный) и меняются за жизнь частицы.
 	/// </summary>
-	public static class AuraEffects
+	public static partial class AuraEffects
 	{
 		private struct Ctx
 		{
@@ -62,6 +62,11 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				case AuraStyle.Butterflies: Butterflies(c); break;
 				case AuraStyle.Runes: Runes(c); break;
 				case AuraStyle.Fireflies: Fireflies(c); break;
+				case AuraStyle.Astrolabe: Astrolabe(c); break;
+				case AuraStyle.Aurora: Aurora(c); break;
+				case AuraStyle.Galaxy: Galaxy(c); break;
+				case AuraStyle.Eclipse: Eclipse(c); break;
+				case AuraStyle.Mandala: Mandala(c); break;
 			}
 		}
 
@@ -288,6 +293,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					Glowing = true,
 					GlowRamp = pal.B,
 					GlowStrength = 0.45f,
+					Settle = true,
 					Front = Coin
 				});
 			}
@@ -338,6 +344,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				{
 					GlowStrength = 0.35f,
 					GlowRamp = pal.B,
+					Settle = true,
 					Front = Coin
 				});
 			}
@@ -498,7 +505,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				for (int k = 0; k < 8; k++)
 				{
 					Vector2 dir = new Vector2(R(-1f, 1f), -R(0.3f, 1f) * c.G);
-					ParticleSystem.Spawn(new SparkParticle(end, dir * R(3f, 6f), pal.Glow, 0.7f, 18) { Gravity = new Vector2(0f, 0.2f * c.G) });
+					ParticleSystem.Spawn(new SparkParticle(end, dir * R(3f, 6f), pal.Glow, 0.7f, 18) { Gravity = new Vector2(0f, 0.2f * c.G), Bounce = true });
 				}
 				Lighting.AddLight(end, pal.A.ToVector3() * 2f);
 			}
@@ -560,6 +567,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				{
 					GlowStrength = 0.5f,
 					GlowRamp = pal.B,
+					Settle = true,
 					Front = Coin
 				});
 			}

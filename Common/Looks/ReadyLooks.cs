@@ -35,7 +35,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			theme.ApplyToAll(l);
 		}
 
-		// В каждом образе 4–5 эффектов, которые дополняют друг друга: больше — и всё сливается в пятно.
+		// В каждом образе 4–6 эффектов, которые дополняют друг друга: больше — и всё сливается в пятно.
+		// След оружия, шаги и спутник почти не перекрывают персонажа, поэтому их можно добавлять смелее.
 		public static readonly Entry[] All =
 		{
 			new Entry("Seraph", new Color(255, 214, 110), l =>
@@ -49,6 +50,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Ribbon = RibbonStyle.Soft;
 				l.RibbonWidth = 0.8f;
 				l.Dash = DashStyle.Flash;
+				l.WeaponTrail = WeaponTrailStyle.Soft;
 			}),
 			new Entry("Inferno", new Color(255, 160, 40), l =>
 			{
@@ -58,6 +60,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Flame;
 				l.Ribbon = RibbonStyle.Flame;
 				l.Dash = DashStyle.Flame;
+				l.WeaponTrail = WeaponTrailStyle.Flame;
+				l.Steps = StepStyle.Embers;
 			}),
 			new Entry("Frost", new Color(120, 210, 255), l =>
 			{
@@ -68,6 +72,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Crystal;
 				l.Echo = EchoStyle.Ghost;
 				l.Dash = DashStyle.Flash;
+				l.WeaponTrail = WeaponTrailStyle.Sparkle;
+				l.Steps = StepStyle.Frost;
 			}),
 			new Entry("Sakura", new Color(255, 140, 200), l =>
 			{
@@ -77,6 +83,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Ribbon = RibbonStyle.Twin;
 				l.RibbonWidth = 0.8f;
 				l.Dash = DashStyle.Sakura;
+				l.WeaponTrail = WeaponTrailStyle.Sparkle;
+				l.Steps = StepStyle.Flowers;
 			}),
 			new Entry("Void", new Color(150, 70, 255), l =>
 			{
@@ -88,6 +96,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Echo = EchoStyle.Phantom;
 				l.Outline = true;
 				l.Dash = DashStyle.Void;
+				l.WeaponTrail = WeaponTrailStyle.Shadow;
 			}),
 			new Entry("Empress", new Color(255, 120, 220), l =>
 			{
@@ -99,6 +108,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Ribbon = RibbonStyle.Empress;
 				l.RibbonWidth = 0.8f;
 				l.Dash = DashStyle.Prism;
+				l.WeaponTrail = WeaponTrailStyle.Prism;
 			}),
 			new Entry("Storm", new Color(130, 170, 255), l =>
 			{
@@ -108,6 +118,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Echo = EchoStyle.Afterimage;
 				l.Outline = true;
 				l.Dash = DashStyle.Thunder;
+				l.WeaponTrail = WeaponTrailStyle.Sparkle;
 			}),
 			new Entry("Celestial", new Color(120, 150, 255), l =>
 			{
@@ -117,6 +128,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Ring;
 				l.Sigil = true;
 				l.Dash = DashStyle.Prism;
+				l.WeaponTrail = WeaponTrailStyle.Stardust;
 			}),
 			new Entry("Fairy", new Color(120, 255, 180), l =>
 			{
@@ -126,6 +138,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Starry;
 				l.Trail = TrailStyle.Sparkles;
 				l.Dash = DashStyle.Sakura;
+				l.WeaponTrail = WeaponTrailStyle.Sparkle;
+				l.Companion = CompanionStyle.Wisp;
 			}),
 			new Entry("Comet", new Color(80, 230, 255), l =>
 			{
@@ -135,6 +149,73 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.RibbonWidth = 0.8f;
 				l.Echo = EchoStyle.Ghost;
 				l.Dash = DashStyle.Flash;
+				l.WeaponTrail = WeaponTrailStyle.Stardust;
+			}),
+
+			// ---------- v0.6 ----------
+			new Entry("Astral", new Color(255, 205, 110), l =>
+			{
+				Colors(l, new Color(255, 205, 110), new Color(120, 170, 255));
+				l.Aura = AuraStyle.Astrolabe;
+				l.Halo = HaloStyle.Diadem;
+				l.Wings = WingStyle.Constellation;
+				l.Companion = CompanionStyle.Wisp;
+				l.Steps = StepStyle.Stardust;
+				l.WeaponTrail = WeaponTrailStyle.Stardust;
+				l.Dash = DashStyle.Prism;
+			}),
+			new Entry("Phoenix", new Color(255, 170, 60), l =>
+			{
+				Colors(l, new Color(255, 170, 60), new Color(235, 50, 40));
+				l.Aura = AuraStyle.Glow;
+				l.AuraDensity = 0.7f;
+				l.Halo = HaloStyle.Radiant;
+				l.Wings = WingStyle.Phoenix;
+				l.Steps = StepStyle.Embers;
+				l.WeaponTrail = WeaponTrailStyle.Flame;
+				l.Dash = DashStyle.Flame;
+			}),
+			new Entry("Aurora", new Color(90, 255, 170), l =>
+			{
+				Colors(l, new Color(90, 255, 170), new Color(170, 100, 255));
+				l.Aura = AuraStyle.Aurora;
+				l.Wings = WingStyle.Aurora;
+				l.Companion = CompanionStyle.Fox;
+				l.Steps = StepStyle.Frost;
+				l.WeaponTrail = WeaponTrailStyle.Soft;
+				l.Dash = DashStyle.Flash;
+			}),
+			new Entry("Galaxy", new Color(150, 170, 255), l =>
+			{
+				Colors(l, new Color(150, 170, 255), new Color(255, 120, 200));
+				l.Aura = AuraStyle.Galaxy;
+				l.Wings = WingStyle.Nebula;
+				l.Halo = HaloStyle.Starry;
+				l.Companion = CompanionStyle.Serpent;
+				l.Steps = StepStyle.Stardust;
+				l.WeaponTrail = WeaponTrailStyle.Stardust;
+				l.Dash = DashStyle.Void;
+			}),
+			new Entry("Eclipse", new Color(255, 190, 90), l =>
+			{
+				Colors(l, new Color(255, 190, 90), new Color(255, 80, 60));
+				l.Aura = AuraStyle.Eclipse;
+				l.Halo = HaloStyle.Horns;
+				l.Wings = WingStyle.Demon;
+				l.Steps = StepStyle.Shadow;
+				l.WeaponTrail = WeaponTrailStyle.Shadow;
+				l.Dash = DashStyle.Shadow;
+			}),
+			new Entry("Lotus", new Color(255, 170, 215), l =>
+			{
+				Colors(l, new Color(255, 170, 215), new Color(120, 230, 150));
+				l.Aura = AuraStyle.Mandala;
+				l.Wings = WingStyle.Floral;
+				l.Halo = HaloStyle.RuneCrown;
+				l.Companion = CompanionStyle.Butterfly;
+				l.Steps = StepStyle.Flowers;
+				l.WeaponTrail = WeaponTrailStyle.Sparkle;
+				l.Dash = DashStyle.Sakura;
 			})
 		};
 	}

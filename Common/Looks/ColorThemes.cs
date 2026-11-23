@@ -24,13 +24,11 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			second.Set(Secondary);
 		}
 
-		/// <summary>Красит весь образ: ауру, след и эффекты.</summary>
+		/// <summary>Красит весь образ: ауру, след, движение, эффекты, крылья и спутника.</summary>
 		public void ApplyToAll(LookSettings look)
 		{
-			ApplyTo(look.AuraColor, look.AuraColor2);
-			ApplyTo(look.TrailColor, look.TrailColor2);
-			ApplyTo(look.EffectColor, look.EffectColor2);
-			ApplyTo(look.WingColor, look.WingColor2);
+			foreach ((ColorSetting a, ColorSetting b) in look.ColorPairs)
+				ApplyTo(a, b);
 		}
 	}
 

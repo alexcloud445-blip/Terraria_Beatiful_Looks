@@ -13,7 +13,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 	/// - ванильные рывки (щит Ктулху, таби, солнечная броня): в первый кадр Player.dashDelay == -1;
 	/// - любые другие (Calamity и прочие моды): резкий скачок горизонтальной скорости намного выше бега.
 	/// Начало — вспышка, звуковая волна и искры; во время — линии скорости, росчерк-лента, послеобразы и
-	/// частицы стиля; конец — небольшой всплеск. Цвета — как у эффектов на персонаже.
+	/// частицы стиля; конец — небольшой всплеск. Цвета — из вкладки «Движение».
 	/// </summary>
 	public static class DashEffects
 	{
@@ -24,7 +24,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 
 		private static float R(float min, float max) => Main.rand.NextFloat(min, max);
 
-		private static Palette Pal(LookSettings look) => Palette.Of(look.EffectColor, look.EffectColor2, Main.rand.NextFloat(0.3f));
+		private static Palette Pal(LookSettings look) => Palette.Of(look.MotionColor, look.MotionColor2, Main.rand.NextFloat(0.3f));
 
 		private static Color Rainbow(float offset = 0f) =>
 			Main.hslToRgb(VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.6f + offset + Main.rand.NextFloat(0.25f)), 0.8f, 0.75f);
@@ -193,6 +193,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 							GlowStrength = 0.4f,
 							GlowRamp = pal.B,
 							Spin = R(-0.15f, 0.15f),
+							Settle = true,
 							Front = Main.rand.NextBool()
 						});
 					}
@@ -308,6 +309,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						GlowStrength = 0.35f,
 						GlowRamp = pal.B,
 						Spin = R(-0.15f, 0.15f),
+						Settle = true,
 						Front = Main.rand.NextBool()
 					});
 					break;
@@ -333,7 +335,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				return;
 
 			Player player = mp.Player;
-			Palette pal = Palette.Of(look.EffectColor, look.EffectColor2);
+			Palette pal = Palette.Of(look.MotionColor, look.MotionColor2);
 			var ramp = new Ramp(pal.Hi, pal.A, pal.B);
 			bool dark = look.Dash == DashStyle.Shadow || look.Dash == DashStyle.Void;
 			const int count = 5;
@@ -405,7 +407,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Array.Copy(RibbonPos, positions, count);
 			Array.Copy(RibbonRot, rotations, count);
 
-			Palette pal = Palette.Of(look.EffectColor, look.EffectColor2);
+			Palette pal = Palette.Of(look.MotionColor, look.MotionColor2);
 			var ramp = new Ramp(pal.Hi, pal.A, pal.B);
 			float fade = mp.DashFade;
 			float width = 11f;

@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria_Beatiful_Looks.Common.Effects;
 using Terraria_Beatiful_Looks.Common.Looks;
 using Terraria_Beatiful_Looks.Common.Players;
 using Terraria_Beatiful_Looks.Common.Systems;
@@ -16,12 +17,16 @@ namespace Terraria_Beatiful_Looks.Common.UI
 	/// </summary>
 	public class LooksPanel : UIState
 	{
-		private const float WindowWidth = 760f;
-		private const float WindowHeight = 500f;
+		private const float WindowWidth = 860f;
+		private const float WindowHeight = 520f;
 		private const float LeftColumn = 180f;
 
-		private static readonly string[] TabNames = { "TabAura", "TabTrail", "TabEffects", "TabWings", "TabColors", "TabLooks", "TabWardrobe" };
-		private const int ColorsTab = 4;
+		private static readonly string[] TabNames =
+			{ "TabAura", "TabTrail", "TabMotion", "TabEffects", "TabWings", "TabCompanion", "TabColors", "TabLooks", "TabWardrobe" };
+		private const int ColorsTab = 6;
+
+		/// <summary>Наборы цветов (по порядку LookSettings.ColorPairs) и их подписи во вкладке «Цвета».</summary>
+		private static readonly string[] ColorTargets = { "TabAura", "TabTrail", "TabMotion", "TabEffects", "TabWings", "TabCompanion" };
 
 		private UIPanel _root;
 		private UIPanel _previewBox;
@@ -34,7 +39,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		private bool _dragging;
 		private Vector2 _dragOffset;
 
-		/// <summary>Какие цвета правит вкладка «Цвета»: 0 аура, 1 след, 2 эффекты, 3 крылья; слот 0 — основной, 1 — второй.</summary>
+		/// <summary>Какие цвета правит вкладка «Цвета» (номер в ColorTargets); слот 0 — основной, 1 — второй.</summary>
 		private int _colorTarget;
 		private int _colorSlot;
 		private int _hoverLook = -1;
@@ -207,6 +212,15 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			copy.WingAmp = real.WingAmp;
 			copy.WingSpread = real.WingSpread;
 			copy.WingLean = real.WingLean;
+			// спутник: превью рисует его на том же месте относительно персонажа
+			copy.CompanionReady = real.CompanionReady;
+			copy.CompanionPos = real.CompanionPos;
+			copy.CompanionVel = real.CompanionVel;
+			copy.CompanionAnchor = real.CompanionAnchor;
+			copy.CompanionFacing = real.CompanionFacing;
+			copy.CompanionClock = real.CompanionClock;
+			copy.CompanionBlink = real.CompanionBlink;
+			Array.Copy(real.CompanionTrail, copy.CompanionTrail, real.CompanionTrail.Length);
 		}
 
 		// ======================= вкладки =======================
@@ -236,7 +250,11 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			_content.Height.Set(0f, 1f);
 			contentPanel.Append(_content);
 
-			_tabs = new[] { BuildAuraTab(), BuildTrailTab(), BuildEffectsTab(), BuildWingsTab(), BuildColorsTab(), BuildLooksTab(), BuildWardrobeTab() };
+			_tabs = new[]
+			{
+				BuildAuraTab(), BuildTrailTab(), BuildMotionTab(), BuildEffectsTab(), BuildWingsTab(), BuildCompanionTab(),
+				BuildColorsTab(), BuildLooksTab(), BuildWardrobeTab()
+			};
 			SelectTab(0);
 		}
 
@@ -323,11 +341,11 @@ namespace Terraria_Beatiful_Looks.Common.UI
 				i => (int)Look.Aura == i,
 				i => Look.Aura = (AuraStyle)i), 24f);
 
-			Place(page, MulSlider("Density", () => Look.AuraDensity, v => Look.AuraDensity = v), 182f);
-			Place(page, MulSlider("Size", () => Look.AuraSize, v => Look.AuraSize = v), 210f);
-			Place(page, MulSlider("Speed", () => Look.AuraSpeed, v => Look.AuraSpeed = v), 238f);
-			Place(page, ColorChips(0, () => Look.AuraColor, () => Look.AuraColor2), 274f);
-			Place(page, Hint("AuraHint"), 306f);
+			Place(page, MulSlider("Density", () => Look.AuraDensity, v => Look.AuraDensity = v), 212f);
+			Place(page, MulSlider("Size", () => Look.AuraSize, v => Look.AuraSize = v), 240f);
+			Place(page, MulSlider("Speed", () => Look.AuraSpeed, v => Look.AuraSpeed = v), 268f);
+			Place(page, ColorChips(0, () => Look.AuraColor, () => Look.AuraColor2), 302f);
+			Place(page, Hint("AuraHint"), 334f);
 			return page;
 		}
 
@@ -366,12 +384,12 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		{
 			UIElement page = NewPage();
 			Place(page, Header("Halo"), 0f);
-			Place(page, new OptionGrid(LookSettings.HaloStyleCount, 6,
+			Place(page, new OptionGrid(LookSettings.HaloStyleCount, 5,
 				i => Theme.T("HaloStyle." + (HaloStyle)i),
 				i => (int)Look.Halo == i,
 				i => Look.Halo = (HaloStyle)i), 24f);
 
-			Place(page, Header("OnCharacter"), 60f);
+			Place(page, Header("OnCharacter"), 92f);
 			(string key, Func<bool> get, Action toggle)[] toggles =
 			{
 				("BackGlow", () => Look.BackGlow, () => Look.BackGlow = !Look.BackGlow),
@@ -384,21 +402,73 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			Place(page, new OptionGrid(toggles.Length, 6,
 				i => (toggles[i].get() ? "> " : "") + Theme.T(toggles[i].key),
 				i => toggles[i].get(),
-				i => toggles[i].toggle()), 84f);
+				i => toggles[i].toggle()), 116f);
 
 			Place(page, new SelectorRow(() => Theme.T("Dye"),
 				() => EffectDyes.Name(Look.EffectDye) ?? Theme.T("NoDye"),
-				dir => Look.EffectDye = LookSettings.Wrap(Look.EffectDye + dir, EffectDyes.Count)), 124f);
+				dir => Look.EffectDye = LookSettings.Wrap(Look.EffectDye + dir, EffectDyes.Count)), 154f);
 
-			Place(page, Header("Dash"), 162f);
+			Place(page, ColorChips(3, () => Look.EffectColor, () => Look.EffectColor2), 198f);
+			Place(page, Hint("EffectsHint"), 230f);
+			Place(page, Hint("DyeHint"), 252f);
+			return page;
+		}
+
+		// ---------- Движение ----------
+		private UIElement BuildMotionTab()
+		{
+			UIElement page = NewPage();
+			Place(page, Header("Dash"), 0f);
 			Place(page, new OptionGrid(LookSettings.DashStyleCount, 4,
 				i => Theme.T("DashStyle." + (DashStyle)i),
 				i => (int)Look.Dash == i,
-				i => Look.Dash = (DashStyle)i), 186f);
+				i => Look.Dash = (DashStyle)i), 24f);
 
-			Place(page, ColorChips(2, () => Look.EffectColor, () => Look.EffectColor2), 252f);
-			Place(page, Hint("EffectsHint"), 284f);
-			Place(page, Hint("DashHint"), 306f);
+			Place(page, Header("Steps"), 88f);
+			Place(page, new OptionGrid(LookSettings.StepStyleCount, 4,
+				i => Theme.T("StepStyle." + (StepStyle)i),
+				i => (int)Look.Steps == i,
+				i => Look.Steps = (StepStyle)i), 112f);
+
+			Place(page, Header("WeaponTrail"), 176f);
+			Place(page, new OptionGrid(LookSettings.WeaponTrailStyleCount, 7,
+				i => Theme.T("WeaponTrailStyle." + (WeaponTrailStyle)i),
+				i => (int)Look.WeaponTrail == i,
+				i => Look.WeaponTrail = (WeaponTrailStyle)i), 200f);
+
+			(string key, Func<bool> get, Action toggle)[] toggles =
+			{
+				("WeaponTrailAll", () => Look.WeaponTrailAll, () => Look.WeaponTrailAll = !Look.WeaponTrailAll),
+				("StealthFx", () => Look.StealthFx, () => Look.StealthFx = !Look.StealthFx)
+			};
+			Place(page, new OptionGrid(toggles.Length, 2,
+				i => Theme.T(toggles[i].key) + ": " + Theme.T(toggles[i].get() ? "On" : "Off"),
+				i => toggles[i].get(),
+				i => toggles[i].toggle()), 234f);
+
+			Place(page, ColorChips(2, () => Look.MotionColor, () => Look.MotionColor2), 270f);
+			Place(page, Hint("MotionHint"), 302f);
+			Place(page, new DynamicText(() => Theme.T(StealthEffects.CalamityLoaded ? "StealthHintOn" : "StealthHintOff"), 0.72f) { Color = Theme.TextDim }, 324f);
+			Place(page, Hint("DashHint"), 346f);
+			return page;
+		}
+
+		// ---------- Спутник ----------
+		private UIElement BuildCompanionTab()
+		{
+			UIElement page = NewPage();
+			Place(page, Header("Companion"), 0f);
+			Place(page, new OptionGrid(LookSettings.CompanionStyleCount, 5,
+				i => Theme.T("CompanionStyle." + (CompanionStyle)i),
+				i => (int)Look.Companion == i,
+				i => Look.Companion = (CompanionStyle)i,
+				buttonHeight: 30f), 24f);
+
+			Place(page, MulSlider("Size", () => Look.CompanionSize, v => Look.CompanionSize = v), 72f);
+			Place(page, ColorChips(5, () => Look.CompanionColor, () => Look.CompanionColor2), 108f);
+			Place(page, new DynamicText(() => Theme.T("CompanionDesc." + Look.Companion), 0.8f) { Color = Color.White }, 146f);
+			Place(page, Hint("CompanionHint"), 176f);
+			Place(page, Hint("CompanionHint2"), 198f);
 			return page;
 		}
 
@@ -407,57 +477,44 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		{
 			UIElement page = NewPage();
 			Place(page, Header("WingStyle"), 0f);
-			Place(page, new OptionGrid(LookSettings.WingStyleCount, 3,
+			Place(page, new OptionGrid(LookSettings.WingStyleCount, 4,
 				i => Theme.T("WingStyle." + (WingStyle)i),
 				i => (int)Look.Wings == i,
 				i => Look.Wings = (WingStyle)i,
 				buttonHeight: 28f), 24f);
 
-			Place(page, MulSlider("Size", () => Look.WingSize, v => Look.WingSize = v), 124f);
-			Place(page, ColorChips(3, () => Look.WingColor, () => Look.WingColor2), 158f);
-			Place(page, Hint("WingsHint"), 192f);
-			Place(page, Hint("WingsHint2"), 216f);
-			Place(page, Hint("WingsHint3"), 240f);
+			Place(page, MulSlider("Size", () => Look.WingSize, v => Look.WingSize = v), 160f);
+			Place(page, ColorChips(4, () => Look.WingColor, () => Look.WingColor2), 194f);
+			Place(page, Hint("WingsHint"), 228f);
+			Place(page, Hint("WingsHint2"), 252f);
+			Place(page, Hint("WingsHint3"), 276f);
 			return page;
 		}
 
 		// ---------- Цвета ----------
 		private ColorSetting CurrentColor()
 		{
-			LookSettings l = Look;
-			return _colorTarget switch
-			{
-				1 => _colorSlot == 0 ? l.TrailColor : l.TrailColor2,
-				2 => _colorSlot == 0 ? l.EffectColor : l.EffectColor2,
-				3 => _colorSlot == 0 ? l.WingColor : l.WingColor2,
-				_ => _colorSlot == 0 ? l.AuraColor : l.AuraColor2
-			};
+			(ColorSetting a, ColorSetting b) = CurrentPair();
+			return _colorSlot == 0 ? a : b;
 		}
 
 		private (ColorSetting, ColorSetting) CurrentPair()
 		{
-			LookSettings l = Look;
-			return _colorTarget switch
-			{
-				1 => (l.TrailColor, l.TrailColor2),
-				2 => (l.EffectColor, l.EffectColor2),
-				3 => (l.WingColor, l.WingColor2),
-				_ => (l.AuraColor, l.AuraColor2)
-			};
+			(ColorSetting, ColorSetting)[] pairs = Look.ColorPairs;
+			return pairs[Math.Clamp(_colorTarget, 0, pairs.Length - 1)];
 		}
 
 		private UIElement BuildColorsTab()
 		{
 			UIElement page = NewPage();
 
-			string[] targets = { "TabAura", "TabTrail", "TabEffects", "TabWings" };
-			var targetGrid = new OptionGrid(4, 4, i => Theme.T(targets[i]), i => _colorTarget == i, i => _colorTarget = i);
-			targetGrid.Width.Set(-4f, 0.6f);
+			var targetGrid = new OptionGrid(ColorTargets.Length, ColorTargets.Length, i => Theme.T(ColorTargets[i]), i => _colorTarget == i, i => _colorTarget = i);
+			targetGrid.Width.Set(-4f, 0.66f);
 			Place(page, targetGrid, 0f);
 
 			var slotGrid = new OptionGrid(2, 2, i => Theme.T(i == 0 ? "Color1" : "Color2"), i => _colorSlot == i, i => _colorSlot = i);
-			slotGrid.Width.Set(-4f, 0.4f);
-			slotGrid.Left.Set(4f, 0.6f);
+			slotGrid.Width.Set(-4f, 0.34f);
+			slotGrid.Left.Set(4f, 0.66f);
 			Place(page, slotGrid, 0f);
 
 			Place(page, new ColorPicker(CurrentColor), 34f);
@@ -489,7 +546,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			{
 				(ColorSetting a, ColorSetting b) = CurrentPair();
 				LookSettings l = Look;
-				foreach ((ColorSetting x, ColorSetting y) in new[] { (l.AuraColor, l.AuraColor2), (l.TrailColor, l.TrailColor2), (l.EffectColor, l.EffectColor2), (l.WingColor, l.WingColor2) })
+				foreach ((ColorSetting x, ColorSetting y) in l.ColorPairs)
 				{
 					if (x != a)
 					{

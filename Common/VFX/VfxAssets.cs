@@ -20,7 +20,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		private static Asset<Texture2D> _bloom, _orb, _flare, _streak, _line, _ringWave, _godRay,
 			_smoke, _runes, _haloRing, _groundRing, _thornHalo, _sigilRings,
 			_shapes, _shapesGlow, _feather, _featherGlow, _covert, _covertGlow, _butterflyWing, _butterflyPattern, _butterflyGlow,
-			_batWing, _batBones, _flame, _blade, _glint;
+			_batWing, _batBones, _flame, _blade, _glint,
+			_auroraStrip, _galaxy, _corona, _disc, _mandalaOuter, _mandalaInner,
+			_nebulaWing, _nebulaRim, _nebulaStarsA, _nebulaStarsB, _fox, _foxGlow;
 
 		/// <summary>Мягкое гауссово пятно 128x128.</summary>
 		public static Texture2D Bloom => _bloom.Value;
@@ -71,6 +73,32 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public static Texture2D ThornHalo => _thornHalo.Value;
 		/// <summary>Кольца магического круга в перспективе 128x40 (внешний эллипс 124x37).</summary>
 		public static Texture2D SigilRings => _sigilRings.Value;
+
+		// ---------- v0.6 (tools/make_vfx_v6.py) ----------
+		/// <summary>Складка северного сияния 32x128: яркая кромка внизу по центру, свет гаснет вверх.</summary>
+		public static Texture2D AuroraStrip => _auroraStrip.Value;
+		/// <summary>32 кадра 160x64 (сетка 8x4) вращающейся галактики в перспективе. Верх кадра — дальняя сторона.</summary>
+		public static Texture2D Galaxy => _galaxy.Value;
+		/// <summary>Корона затмения 128x128: ободок на радиусе 0.36 (23 px) и лучи наружу.</summary>
+		public static Texture2D Corona => _corona.Value;
+		/// <summary>Залитый круг 64x64 радиусом 30.</summary>
+		public static Texture2D Disc => _disc.Value;
+		/// <summary>Мандала 256x256: внешнее кольцо с лепестками / внутренняя звезда.</summary>
+		public static Texture2D MandalaOuter => _mandalaOuter.Value;
+		public static Texture2D MandalaInner => _mandalaInner.Value;
+		/// <summary>Крыло-туманность 96x88: перепонка, кромка и два набора звёзд; крепление в (6, 40).</summary>
+		public static Texture2D NebulaWing => _nebulaWing.Value;
+		public static Texture2D NebulaRim => _nebulaRim.Value;
+		public static Texture2D NebulaStarsA => _nebulaStarsA.Value;
+		public static Texture2D NebulaStarsB => _nebulaStarsB.Value;
+		/// <summary>Лисица-дух 64x48 (смотрит вправо, хвосты — кодом от точки (14, 23)) и её свечение.</summary>
+		public static Texture2D Fox => _fox.Value;
+		public static Texture2D FoxGlow => _foxGlow.Value;
+
+		public const int GalaxyFrames = 32;
+
+		/// <summary>Кадр галактики (0..31).</summary>
+		public static Rectangle GalaxyFrame(int index) => new Rectangle((index & 7) * 160, ((index >> 3) & 3) * 64, 160, 64);
 
 		private static readonly List<Asset<Texture2D>> All = new List<Asset<Texture2D>>();
 		private static bool _prepared;
@@ -175,6 +203,18 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			_groundRing = Request("GroundRing");
 			_thornHalo = Request("ThornHalo");
 			_sigilRings = Request("SigilRings");
+			_auroraStrip = Request("AuroraStrip");
+			_galaxy = Request("Galaxy");
+			_corona = Request("Corona");
+			_disc = Request("Disc");
+			_mandalaOuter = Request("MandalaOuter");
+			_mandalaInner = Request("MandalaInner");
+			_nebulaWing = Request("NebulaWing");
+			_nebulaRim = Request("NebulaRim");
+			_nebulaStarsA = Request("NebulaStarsA");
+			_nebulaStarsB = Request("NebulaStarsB");
+			_fox = Request("Fox");
+			_foxGlow = Request("FoxGlow");
 		}
 
 		public override void Unload()
@@ -185,6 +225,8 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			_smoke = _runes = _haloRing = _groundRing = _thornHalo = _sigilRings = null;
 			_shapes = _shapesGlow = _feather = _featherGlow = _covert = _covertGlow = _butterflyWing = _butterflyPattern = _butterflyGlow = null;
 			_batWing = _batBones = _flame = _blade = _glint = null;
+			_auroraStrip = _galaxy = _corona = _disc = _mandalaOuter = _mandalaInner = null;
+			_nebulaWing = _nebulaRim = _nebulaStarsA = _nebulaStarsB = _fox = _foxGlow = null;
 		}
 
 		private static Asset<Texture2D> Request(string name)

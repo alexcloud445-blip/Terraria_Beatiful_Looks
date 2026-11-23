@@ -22,6 +22,10 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public float Wander;
 		/// <summary>Сила ореола (0..1).</summary>
 		public float Halo = 0.28f;
+		/// <summary>Отскакивает от блоков (угольки); после нескольких отскоков ложится и тлеет.</summary>
+		public bool Bounce;
+		private int _bounces;
+		private bool _resting;
 		private readonly float _phase = Main.rand.NextFloat(MathHelper.TwoPi);
 
 		public GlowParticle(Vector2 position, Vector2 velocity, Ramp ramp, float scale = 1f, int lifetime = 40)
@@ -35,9 +39,17 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 
 		public override void Update()
 		{
+			if (_resting)
+				return;
 			if (Wander > 0f)
 				Velocity += Main.rand.NextVector2Circular(Wander, Wander);
 			Velocity = Velocity * Drag + Gravity;
+			if (Bounce && BounceOffTiles(ref _bounces) && _bounces >= 3 && Math.Abs(Velocity.Y) < 1.2f)
+			{
+				_resting = true;
+				Velocity = Vector2.Zero;
+				return;
+			}
 			Position += Velocity;
 		}
 
@@ -114,6 +126,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Насколько искра вытягивается от скорости.</summary>
 		public float Stretch = 3f;
 		public float Width = 1f;
+		/// <summary>Отскакивает от блоков.</summary>
+		public bool Bounce;
+		private int _bounces;
 
 		public SparkParticle(Vector2 position, Vector2 velocity, Ramp ramp, float scale = 1f, int lifetime = 25)
 		{
@@ -128,6 +143,8 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public override void Update()
 		{
 			Velocity = Velocity * Drag + Gravity;
+			if (Bounce && BounceOffTiles(ref _bounces) && _bounces >= 3)
+				Gravity = Vector2.Zero;
 			Position += Velocity;
 			if (Velocity.LengthSquared() > 0.0001f)
 				Rotation = Velocity.ToRotation();
@@ -304,7 +321,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Летит по инерции и вращается (звёзды, осколки).</summary>
 		Spin,
 		/// <summary>Кружит вокруг владельца по спирали (вихри лепестков, затягивание в пустоту).</summary>
-		Orbit
+		Orbit,
+		/// <summary>Лежит на месте (следы шагов, улёгшиеся лепестки).</summary>
+		Stay
 	}
 
 	/// <summary>
@@ -326,6 +345,12 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public bool FaceVelocity;
 		/// <summary>Игрок, вокруг которого кружит/порхает форма (-1 — никто).</summary>
 		public int Owner = -1;
+		/// <summary>Растяжение формы в её собственных осях (X — поперёк, Y — вдоль).</summary>
+		public Vector2 Stretch = Vector2.One;
+		/// <summary>«Живая» частица: долетев до земли, ложится и лежит пару секунд (лепестки, снежинки, перья).</summary>
+		public bool Settle;
+		private bool _settled;
+		private float _settleRotation;
 		public Vector2 HomeOffset;
 		// Орбита (Motion.Orbit)
 		public float OrbitAngle, OrbitRadius = 40f, OrbitSpeed = 0.05f, RadiusSpeed, OrbitSquash = 0.35f;
@@ -350,6 +375,28 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 
 		public override void Update()
 		{
+			if (_settled)
+			{
+				Rotation = MathHelper.Lerp(Rotation, _settleRotation, 0.25f);
+				return;
+			}
+
+			if (Settle && Velocity.Y > 0f && Time > 6 && Living.Enabled && !Living.Solid(Position)
+				&& Living.Solid(Position + new Vector2(0f, 3f + 4f * Scale)))
+			{
+				// долетела до земли: ложится плашмя и лежит
+				_settled = true;
+				Motion = SpriteMotion.Stay;
+				Velocity = Vector2.Zero;
+				float flat = MathHelper.PiOver2 * (Math.Cos(Rotation) * Math.Sin(Rotation) >= 0 ? 1f : -1f);
+				_settleRotation = flat + Main.rand.NextFloat(-0.25f, 0.25f);
+				Stretch = new Vector2(0.62f, 1f);
+				Time = 0;
+				Lifetime = Main.rand.Next(130, 200);
+				GlowStrength *= 0.6f;
+				return;
+			}
+
 			float wave = (float)Math.Sin(Time * 0.06f + _phase);
 			switch (Motion)
 			{
@@ -386,6 +433,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 					Velocity *= 0.95f;
 					Rotation += Spin;
 					break;
+				case SpriteMotion.Stay:
+					Velocity *= 0.8f;
+					break;
 				case SpriteMotion.Orbit:
 					OrbitAngle += OrbitSpeed;
 					OrbitRadius = Math.Max(0f, OrbitRadius + RadiusSpeed);
@@ -408,7 +458,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public override void Draw(SpriteBatch sb)
 		{
 			float t = Progress;
-			float alpha = VfxMath.FadeInOut(t, 0.1f, 0.65f) * Opacity;
+			float alpha = (_settled ? VfxMath.FadeInOut(t, 0f, 0.6f) : VfxMath.FadeInOut(t, 0.1f, 0.65f)) * Opacity;
 			if (alpha <= 0.01f)
 				return;
 
@@ -418,16 +468,18 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			Rectangle frame = Shapes.Frame(shape);
 
 			Vector2 pos = Screen(Position);
-			float s = Scale * 0.62f * VfxMath.PopIn(Time / 10f);
+			// у улёгшейся частицы цвет «замирает» на том, каким был в момент касания земли
+			float ct = _settled ? 0.55f : t;
+			Vector2 s = Stretch * (Scale * 0.62f * (_settled ? 1f : VfxMath.PopIn(Time / 10f)));
 			SpriteEffects fx = Motion == SpriteMotion.Flutter && Velocity.X < 0f ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 			if (GlowStrength > 0f)
 			{
-				Color glow = GlowRamp.HasValue ? GlowRamp.Value.At(t) : Ramp.At(Math.Min(1f, t + 0.45f));
+				Color glow = GlowRamp.HasValue ? GlowRamp.Value.At(ct) : Ramp.At(Math.Min(1f, ct + 0.45f));
 				sb.Draw(VfxAssets.ShapesGlow, pos, frame, VfxMath.Additive(glow, 0.75f * GlowStrength * alpha), Rotation, Shapes.Origin, s * 1.15f, fx, 0f);
 			}
 
-			Color fill = Ramp.At(t);
+			Color fill = Ramp.At(ct);
 			sb.Draw(VfxAssets.Shapes, pos, frame, Glowing ? VfxMath.Additive(fill, alpha) : fill * alpha, Rotation, Shapes.Origin, s, fx, 0f);
 
 			if (Glowing)

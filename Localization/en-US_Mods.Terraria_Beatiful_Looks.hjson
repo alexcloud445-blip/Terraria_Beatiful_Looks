@@ -92,6 +92,51 @@ Items: {
 		DisplayName: Shadow Cape
 		Tooltip: Mysterious and dramatic
 	}
+
+	SeraphRobe: {
+		DisplayName: Seraph Robe
+		Tooltip:
+			'''
+			The hem glows with warm gold
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	InfernoRobe: {
+		DisplayName: Inferno Robe
+		Tooltip:
+			'''
+			Tongues of fire run along the hem
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	FrostRobe: {
+		DisplayName: Frost Robe
+		Tooltip:
+			'''
+			Snowflakes drift from the hem
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	SakuraKimono: {
+		DisplayName: Sakura Kimono
+		Tooltip:
+			'''
+			Drops petals with every step
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	VoidRobe: {
+		DisplayName: Void Robe
+		Tooltip:
+			'''
+			The hem shimmers with stars from the night between worlds
+			Glowing pattern: lights run along the hem
+			'''
+	}
 }
 
 Keybinds.ToggleLooksUI.DisplayName: Open Beautiful Looks menu
@@ -120,6 +165,11 @@ Configs: {
 			Tooltip: Glowing ribbons on Terraria's own shaders (trails, comet tails). Turn off if something looks wrong
 		}
 
+		LivingParticles: {
+			Label: Living particles
+			Tooltip: Petals and snowflakes settle on the ground, embers bounce off blocks
+		}
+
 		ShowOtherPlayers: {
 			Label: Show other players' looks
 			Tooltip: Show auras, trails and effects of other players in multiplayer
@@ -143,6 +193,18 @@ UI: {
 	TabAura: Aura
 	TabTrail: Trail
 	TabEffects: Effects
+	TabMotion: Motion
+	TabCompanion: Companion
+	Steps: Steps, jumps and landings
+	WeaponTrail: Thrown weapon trail
+	WeaponTrailAll: All projectiles
+	StealthFx: Stealth
+	MotionHint: Dash, steps, weapon trail and stealth use these colors
+	StealthHintOn: Calamity stealth: dark haze, glowing eye, outline and a strike flash
+	StealthHintOff: Stealth effects work together with Calamity (not loaded now)
+	Companion: Companion of light
+	CompanionHint: Flies next to you and shows in the preview. Purely cosmetic
+	CompanionHint2: Does not take the pet slot: you can still have a normal pet
 	Dash: Dash
 	DashHint: Works with any dash: Shield of Cthulhu, Tabi, Calamity dashes and more
 	TabWings: Wings
@@ -181,7 +243,7 @@ UI: {
 	Color1: Main color
 	Color2: Second color
 	Themes: Color themes (for the selected part)
-	CopyToAll: Copy to aura, trail and effects
+	CopyToAll: Copy to the whole look
 	CopiedToAll: Colors copied to the whole look!
 	SwapColors: Swap colors 1 and 2
 	ReadyLooks: Ready looks
@@ -212,6 +274,11 @@ UI: {
 		Butterflies: Butterflies
 		Runes: Runes
 		Fireflies: Fireflies
+		Astrolabe: Astrolabe
+		Aurora: Northern lights
+		Galaxy: Galaxy
+		Eclipse: Eclipse
+		Mandala: Mandala
 	}
 
 	Trail: {
@@ -252,6 +319,10 @@ UI: {
 		Radiant: Radiant
 		Thorns: Thorns
 		Starry: Starry
+		RuneCrown: Rune crown
+		Diadem: Diadem
+		Horns: Light horns
+		Eclipse: Eclipse
 	}
 
 	WingStyle: {
@@ -264,6 +335,10 @@ UI: {
 		Crystal: Crystal
 		Constellation: Constellation
 		Spirit: Spirit
+		Phoenix: Phoenix
+		Aurora: Aurora
+		Nebula: Nebula
+		Floral: Floral
 	}
 
 	DashStyle: {
@@ -275,6 +350,42 @@ UI: {
 		Prism: Prism
 		Sakura: Sakura
 		Void: Void
+	}
+
+	StepStyle: {
+		None: Off
+		Flowers: Flowers
+		Frost: Frost
+		Embers: Embers
+		Stardust: Stardust
+		Shadow: Shadow
+		Ripple: Ripples
+	}
+
+	WeaponTrailStyle: {
+		None: Off
+		Soft: Light
+		Sparkle: Sparkle
+		Flame: Flame
+		Prism: Prism
+		Shadow: Shadow
+		Stardust: Stardust
+	}
+
+	CompanionStyle: {
+		None: None
+		Wisp: Wisp
+		Fox: Fox
+		Butterfly: Butterfly
+		Serpent: Serpent
+	}
+
+	CompanionDesc: {
+		None: Pick a companion and it will fly next to you
+		Wisp: A little spirit flame with eyes and a fiery tail
+		Fox: A ghostly fox with three fluffy tails
+		Butterfly: A large butterfly dropping glowing pollen
+		Serpent: A celestial serpent weaving figure eights around you
 	}
 
 	Theme: {
@@ -313,5 +424,17 @@ UI: {
 		FairyDesc: Butterflies, spirit wings, sparkles and a starry halo
 		Comet: Comet
 		CometDesc: Comets with glowing tails, a rainbow ribbon and a ghostly echo
+		Astral: Astral
+		AstralDesc: An astrolabe, a starry diadem, constellation wings and a wisp companion
+		Phoenix: Phoenix
+		PhoenixDesc: Fire wings with a flaming tail, ember steps and a flaming weapon trail
+		Aurora: Aurora
+		AuroraDesc: Northern lights overhead, aurora wings, frost steps and a spirit fox
+		Galaxy: Galaxy
+		GalaxyDesc: A spinning galaxy, nebula wings and a celestial serpent
+		Eclipse: Eclipse
+		EclipseDesc: A dark sun with a corona, horns of light, demon wings and shadow
+		Lotus: Lotus
+		LotusDesc: A mandala, floral wings, a rune crown, flower steps and a butterfly
 	}
 }

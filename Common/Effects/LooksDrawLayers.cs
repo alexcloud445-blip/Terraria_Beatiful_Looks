@@ -45,13 +45,16 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		public static void Add(ref PlayerDrawSet info, int shader, Texture2D tex, Vector2 pos, Color color, float scale) =>
 			Add(ref info, shader, tex, pos, null, color, 0f, tex.Size() / 2f, new Vector2(scale));
 
-		/// <summary>Линия между двумя точками (текстура Line).</summary>
+		/// <summary>
+		/// Линия между двумя точками (текстура Line). Длина точная: цепочки из коротких отрезков
+		/// (кольца, рога, ленты) не дают светлых «бусин» на стыках.
+		/// </summary>
 		public static void Line(ref PlayerDrawSet info, int shader, Vector2 a, Vector2 b, Color color, float thickness)
 		{
 			Texture2D line = VfxAssets.Line;
 			Vector2 diff = b - a;
 			Add(ref info, shader, line, a, null, color, diff.ToRotation(), new Vector2(0f, line.Height / 2f),
-				new Vector2((diff.Length() + 1f) / line.Width, thickness / line.Height));
+				new Vector2(diff.Length() / line.Width, thickness / line.Height));
 		}
 	}
 
@@ -67,7 +70,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			if (!LayerUtils.Visible(drawInfo))
 				return false;
 			LookSettings l = LayerUtils.Mp(drawInfo).Look;
-			return l.BackGlow || l.GodRays || l.GroundRing || l.Sigil || l.PulseRing || l.Aura != AuraStyle.None;
+			return l.BackGlow || l.GodRays || l.GroundRing || l.Sigil || l.PulseRing || l.Aura != AuraStyle.None || l.Halo == HaloStyle.Eclipse;
 		}
 
 		protected override void Draw(ref PlayerDrawSet drawInfo)
@@ -93,7 +96,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			}
 
 			if (look.Aura != AuraStyle.None)
-				AuraBackdrop(ref drawInfo, look, center, feet, time);
+				AuraBackdrop(ref drawInfo, look, center, feet, time, p);
 
 			if (look.Sigil)
 				Sigil(ref drawInfo, look, feet, shader, time, p.gravDir);
@@ -108,6 +111,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				LayerUtils.Add(ref drawInfo, shader, bloom, feet, null, VfxMath.Additive(look.EffectColor2.Get(), 0.3f), 0f,
 					bloom.Size() / 2f, new Vector2(0.6f, 0.16f));
 			}
+
+			CelestialHalos.DrawBehindBody(ref drawInfo, look);
 
 			if (look.PulseRing)
 			{
@@ -143,7 +148,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		}
 
 		/// <summary>Подсветка, которая показывает ауру и в превью меню, плюс постоянные детали некоторых аур.</summary>
-		private static void AuraBackdrop(ref PlayerDrawSet info, LookSettings look, Vector2 center, Vector2 feet, float time)
+		private static void AuraBackdrop(ref PlayerDrawSet info, LookSettings look, Vector2 center, Vector2 feet, float time, Player p)
 		{
 			Texture2D bloom = VfxAssets.Bloom;
 			float s = look.AuraSize;
@@ -192,6 +197,21 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						bloom.Size() / 2f, new Vector2(0.5f, 0.3f) * s);
 					break;
 				}
+				case AuraStyle.Astrolabe:
+					CelestialDraw.Astrolabe(ref info, look, center, false, p.gravDir);
+					break;
+				case AuraStyle.Aurora:
+					CelestialDraw.Aurora(ref info, look, center, p.gravDir, p.height);
+					break;
+				case AuraStyle.Galaxy:
+					CelestialDraw.Galaxy(ref info, look, center, false, p.gravDir);
+					break;
+				case AuraStyle.Eclipse:
+					CelestialDraw.Eclipse(ref info, look, center, p.gravDir);
+					break;
+				case AuraStyle.Mandala:
+					CelestialDraw.Mandala(ref info, look, center);
+					break;
 			}
 		}
 
@@ -240,7 +260,35 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		}
 	}
 
-	/// <summary>Нимб над головой (5 стилей).</summary>
+	/// <summary>
+	/// Эффекты ПЕРЕД персонажем (ближняя половина колец астролябии и диска галактики).
+	/// Рисуется самым последним слоем игрока.
+	/// </summary>
+	public class FrontEffectsLayer : PlayerDrawLayer
+	{
+		public override Position GetDefaultPosition() => new Between(PlayerDrawLayers.BeetleBuff, PlayerDrawLayers.EyebrellaCloud);
+
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+		{
+			if (!LayerUtils.Visible(drawInfo))
+				return false;
+			AuraStyle aura = LayerUtils.Mp(drawInfo).Look.Aura;
+			return aura == AuraStyle.Astrolabe || aura == AuraStyle.Galaxy;
+		}
+
+		protected override void Draw(ref PlayerDrawSet drawInfo)
+		{
+			LookSettings look = LayerUtils.Mp(drawInfo).Look;
+			Player p = drawInfo.drawPlayer;
+			Vector2 center = LayerUtils.Center(drawInfo);
+			if (look.Aura == AuraStyle.Astrolabe)
+				CelestialDraw.Astrolabe(ref drawInfo, look, center, true, p.gravDir);
+			else if (look.Aura == AuraStyle.Galaxy)
+				CelestialDraw.Galaxy(ref drawInfo, look, center, true, p.gravDir);
+		}
+	}
+
+	/// <summary>Нимб над головой (9 стилей). Дальняя часть некоторых нимбов v0.6 — в HaloBackLayer (за головой).</summary>
 	public class HaloLayer : PlayerDrawLayer
 	{
 		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Head);
@@ -261,6 +309,13 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Color c2 = look.EffectColor2.Get();
 			Texture2D bloom = VfxAssets.Bloom;
 			Texture2D flare = VfxAssets.Flare;
+
+			if (look.Halo >= HaloStyle.RuneCrown)
+			{
+				// нимбы v0.6 (часть из них ещё и за головой — HaloBackLayer)
+				CelestialHalos.Draw(ref drawInfo, look, true);
+				return;
+			}
 
 			// общий ореол
 			LayerUtils.Add(ref drawInfo, shader, bloom, pos, null, VfxMath.Additive(c2, 0.32f), 0f, bloom.Size() / 2f, new Vector2(0.34f, 0.13f));

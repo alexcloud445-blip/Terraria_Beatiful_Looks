@@ -11,6 +11,7 @@ using Terraria_Beatiful_Looks.Common.Effects;
 using Terraria_Beatiful_Looks.Common.Looks;
 using Terraria_Beatiful_Looks.Common.Systems;
 using Terraria_Beatiful_Looks.Common.VFX;
+using Terraria_Beatiful_Looks.Content.Items.Vanity;
 using Terraria_Beatiful_Looks.Content.Items.Wings;
 
 namespace Terraria_Beatiful_Looks.Common.Players
@@ -47,6 +48,29 @@ namespace Terraria_Beatiful_Looks.Common.Players
 		public float DashSpeed;
 		public Vector2 DashDir = Vector2.UnitX;
 		public float PrevVelocityX;
+
+		/// <summary>Шаги, прыжки и приземления (StepEffects).</summary>
+		public bool WasOnGround = true;
+		public float PrevVelocityY;
+		public float StepProgress;
+		public int StepSide = 1;
+		public int JumpCooldown;
+
+		/// <summary>Скрытность разбойника Calamity (StealthEffects): сглаженная доля 0..1, прошлое значение и вспышка удара.</summary>
+		public float StealthRatio;
+		public float StealthPrev;
+		public float StealthFlash;
+
+		/// <summary>Спутник из света (CompanionEffects): положение, скорость, путь и т. п.</summary>
+		public bool CompanionReady;
+		public Vector2 CompanionPos;
+		public Vector2 CompanionVel;
+		public Vector2 CompanionAnchor;
+		public int CompanionFacing = 1;
+		public float CompanionClock;
+		public int CompanionBlink;
+		public readonly Vector2[] CompanionTrail = new Vector2[CompanionEffects.TrailLength];
+		public int CompanionTrailCount;
 
 		public WingState WingState => new WingState { Phase = WingPhase, Amp = WingAmp, Spread = WingSpread, Lean = WingLean };
 
@@ -195,7 +219,18 @@ namespace Terraria_Beatiful_Looks.Common.Players
 			UpdateWingFlap();
 			DashEffects.Update(this);
 
-			if (!EffectsVisible)
+			bool visible = EffectsVisible;
+			StepEffects.Update(this, visible);
+			StealthEffects.Update(this, visible);
+			CompanionEffects.Update(this, visible);
+			if (StealthFlash > 0f)
+				StealthFlash = Math.Max(0f, StealthFlash - 0.06f);
+
+			// робы светятся всегда, когда надеты (это предмет, а не часть образа)
+			if (Player.active && !Player.dead && !Player.invis)
+				CosmeticRobe.UpdateWorn(Player);
+
+			if (!visible)
 				return;
 
 			AuraEffects.Update(Player, Look);
@@ -279,6 +314,7 @@ namespace Terraria_Beatiful_Looks.Common.Players
 			DashEffects.DrawAfterimages(this, camera);
 			TrailEffects.DrawEchoes(this, camera);
 			OutlineEffect.Draw(this, camera);
+			StealthEffects.DrawOutline(this, camera);
 		}
 
 		/// <summary>Перекрашивает призрачные копии (вызывается для каждой отрисовки игрока).</summary>

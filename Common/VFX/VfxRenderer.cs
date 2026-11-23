@@ -65,13 +65,17 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			VfxAssets.Prepare();
 
 			LooksClientConfig config = ModContent.GetInstance<LooksClientConfig>();
-			if (config == null || config.ShaderRibbons)
+			bool shaderRibbons = config == null || config.ShaderRibbons;
+			if (shaderRibbons)
 			{
 				try
 				{
 					Ribbons.PrepareDevice();
 					if (!front)
+					{
 						TrailEffects.DrawRibbons();
+						WeaponTrails.DrawRibbons();
+					}
 					ParticleSystem.DrawTrails(front);
 				}
 				catch (Exception e)
@@ -86,7 +90,11 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 				sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None,
 					RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 				begun = true;
+				if (!front && !shaderRibbons)
+					WeaponTrails.DrawSprites(sb);
 				ParticleSystem.DrawParticles(sb, front);
+				if (front)
+					StealthEffects.DrawEyes(sb);
 			}
 			catch (Exception e)
 			{

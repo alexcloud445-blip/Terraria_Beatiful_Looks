@@ -28,7 +28,13 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Prism,
 		Butterflies,
 		Runes,
-		Fireflies
+		Fireflies,
+		// v0.6
+		Astrolabe,
+		Aurora,
+		Galaxy,
+		Eclipse,
+		Mandala
 	}
 
 	/// <summary>Частицы, которые сыплются за персонажем при движении.</summary>
@@ -76,7 +82,12 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Double,
 		Radiant,
 		Thorns,
-		Starry
+		Starry,
+		// v0.6
+		RuneCrown,
+		Diadem,
+		Horns,
+		Eclipse
 	}
 
 	/// <summary>Крылья из эффектов (рисуются поверх/вместо надетых крыльев).</summary>
@@ -90,7 +101,12 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Flame,
 		Crystal,
 		Constellation,
-		Spirit
+		Spirit,
+		// v0.6
+		Phoenix,
+		Aurora,
+		Nebula,
+		Floral
 	}
 
 	/// <summary>Эффект рывка (щит Ктулху, таби, рывки Calamity и т. п.).</summary>
@@ -106,6 +122,40 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Void
 	}
 
+	/// <summary>Следы шагов, прыжок и приземление.</summary>
+	public enum StepStyle
+	{
+		None,
+		Flowers,
+		Frost,
+		Embers,
+		Stardust,
+		Shadow,
+		Ripple
+	}
+
+	/// <summary>Светящийся след за брошенным оружием и снарядами игрока.</summary>
+	public enum WeaponTrailStyle
+	{
+		None,
+		Soft,
+		Sparkle,
+		Flame,
+		Prism,
+		Shadow,
+		Stardust
+	}
+
+	/// <summary>Спутник из света, который летает рядом с персонажем.</summary>
+	public enum CompanionStyle
+	{
+		None,
+		Wisp,
+		Fox,
+		Butterfly,
+		Serpent
+	}
+
 	/// <summary>Весь «образ» персонажа: то, что сохраняется, синхронизируется и кладётся в пресеты.</summary>
 	public class LookSettings
 	{
@@ -116,6 +166,9 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public static readonly int HaloStyleCount = Enum.GetValues(typeof(HaloStyle)).Length;
 		public static readonly int WingStyleCount = Enum.GetValues(typeof(WingStyle)).Length;
 		public static readonly int DashStyleCount = Enum.GetValues(typeof(DashStyle)).Length;
+		public static readonly int StepStyleCount = Enum.GetValues(typeof(StepStyle)).Length;
+		public static readonly int WeaponTrailStyleCount = Enum.GetValues(typeof(WeaponTrailStyle)).Length;
+		public static readonly int CompanionStyleCount = Enum.GetValues(typeof(CompanionStyle)).Length;
 
 		/// <summary>Общий выключатель всех эффектов образа.</summary>
 		public bool Enabled = true;
@@ -146,8 +199,6 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public bool PulseRing;
 		/// <summary>Светящийся контур вокруг персонажа.</summary>
 		public bool Outline;
-		/// <summary>Эффект рывка (цвета — как у эффектов).</summary>
-		public DashStyle Dash = DashStyle.None;
 		/// <summary>Номер краски из EffectDyes.Items (0 — без краски).</summary>
 		public int EffectDye;
 		public ColorSetting EffectColor = new ColorSetting(0.14f, 1f, 0.7f);
@@ -158,6 +209,33 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public float WingSize = 1f;
 		public ColorSetting WingColor = new ColorSetting(0.13f, 0.9f, 0.75f);
 		public ColorSetting WingColor2 = new ColorSetting(0.55f, 0.8f, 0.8f);
+
+		// ---------- движение (вкладка «Движение») ----------
+		/// <summary>Эффект рывка.</summary>
+		public DashStyle Dash = DashStyle.None;
+		/// <summary>Следы шагов, прыжок и приземление.</summary>
+		public StepStyle Steps = StepStyle.None;
+		/// <summary>След за брошенным оружием и снарядами.</summary>
+		public WeaponTrailStyle WeaponTrail = WeaponTrailStyle.None;
+		/// <summary>false — только метательное оружие (и разбойник Calamity), true — все снаряды игрока.</summary>
+		public bool WeaponTrailAll;
+		/// <summary>Эффекты скрытности разбойника Calamity (дымка, глаза, контур, вспышка удара).</summary>
+		public bool StealthFx = true;
+		public ColorSetting MotionColor = new ColorSetting(0.14f, 1f, 0.7f);
+		public ColorSetting MotionColor2 = new ColorSetting(0.05f, 0.9f, 0.68f);
+
+		// ---------- спутник ----------
+		public CompanionStyle Companion = CompanionStyle.None;
+		public float CompanionSize = 1f;
+		public ColorSetting CompanionColor = new ColorSetting(0.52f, 0.85f, 0.72f);
+		public ColorSetting CompanionColor2 = new ColorSetting(0.78f, 0.85f, 0.75f);
+
+		/// <summary>Все пары цветов образа (для тем, «скопировать на всё» и т. п.).</summary>
+		public (ColorSetting, ColorSetting)[] ColorPairs => new[]
+		{
+			(AuraColor, AuraColor2), (TrailColor, TrailColor2), (MotionColor, MotionColor2),
+			(EffectColor, EffectColor2), (WingColor, WingColor2), (CompanionColor, CompanionColor2)
+		};
 
 		public void CycleAura(int dir) => Aura = (AuraStyle)Wrap((int)Aura + dir, AuraStyleCount);
 
@@ -201,6 +279,16 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			WingSize = o.WingSize;
 			WingColor.CopyFrom(o.WingColor);
 			WingColor2.CopyFrom(o.WingColor2);
+			Steps = o.Steps;
+			WeaponTrail = o.WeaponTrail;
+			WeaponTrailAll = o.WeaponTrailAll;
+			StealthFx = o.StealthFx;
+			MotionColor.CopyFrom(o.MotionColor);
+			MotionColor2.CopyFrom(o.MotionColor2);
+			Companion = o.Companion;
+			CompanionSize = o.CompanionSize;
+			CompanionColor.CopyFrom(o.CompanionColor);
+			CompanionColor2.CopyFrom(o.CompanionColor2);
 		}
 
 		public bool SameAs(LookSettings o)
@@ -213,7 +301,11 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				&& Halo == o.Halo && BackGlow == o.BackGlow && GodRays == o.GodRays && GroundRing == o.GroundRing
 				&& Sigil == o.Sigil && PulseRing == o.PulseRing && Outline == o.Outline && Dash == o.Dash && EffectDye == o.EffectDye
 				&& EffectColor.SameAs(o.EffectColor) && EffectColor2.SameAs(o.EffectColor2)
-				&& Wings == o.Wings && WingSize == o.WingSize && WingColor.SameAs(o.WingColor) && WingColor2.SameAs(o.WingColor2);
+				&& Wings == o.Wings && WingSize == o.WingSize && WingColor.SameAs(o.WingColor) && WingColor2.SameAs(o.WingColor2)
+				&& Steps == o.Steps && WeaponTrail == o.WeaponTrail && WeaponTrailAll == o.WeaponTrailAll && StealthFx == o.StealthFx
+				&& MotionColor.SameAs(o.MotionColor) && MotionColor2.SameAs(o.MotionColor2)
+				&& Companion == o.Companion && CompanionSize == o.CompanionSize
+				&& CompanionColor.SameAs(o.CompanionColor) && CompanionColor2.SameAs(o.CompanionColor2);
 		}
 
 		public void Reset() => CopyFrom(new LookSettings());
@@ -241,6 +333,10 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			EffectDye = 0;
 			Wings = Main.rand.NextBool(3) ? WingStyle.None : (WingStyle)Main.rand.Next(1, WingStyleCount);
 			WingSize = Main.rand.NextFloat(0.85f, 1.2f);
+			Steps = Main.rand.NextBool(3) ? StepStyle.None : (StepStyle)Main.rand.Next(1, StepStyleCount);
+			WeaponTrail = (WeaponTrailStyle)Main.rand.Next(1, WeaponTrailStyleCount);
+			Companion = Main.rand.NextBool(3) ? CompanionStyle.None : (CompanionStyle)Main.rand.Next(1, CompanionStyleCount);
+			CompanionSize = 1f;
 
 			// Одна случайная тема на весь образ, чтобы цвета сочетались
 			ColorTheme theme = ColorThemes.All[Main.rand.Next(ColorThemes.All.Length)];
@@ -252,7 +348,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		{
 			return new TagCompound
 			{
-				["v"] = 3,
+				["v"] = 4,
 				["enabled"] = Enabled,
 				["aura"] = (int)Aura,
 				["auraDensity"] = AuraDensity,
@@ -281,7 +377,17 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				["wings"] = (int)Wings,
 				["wingSize"] = WingSize,
 				["wingColor"] = WingColor.Save(),
-				["wingColor2"] = WingColor2.Save()
+				["wingColor2"] = WingColor2.Save(),
+				["steps"] = (int)Steps,
+				["weaponTrail"] = (int)WeaponTrail,
+				["weaponTrailAll"] = WeaponTrailAll,
+				["stealthFx"] = StealthFx,
+				["motionColor"] = MotionColor.Save(),
+				["motionColor2"] = MotionColor2.Save(),
+				["companion"] = (int)Companion,
+				["companionSize"] = CompanionSize,
+				["companionColor"] = CompanionColor.Save(),
+				["companionColor2"] = CompanionColor2.Save()
 			};
 		}
 
@@ -323,6 +429,20 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			if (tag.TryGet("wingSize", out float wingSize)) s.WingSize = ClampMul(wingSize);
 			if (tag.TryGet("wingColor", out TagCompound wc)) s.WingColor.Load(wc);
 			if (tag.TryGet("wingColor2", out TagCompound wc2)) s.WingColor2.Load(wc2);
+
+			// v0.6: вкладка «Движение» со своими цветами. В старых образах рывок брал цвета эффектов.
+			if (tag.TryGet("motionColor", out TagCompound mc)) s.MotionColor.Load(mc);
+			else s.MotionColor.CopyFrom(s.EffectColor);
+			if (tag.TryGet("motionColor2", out TagCompound mc2)) s.MotionColor2.Load(mc2);
+			else s.MotionColor2.CopyFrom(s.EffectColor2);
+			if (tag.TryGet("steps", out int steps)) s.Steps = (StepStyle)Wrap(steps, StepStyleCount);
+			if (tag.TryGet("weaponTrail", out int wt)) s.WeaponTrail = (WeaponTrailStyle)Wrap(wt, WeaponTrailStyleCount);
+			if (tag.TryGet("weaponTrailAll", out bool wtAll)) s.WeaponTrailAll = wtAll;
+			if (tag.TryGet("stealthFx", out bool stealth)) s.StealthFx = stealth;
+			if (tag.TryGet("companion", out int comp)) s.Companion = (CompanionStyle)Wrap(comp, CompanionStyleCount);
+			if (tag.TryGet("companionSize", out float compSize)) s.CompanionSize = ClampMul(compSize);
+			if (tag.TryGet("companionColor", out TagCompound cc)) s.CompanionColor.Load(cc);
+			if (tag.TryGet("companionColor2", out TagCompound cc2)) s.CompanionColor2.Load(cc2);
 			return s;
 		}
 
@@ -358,6 +478,16 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			w.Write(WingSize);
 			WingColor.Write(w);
 			WingColor2.Write(w);
+			w.Write((byte)Steps);
+			w.Write((byte)WeaponTrail);
+			w.Write(WeaponTrailAll);
+			w.Write(StealthFx);
+			MotionColor.Write(w);
+			MotionColor2.Write(w);
+			w.Write((byte)Companion);
+			w.Write(CompanionSize);
+			CompanionColor.Write(w);
+			CompanionColor2.Write(w);
 		}
 
 		public void Read(BinaryReader r)
@@ -391,6 +521,16 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			WingSize = ClampMul(r.ReadSingle());
 			WingColor.Read(r);
 			WingColor2.Read(r);
+			Steps = (StepStyle)Wrap(r.ReadByte(), StepStyleCount);
+			WeaponTrail = (WeaponTrailStyle)Wrap(r.ReadByte(), WeaponTrailStyleCount);
+			WeaponTrailAll = r.ReadBoolean();
+			StealthFx = r.ReadBoolean();
+			MotionColor.Read(r);
+			MotionColor2.Read(r);
+			Companion = (CompanionStyle)Wrap(r.ReadByte(), CompanionStyleCount);
+			CompanionSize = ClampMul(r.ReadSingle());
+			CompanionColor.Read(r);
+			CompanionColor2.Read(r);
 		}
 
 		/// <summary>Множители (плотность, размер, скорость, ширина) живут в пределах 0.2..2.</summary>

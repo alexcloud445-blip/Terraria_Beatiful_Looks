@@ -47,6 +47,37 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Отрисовка в активный SpriteBatch (экранные координаты = мир - Main.screenPosition).</summary>
 		public abstract void Draw(SpriteBatch sb);
 
+		/// <summary>
+		/// «Живые» частицы: отскок от блоков (меняет Velocity до перемещения). true — был удар.
+		/// Частица, появившаяся внутри блока, не сталкивается, пока не вылетит из него.
+		/// </summary>
+		protected bool BounceOffTiles(ref int bounces, float restitution = 0.45f)
+		{
+			if (!Living.Enabled || Living.Solid(Position))
+				return false;
+			Vector2 next = Position + Velocity;
+			bool hit = false;
+			if (Velocity.Y > 0f && Living.Solid(new Vector2(Position.X, next.Y + 1f)))
+			{
+				Velocity.Y *= -restitution;
+				Velocity.X *= 0.7f;
+				hit = true;
+			}
+			else if (Velocity.Y < 0f && Living.Solid(new Vector2(Position.X, next.Y - 1f)))
+			{
+				Velocity.Y *= -0.3f;
+				hit = true;
+			}
+			if (Math.Abs(Velocity.X) > 0.01f && Living.Solid(new Vector2(next.X, Position.Y)))
+			{
+				Velocity.X *= -restitution;
+				hit = true;
+			}
+			if (hit)
+				bounces++;
+			return hit;
+		}
+
 		protected static Vector2 Screen(Vector2 world) => world - Main.screenPosition;
 	}
 

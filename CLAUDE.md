@@ -14,7 +14,7 @@
 - Лог сборки и ошибок: `C:\Program Files (x86)\Steam\steamapps\common\tModLoader\tModLoader-Logs\client.log`.
 - У пользователя также стоят Calamity, MagicStorage, RecipeBrowser, BossChecklist.
 
-## Архитектура (v0.4)
+## Архитектура (v0.6)
 ```
 BeautifulLooksMod.cs            Mod: сетевые пакеты (SyncLook)
 Common/Looks/                   LookSettings (весь образ: сохранение, сеть, пресеты), ColorSetting (HSL + радуга),
@@ -35,22 +35,36 @@ Common/Effects/                 AuraEffects (17 аур), TrailEffects (част�
                                 WingEffects (WingRig: скелет плечо→запястье→кончик + 3 ряда перьев; 8 стилей; VfxWingsLayer
                                 вместо слоя Wings, который прячется в HideDrawLayers), OutlineEffect (контур = 8 сдвинутых копий),
                                 DashEffects (рывок: dashDelay == -1 или скачок скорости X выше бега — ловит и рывки Calamity;
-                                вспышка/волна/искры, линии скорости, росчерк-лента, послеобразы; 7 стилей, цвета эффектов)
-Common/UI/                      LooksPanel (760x500, справа, вкладки Аура/След/Эффекты/Крылья/Цвета/Образы/Гардероб),
+                                вспышка/волна/искры, линии скорости, росчерк-лента, послеобразы; 7 стилей, цвета «Движения»)
+  v0.6:                         CelestialAuras (AstroRig — 3 кольца в 3D, точки с Z: Z>=0 рисует FrontEffectsLayer, Z<0 —
+                                BackEffectsLayer; сияние, галактика (32 кадра + смешивание), затмение, мандала),
+                                CelestialHalos (венец рун, диадема, рога, нимб-затмение; дальняя часть — HaloBackLayer перед Head),
+                                StepEffects (шаги/прыжок/приземление), WeaponTrails (GlobalProjectile.PostAI → свой массив путей
+                                по whoAmI + identity; ленты из VfxRenderer, без шейдеров — спрайтами), StealthEffects (Calamity
+                                через Mod.Call: GetCurrentStealth/GetMaxStealth/GetStealthProjectile; глаз рисуется в VfxRenderer),
+                                CompanionEffects (+ CompanionLayer: спутник рисуется относительно центра игрока → виден в превью)
+Common/UI/                      LooksPanel (860x520, справа, вкладки Аура/След/Движение/Эффекты/Крылья/Спутник/Цвета/Образы/Гардероб),
                                 Elements (кнопки с авто-уменьшением текста, OptionGrid, SwatchButton, LiveSwatch, слайдеры, палитра)
 Common/Systems/                 KeybindSystem (K), LooksUISystem (меню создаётся лениво при первом открытии)
 Content/Dusts/                  старые ModDust (больше не используются эффектами, оставлены)
-Content/Items/Wings|Vanity/     базовые классы CosmeticWings (VfxStyle + цвета → рисуются WingEffects) / CosmeticHat / CosmeticCape
+Content/Items/Wings|Vanity/     базовые классы CosmeticWings (VfxStyle + цвета → рисуются WingEffects) / CosmeticHat / CosmeticCape /
+                                CosmeticRobe (5 роб; RobeGlowLayer после слоя Robe копирует каждый DrawData юбки из текстуры _Glow)
 Assets/VFX/                     текстуры эффектов (tools/make_vfx.py + make_vfx_shapes.py): Bloom, Orb, Flare, Glint, Streak,
                                 Line, RingWave, GodRay (тонкий луч), Smoke, Runes, Shapes/ShapesGlow (24 формы: заливка + свечение),
                                 Feather/Covert(+Glow), ButterflyWing/Pattern/Glow, BatWing/BatBones, Flame (4 кадра), Blade,
-                                HaloRing/GroundRing/ThornHalo/SigilRings (уже в перспективе)
+                                HaloRing/GroundRing/ThornHalo/SigilRings (уже в перспективе);
+                                v0.6 (make_vfx_v6.py): AuroraStrip, Galaxy (32 кадра), Corona, Disc, MandalaOuter/Inner,
+                                NebulaWing/Rim/StarsA/B, Fox/FoxGlow
+tools/make_robes.py             робы из шаблона ExampleMod (MIT): перекраска по ролям цветов, узор и маска свечения подола
+tools/sim/                      симуляции на Python: wingsim2 (крылья v2), v6sim (новые крылья/ауры/нимбы), companions_sim
 tools/make_sprites.py, pngio.py генерация PNG предметов на чистом Python (без Pillow)
 tools/stubcheck/                проверка компиляции без игры (см. ниже)
 ```
 
-Номера в перечислениях (AuraStyle, TrailStyle, RibbonStyle, EchoStyle, HaloStyle, WingStyle, DashStyle, EffectDyes.Items) сохраняются
-в файл персонажа: новые значения добавлять только В КОНЕЦ.
+Номера в перечислениях (AuraStyle, TrailStyle, RibbonStyle, EchoStyle, HaloStyle, WingStyle, DashStyle, StepStyle,
+WeaponTrailStyle, CompanionStyle, EffectDyes.Items) сохраняются в файл персонажа: новые значения добавлять только В КОНЕЦ.
+Пары цветов — LookSettings.ColorPairs (аура, след, движение, эффекты, крылья, спутник): темы, «скопировать на всё» и вкладка
+«Цвета» берут их оттуда. Цвета «Движения» (рывок, шаги, след оружия, скрытность) в старых сохранениях = цвета эффектов.
 
 ## Проверка сборки без игры (tools/stubcheck)
 Скачать сам tModLoader в облачной сессии не удалось (github.com закрыт прокси для чужих репозиториев,
@@ -76,6 +90,17 @@ tools/stubcheck/check.sh        # должно быть "0 Error(s)"
 - Призрачные копии: `Main.PlayerRenderer.DrawPlayer` из `ModPlayer.DrawPlayer`, перекраска в `TransformDrawData`.
 - Имена ItemID красок в `EffectDyes`: `ItemID.PrismaticDye` НЕ существует (сборка упала). Остальные прошли компиляцию.
 - Все ошибки отрисовки ловятся и пишутся в client.log один раз: строка `Beautiful Looks VFX error (...)`.
+
+## v0.6 — что не проверено в игре (если упадёт — смотреть сюда)
+- Слои: `FrontEffectsLayer` = Between(BeetleBuff, EyebrellaCloud), `HaloBackLayer` = BeforeParent(Head),
+  `CompanionLayer` = Between(MountBack, Carpet), `RobeGlowLayer` = AfterParent(Robe).
+- Робы: `EquipLoader.AddEquipTexture` в Load + SetMatch (как ExampleRobe). Свечение сравнивает `DrawData.texture` с
+  `TextureAssets.ArmorLeg[player.legs].Value`. Если подол не светится — смотреть сюда.
+- Глаз в скрытности: позиция вычисляется (кадр головы 40x56, глаз ≈ (24, 21), + Main.OffsetsPlayerHeadgear). Может быть сдвинут на 1–2 px.
+- Calamity может приглушать DrawDataCache персонажа в скрытности — поэтому глаз рисуется в VfxRenderer, а не слоем.
+- «Метательное» оружие: CountsAsClass(DamageClass.Throwing) (разбойник Calamity наследует Throwing) или aiStyle == 2
+  (ванильные сюрикены/ножи числятся дальним боем).
+- Живые частицы: `Living.Solid` (Main.tile, HasUnactuatedTile, tileSolid/tileSolidTop); выключаются в настройках.
 
 ## Грабли, на которые уже наступили
 - **tModLoader НЕ предумножает прозрачность PNG** (ImageIO.ToRaw только обнуляет пиксели с alpha = 0), а SpriteBatch
@@ -124,12 +149,15 @@ tools/stubcheck/check.sh        # должно быть "0 Error(s)"
 - v0.4.3 (проверено в игре): крылья v2 — «всё выглядит довольно хорошо».
 - v0.5 (ждёт проверки): эффекты рывка (7 стилей). Пользователь играет разбойником Calamity: из-за скрытности персонаж
   полупрозрачный — это механика Calamity, не баг мода; послеобразы рывка перекрашиваются целиком и видны и в скрытности.
+- v0.5.1: исправлена «замерзающая» ходьба при открытом меню (превью = SerializedClone).
+- v0.6 (ждёт проверки): все 19 идей «для красоты»: 5 аур (Астролябия, Северное сияние, Галактика, Затмение, Мандала),
+  4 крыла (Феникс, Аврора, Туманность, Цветы), 4 нимба (венец рун, диадема, рога, затмение), вкладка «Движение»
+  (рывок, шаги/прыжок/приземление, след брошенного оружия, скрытность Calamity), живые частицы, 5 роб со светящимся
+  подолом, вкладка «Спутник» (огонёк, лисица, бабочка, змей), 6 новых готовых образов. Вид проверен симуляциями tools/sim.
 
-Идеи на будущее (предлагались пользователю): эффекты прыжка/приземления и следы шагов, питомцы из эффектов,
-обмен образами кодом, публикация в Steam Workshop.
+Идеи на будущее: обмен образами кодом, публикация в Steam Workshop, полные костюмы с ручными спрайтами,
+свечение узоров на теле робы (тело в 1.4 рисуется составными частями — сложнее, чем юбка).
 
 Осталось:
-- **Проверить v0.4 в игре** и поправить то, что всплывёт.
-- **Костюмы-робы** (тело + юбка через SetMatch), перекраска шаблонов ExampleMod градиентной картой с узорами:
-  Серафим, Инферно, Мороз, Сакура-кимоно, Пустота; королевский комплект; капюшон пустоты; частицы комплекта.
-  Шаблоны ExampleMod есть в клоне tML: `ExampleMod/Content/Items/Armor/...`, `ExampleMod/Content/Items/Vanity/...`.
+- **Проверить v0.5–v0.6 в игре** и поправить то, что всплывёт.
+- Робы сделаны (v0.6). Шаблоны ExampleMod: `ExampleMod/Content/Items/Armor/Vanity/ExampleRobe*.png` в клоне tML.

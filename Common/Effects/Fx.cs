@@ -28,10 +28,10 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			ParticleSystem.Spawn(new ShapeParticle(Shape.Heart, SpriteMotion.Float, pos, vel, color, scale * 0.8f, 70) { GlowStrength = 0.5f });
 
 		public static void Petal(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
-			ParticleSystem.Spawn(new ShapeParticle(Shape.Petal, SpriteMotion.Fall, pos, vel, color, scale * 0.85f, 100) { GlowStrength = 0.3f });
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Petal, SpriteMotion.Fall, pos, vel, color, scale * 0.85f, 100) { GlowStrength = 0.3f, Settle = true });
 
 		public static void Snow(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
-			ParticleSystem.Spawn(new ShapeParticle(Shape.Snowflake, SpriteMotion.Drift, pos, vel, new Ramp(Color.White, color), scale * 0.75f, 90) { Glowing = true });
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Snowflake, SpriteMotion.Drift, pos, vel, new Ramp(Color.White, color), scale * 0.75f, 90) { Glowing = true, Settle = true });
 
 		/// <summary>Срабатывает с вероятностью chance (может быть больше 1 — тогда иногда несколько раз).</summary>
 		public static int Rolls(float chance)

@@ -78,6 +78,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						{
 							GlowStrength = 0.3f,
 							GlowRamp = pal.B,
+							Settle = true,
 							Front = front
 						});
 						break;
@@ -86,6 +87,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 						{
 							Glowing = true,
 							GlowRamp = pal.B,
+							Settle = true,
 							Front = front
 						});
 						break;
@@ -95,6 +97,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 							{
 								GlowStrength = 0.4f,
 								GlowRamp = pal.B,
+								Settle = true,
 								Front = front
 							});
 						else

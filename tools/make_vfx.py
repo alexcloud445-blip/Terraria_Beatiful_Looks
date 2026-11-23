@@ -569,6 +569,10 @@ def main():
     import make_vfx_shapes
     make_vfx_shapes.main()
 
+    # v0.6: сияние, галактика, затмение, мандала, туманность, лисица
+    import make_vfx_v6
+    make_vfx_v6.main()
+
 
 if __name__ == "__main__":
     main()

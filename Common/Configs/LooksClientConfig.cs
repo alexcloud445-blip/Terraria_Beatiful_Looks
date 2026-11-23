@@ -29,6 +29,10 @@ namespace Terraria_Beatiful_Looks.Common.Configs
 		[DefaultValue(true)]
 		public bool ShaderRibbons;
 
+		/// <summary>Лепестки и снежинки ложатся на землю, угольки отскакивают от блоков.</summary>
+		[DefaultValue(true)]
+		public bool LivingParticles;
+
 		/// <summary>Показывать эффекты других игроков (в мультиплеере).</summary>
 		[DefaultValue(true)]
 		public bool ShowOtherPlayers;

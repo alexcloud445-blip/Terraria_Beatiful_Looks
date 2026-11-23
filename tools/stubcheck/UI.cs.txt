@@ -21,6 +21,7 @@ namespace Terraria.GameContent
 	public static class TextureAssets
 	{
 		public static Asset<Texture2D> MagicPixel;
+		public static Asset<Texture2D>[] ArmorLeg;
 	}
 }
 
