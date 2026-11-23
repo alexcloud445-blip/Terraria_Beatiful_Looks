@@ -1,0 +1,303 @@
+// Заглушки API Terraria/tModLoader только для проверки компиляции (не для запуска).
+#pragma warning disable
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
+using Terraria.Graphics;
+using Terraria.Graphics.Renderers;
+using Terraria.ModLoader;
+using Terraria.Utilities;
+
+namespace Terraria.Utilities
+{
+	public class UnifiedRandom
+	{
+		public int Next() => 0;
+		public int Next(int maxValue) => 0;
+		public int Next(int minValue, int maxValue) => 0;
+		public double NextDouble() => 0;
+	}
+}
+
+namespace Terraria
+{
+	public class Entity
+	{
+		public int whoAmI;
+		public bool active;
+		public Vector2 position;
+		public Vector2 velocity;
+		public Vector2 oldPosition;
+		public int width;
+		public int height;
+		public int direction = 1;
+		public Vector2 Center { get => default; set { } }
+		public Vector2 Top { get => default; set { } }
+		public Vector2 Bottom { get => default; set { } }
+		public Vector2 Size { get => default; set { } }
+	}
+
+	public partial class Player : Entity
+	{
+		public bool dead;
+		public bool ghost;
+		public bool invis;
+		public float gravDir = 1f;
+		public float fullRotation;
+		public Vector2 fullRotationOrigin;
+		public bool mouseInterface;
+		public bool ShouldNotDraw => false;
+		public T GetModPlayer<T>() where T : ModPlayer => throw null;
+		public bool TryGetModPlayer<T>(out T result) where T : ModPlayer => throw null;
+	}
+
+	public class Item : Entity
+	{
+		public int type;
+		public int value;
+		public int rare;
+		public bool accessory;
+		public bool vanity;
+		public int wingSlot;
+		public int headSlot;
+		public int bodySlot;
+		public int legSlot;
+		public string Name => null;
+		public void SetDefaults(int Type) { }
+		public Item Clone() => null;
+		public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => 0;
+		public static int buyPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => 0;
+	}
+
+	public class Dust
+	{
+		public Vector2 position;
+		public Vector2 velocity;
+		public float fadeIn;
+		public bool noGravity;
+		public float scale;
+		public float rotation;
+		public bool noLight;
+		public bool active;
+		public int type;
+		public Color color;
+		public int alpha;
+		public Rectangle frame;
+		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default, float Scale = 1f) => null;
+	}
+
+	public class Recipe
+	{
+		public Recipe AddIngredient(int itemID, int stack = 1) => this;
+		public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) => this;
+		public Recipe AddTile(int tileID) => this;
+		public Recipe Register() => this;
+	}
+
+	public class SpriteViewMatrix
+	{
+		public Matrix TransformationMatrix => default;
+		public Matrix NormalizedTransformationmatrix => default;
+		public Vector2 Zoom => default;
+	}
+
+	public class Main : Game
+	{
+		public const int maxPlayers = 255;
+		public static Main instance;
+		public static bool dedServ;
+		public static bool gameMenu;
+		public static bool gamePaused;
+		public static int netMode;
+		public static int myPlayer;
+		public static Player[] player = new Player[256];
+		public static UnifiedRandom rand;
+		public static Vector2 screenPosition;
+		public static int screenWidth;
+		public static int screenHeight;
+		public static SpriteBatch spriteBatch;
+		public static GraphicsDeviceManager graphics;
+		public static Effect pixelShader;
+		public static SpriteViewMatrix GameViewMatrix;
+		public static IPlayerRenderer PlayerRenderer;
+		public static uint GameUpdateCount;
+		public static float GlobalTimeWrappedHourly;
+		public static bool mouseLeft;
+		public static Item HoverItem;
+		public static string hoverItemName;
+		public static Player LocalPlayer => null;
+		public static Vector2 MouseScreen => default;
+		public static Color hslToRgb(float Hue, float Saturation, float Luminosity, byte a = 255) => default;
+		public static Vector3 rgbToHsl(Color newColor) => default;
+		public static void NewText(string newText, Color textColor) { }
+		public static void NewText(object o, Color? color = null) { }
+	}
+
+	public static class Lighting
+	{
+		public static void AddLight(Vector2 position, Vector3 rgb) { }
+	}
+
+	public static class Lang
+	{
+		public static string GetItemNameValue(int id) => null;
+	}
+
+	public static class Utils
+	{
+		public static Vector2 Size(this Texture2D tex) => default;
+		public static Vector2 ToRotationVector2(this float f) => default;
+		public static float ToRotation(this Vector2 v) => 0f;
+		public static Vector2 SafeNormalize(this Vector2 v, Vector2 defaultValue) => default;
+		public static Vector2 RotatedBy(this Vector2 spinningpoint, double radians, Vector2 center = default) => default;
+		public static Vector2 Floor(this Vector2 vec) => default;
+		public static Vector2 ToVector2(this Point p) => default;
+		public static Point ToPoint(this Vector2 v) => default;
+		public static Vector2 NextVector2Circular(this UnifiedRandom r, float circleHalfWidth, float circleHalfHeight) => default;
+		public static Vector2 NextVector2Unit(this UnifiedRandom r, float startRotation = 0f, float rotationRange = (float)Math.PI * 2f) => default;
+		public static float NextFloat(this UnifiedRandom r) => 0f;
+		public static float NextFloat(this UnifiedRandom r, float maxValue) => 0f;
+		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue) => 0f;
+		public static bool NextBool(this UnifiedRandom r) => false;
+		public static bool NextBool(this UnifiedRandom r, int consequent) => false;
+		public static Vector2 DrawBorderString(SpriteBatch sb, string text, Vector2 pos, Color color, float scale = 1f, float anchorx = 0f, float anchory = 0f, int maxCharactersDisplayed = -1) => default;
+	}
+}
+
+namespace Terraria.DataStructures
+{
+	public struct DrawData
+	{
+		public Texture2D texture;
+		public Vector2 position;
+		public Rectangle? sourceRect;
+		public Color color;
+		public float rotation;
+		public Vector2 origin;
+		public Vector2 scale;
+		public SpriteEffects effect;
+		public int shader;
+		public DrawData(Texture2D texture, Vector2 position, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effect, float inactiveLayerDepth = 0f) : this() { }
+		public DrawData(Texture2D texture, Vector2 position, Rectangle? sourceRect, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effect, float inactiveLayerDepth = 0f) : this() { }
+	}
+
+	public struct PlayerDrawSet
+	{
+		public List<DrawData> DrawDataCache;
+		public Player drawPlayer;
+		public float shadow;
+		public Vector2 Position;
+	}
+
+	public struct WingStats
+	{
+		public WingStats(int flyTime = 100, float flySpeedOverride = -1f, float accelerationMultiplier = 1f, bool hasHoldDownHoverFeatures = false, float hoverFlySpeedOverride = -1f, float hoverAccelerationMultiplier = 1f) { }
+	}
+}
+
+namespace Terraria.Graphics
+{
+	public class Camera
+	{
+		public SpriteBatch SpriteBatch => null;
+	}
+
+	public class VertexStrip
+	{
+		public delegate Color StripColorFunction(float progressOnStrip);
+		public delegate float StripHalfWidthFunction(float progressOnStrip);
+		public void PrepareStrip(Vector2[] positions, float[] rotations, StripColorFunction colorFunction, StripHalfWidthFunction widthFunction, Vector2 offsetForAllPositions = default, int? expectedVertexPairsAmount = null, bool includeBacksides = false) { }
+		public void PrepareStripWithProceduralPadding(Vector2[] positions, float[] rotations, StripColorFunction colorFunction, StripHalfWidthFunction widthFunction, Vector2 offsetForAllPositions = default, bool includeBacksides = false, bool tryStoppingOddBug = true) { }
+		public void DrawTrail() { }
+	}
+}
+
+namespace Terraria.Graphics.Renderers
+{
+	public interface IPlayerRenderer
+	{
+		void DrawPlayer(Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow = 0f, float scale = 1f);
+	}
+}
+
+namespace Terraria.Graphics.Shaders
+{
+	public class ShaderData
+	{
+		public Effect Shader => null;
+		public virtual void Apply() { }
+	}
+
+	public class MiscShaderData : ShaderData
+	{
+		public virtual void Apply(Terraria.DataStructures.DrawData? drawData = null) { }
+		public MiscShaderData UseColor(Color color) => this;
+		public MiscShaderData UseSecondaryColor(Color color) => this;
+		public MiscShaderData UseOpacity(float alpha) => this;
+		public MiscShaderData UseSaturation(float saturation) => this;
+		public MiscShaderData UseShaderSpecificData(Vector4 specificData) => this;
+	}
+
+	public class ArmorShaderDataSet
+	{
+		public int GetShaderIdFromItemId(int type) => 0;
+	}
+
+	public static class GameShaders
+	{
+		public static ArmorShaderDataSet Armor;
+		public static Dictionary<string, MiscShaderData> Misc;
+	}
+}
+
+namespace Terraria.Audio
+{
+	public struct SoundStyle { }
+	public static class SoundEngine
+	{
+		public static void PlaySound(in SoundStyle style, Vector2? position = null) { }
+	}
+}
+
+namespace Terraria.GameInput
+{
+	public class TriggersSet { }
+}
+
+namespace Terraria.Localization
+{
+	public static class Language
+	{
+		public static string GetTextValue(string key) => null;
+	}
+}
+
+namespace Terraria.ID
+{
+	public static class NetmodeID { public const int SinglePlayer = 0, MultiplayerClient = 1, Server = 2; }
+	public static class DustID { public const short RainbowMk2 = 267; }
+	public static class SoundID
+	{
+		public static readonly Terraria.Audio.SoundStyle MenuOpen, MenuClose, MenuTick;
+	}
+	public static class ItemRarityID { public const int Blue = 1, Green = 2, Pink = 5; }
+	public static class TileID { public const ushort Anvils = 16, Loom = 86, WorkBenches = 18; }
+	public static class RecipeGroupID { public const int IronBar = 1; }
+	public static class ArmorIDs
+	{
+		public static class Wing { public static class Sets { public static WingStats[] Stats; } }
+		public static class Head { public static class Sets { public static bool[] DrawFullHair; public static bool[] DrawHatHair; } }
+		public static class Body { public static class Sets { public static bool[] HidesHands; } }
+	}
+	public static class ItemID
+	{
+		public const short Feather = 320, FallenStar = 75, Torch = 8, Gel = 23, IceBlock = 664, Silk = 225, PinkGel = 3111,
+			Obsidian = 173, Daybloom = 313, GoldBar = 19, PlatinumBar = 706, Ruby = 178, Sunflower = 63,
+			RainbowDye = 1066, IntenseRainbowDye = 1067, LivingRainbowDye = 2878, MidnightRainbowDye = 3040, LivingFlameDye = 2869,
+			LivingOceanDye = 2873, HadesDye = 2883, BurningHadesDye = 2884, ShadowflameHadesDye = 2885, NebulaDye = 3533,
+			SolarDye = 3534, VortexDye = 3535, StardustDye = 3536, PhaseDye = 2877, ReflectiveGoldDye = 3027, TwilightDye = 3550,
+			VoidDye = 3561, PrismaticDye = 3598;
+	}
+}

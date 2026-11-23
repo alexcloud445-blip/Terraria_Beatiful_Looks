@@ -69,11 +69,13 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		}
 	}
 
-	/// <summary>Кнопка с подсветкой при наведении и состоянием «выбрано».</summary>
+	/// <summary>Кнопка с подсветкой при наведении и состоянием «выбрано». Длинный текст сам уменьшается.</summary>
 	public class LooksButton : UITextPanel<string>
 	{
 		private readonly Func<string> _textProvider;
+		private readonly float _baseScale;
 		private string _lastText;
+		private float _lastWidth = -1f;
 		public Func<bool> IsSelected;
 
 		public LooksButton(Func<string> text, float width, float height = 30f, float textScale = 0.85f)
@@ -81,12 +83,31 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		{
 			// Текст берём только в Update: при создании меню персонажа может ещё не быть
 			_textProvider = text;
+			_baseScale = textScale;
 			_lastText = null;
 			Width.Set(width, 0f);
 			Height.Set(height, 0f);
 			SetPadding(0f);
 			PaddingTop = 4f;
 			BackgroundColor = Theme.Button;
+		}
+
+		/// <summary>Ставит текст, уменьшая шрифт, если он не помещается в кнопку.</summary>
+		private void FitText(string text)
+		{
+			float available = GetInnerDimensions().Width - 6f;
+			float scale = _baseScale;
+			if (available > 10f && !string.IsNullOrEmpty(text))
+			{
+				float textWidth = FontAssets.MouseText.Value.MeasureString(text).X * _baseScale;
+				if (textWidth > available)
+					scale = Math.Max(0.45f, _baseScale * available / textWidth);
+			}
+
+			SetText(text, scale, false);
+			// Кнопка не должна раздуваться под текст: размер задаёт раскладка
+			MinWidth.Set(0f, 0f);
+			MinHeight.Set(0f, 0f);
 		}
 
 		public LooksButton(string text, float width, float height = 30f, float textScale = 0.85f)
@@ -105,10 +126,12 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			base.Update(gameTime);
 
 			string text = _textProvider();
-			if (text != _lastText)
+			float width = GetInnerDimensions().Width;
+			if (text != _lastText || Math.Abs(width - _lastWidth) > 0.5f)
 			{
 				_lastText = text;
-				SetText(text);
+				_lastWidth = width;
+				FitText(text);
 			}
 
 			bool selected = IsSelected?.Invoke() ?? false;
@@ -342,6 +365,96 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			Theme.Rect(sb, r, Color.Black);
 			r.Inflate(-2, -2);
 			Theme.Rect(sb, r, _color());
+		}
+	}
+
+	/// <summary>Сетка кнопок-вариантов (стили ауры, следа, нимба...). Выбранная подсвечивается.</summary>
+	public class OptionGrid : UIElement
+	{
+		public readonly List<LooksButton> Buttons = new List<LooksButton>();
+
+		public OptionGrid(int count, int columns, Func<int, string> label, Func<int, bool> selected, Action<int> click,
+			float buttonHeight = 26f, float gap = 4f, float textScale = 0.75f)
+		{
+			int rows = (count + columns - 1) / columns;
+			Width.Set(0f, 1f);
+			Height.Set(rows * (buttonHeight + gap), 0f);
+
+			for (int i = 0; i < count; i++)
+			{
+				int index = i;
+				int col = i % columns;
+				int row = i / columns;
+				var button = new LooksButton(() => label(index), 0f, buttonHeight, textScale);
+				button.Width.Set(-gap, 1f / columns);
+				button.Left.Set(gap / 2f, (float)col / columns);
+				button.Top.Set(row * (buttonHeight + gap), 0f);
+				button.IsSelected = () => selected(index);
+				button.OnLeftClick += (_, _) => click(index);
+				Append(button);
+				Buttons.Add(button);
+			}
+		}
+	}
+
+	/// <summary>Кнопка с двумя цветными квадратиками слева (цветовые темы, готовые образы).</summary>
+	public class SwatchButton : LooksButton
+	{
+		private readonly Func<Color> _first;
+		private readonly Func<Color> _second;
+
+		public SwatchButton(Func<string> text, Func<Color> first, Func<Color> second, float height = 26f, float textScale = 0.75f)
+			: base(text, 0f, height, textScale)
+		{
+			_first = first;
+			_second = second;
+			PaddingLeft = 34f;
+		}
+
+		protected override void DrawSelf(SpriteBatch sb)
+		{
+			base.DrawSelf(sb);
+			CalculatedStyle d = GetDimensions();
+			int size = (int)Math.Min(14f, d.Height - 10f);
+			int y = (int)(d.Y + (d.Height - size) / 2f);
+			DrawBox(sb, new Rectangle((int)d.X + 5, y, size, size), _first());
+			DrawBox(sb, new Rectangle((int)d.X + 7 + size, y, size, size), _second());
+		}
+
+		private static void DrawBox(SpriteBatch sb, Rectangle r, Color c)
+		{
+			Theme.Rect(sb, r, Color.Black);
+			r.Inflate(-1, -1);
+			Theme.Rect(sb, r, c);
+		}
+	}
+
+	/// <summary>Квадратик с живым цветом: по клику открывает вкладку «Цвета».</summary>
+	public class LiveSwatch : UIElement
+	{
+		private readonly Func<Color> _color;
+		private readonly Func<string> _label;
+
+		public LiveSwatch(Func<Color> color, Func<string> label, Action onClick, float width = 70f, float height = 24f)
+		{
+			_color = color;
+			_label = label;
+			Width.Set(width, 0f);
+			Height.Set(height, 0f);
+			OnLeftClick += (_, _) =>
+			{
+				onClick();
+				SoundEngine.PlaySound(SoundID.MenuTick);
+			};
+		}
+
+		protected override void DrawSelf(SpriteBatch sb)
+		{
+			Rectangle r = GetDimensions().ToRectangle();
+			Theme.Rect(sb, r, IsMouseHovering ? Theme.Accent : Color.Black);
+			r.Inflate(-2, -2);
+			Theme.Rect(sb, r, _color());
+			Theme.Text(sb, _label(), r.Center.ToVector2() + new Vector2(0f, 2f), Color.White, 0.7f, 0.5f, 0.5f);
 		}
 	}
 

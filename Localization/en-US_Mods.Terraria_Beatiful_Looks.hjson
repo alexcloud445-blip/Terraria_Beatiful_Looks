@@ -104,12 +104,30 @@ Configs: {
 			Label: Effects intensity
 			Tooltip: Global multiplier for all particles and glow from this mod
 		}
+
+		MaxParticles: {
+			Label: Particle limit
+			Tooltip: How many particles from this mod can exist at once. Lower it if the game slows down
+		}
+
+		ShaderRibbons: {
+			Label: Shader ribbons
+			Tooltip: Glowing ribbons on Terraria's own shaders (trails, comet tails). Turn off if something looks wrong
+		}
+
+		ShowOtherPlayers: {
+			Label: Show other players' looks
+			Tooltip: Show auras, trails and effects of other players in multiplayer
+		}
 	}
 }
 
 UI: {
 	Title: Beautiful Looks
 	DragHint: drag me
+	Effects: Effects
+	On: on
+	Off: off
 	Presets: Presets
 	Save: Save
 	Load: Load
@@ -120,36 +138,67 @@ UI: {
 	TabAura: Aura
 	TabTrail: Trail
 	TabEffects: Effects
+	TabColors: Colors
+	TabLooks: Looks
 	TabWardrobe: Wardrobe
-	Style: Style
+	AuraStyle: Aura style
 	Density: Density
-	Color: Color
-	EffectColor: Effects color
+	Size: Size
+	Speed: Speed
+	Colors: Colors
+	ColorsHint: click to change
+	AuraHint: Particles are seen in the world; the soft glow is also shown in the preview
+	Ribbon: Glowing ribbon
+	Width: Width
+	Length: Length
+	TrailParticles: Trail particles
+	Echo: Phantom copies
+	TrailHint: Everything here appears behind you while moving
+	Halo: Halo
+	OnCharacter: On the character
+	BackGlow: Glow
+	GodRays: Rays
+	GroundRing: Ring
+	Sigil: Sigil
+	PulseRing: Pulse
+	Dye: Dye
+	NoDye: no dye
+	EffectsHint: Drawn right on the character, visible in the preview
+	DyeHint: Dye recolors the halo, glow, rays and circles with a vanilla dye shader
+	Color1: Main color
+	Color2: Second color
+	Themes: Color themes (for the selected part)
+	CopyToAll: Copy to aura, trail and effects
+	CopiedToAll: Colors copied to the whole look!
+	SwapColors: Swap colors 1 and 2
+	ReadyLooks: Ready looks
+	LooksHint: Hover a look to read about it
+	LooksTip: A look replaces your current settings. Save yours to a preset first!
+	WardrobeHint: Hover an item. Recipes: Recipe Browser or the Guide
 	Hue: Hue
 	Saturation: Saturation
 	Lightness: Brightness
 	Rainbow: Rainbow
-	On: on
-	Off: off
-	TrailHint: Appears behind you while moving
-	Halo: Halo
-	BackGlow: Back glow
-	GroundRing: Ground ring
-	EffectsHint: Drawn right on your character, visible in the preview
-	WardrobeHint: Hover an item to see it. Recipes: Recipe Browser or the Guide
 
 	Aura: {
 		None: Off
-		Glow: Glow
+		Glow: Radiance
 		Sparkles: Sparkles
-		Orbit: Orbit
+		Comets: Comets
 		Flames: Flames
-		Stars: Stars
-		Snow: Snowfall
-		Petals: Petals
+		Starfall: Starfall
+		Frost: Frost
+		Sakura: Sakura
 		Hearts: Hearts
 		Vortex: Vortex
-		Ring: Ring
+		CelestialRing: Rune ring
+		Storm: Storm
+		Void: Void
+		Divine: Divine light
+		Prism: Prism
+		Butterflies: Butterflies
+		Runes: Runes
+		Fireflies: Fireflies
 	}
 
 	Trail: {
@@ -160,5 +209,73 @@ UI: {
 		Hearts: Hearts
 		Petals: Petals
 		Snow: Snow
+		Feathers: Feathers
+		Smoke: Smoke
+		Runes: Runes
+		Prism: Prism
+		Butterflies: Butterflies
+	}
+
+	RibbonStyle: {
+		None: Off
+		Soft: Soft
+		Rainbow: Rainbow
+		Flame: Flame
+		Empress: Empress
+		Twin: Twin
+	}
+
+	EchoStyle: {
+		None: Off
+		Ghost: Ghost
+		Afterimage: Afterimage
+		Phantom: Phantom
+	}
+
+	HaloStyle: {
+		None: Off
+		Ring: Ring
+		Double: Double
+		Radiant: Radiant
+		Thorns: Thorns
+		Starry: Starry
+	}
+
+	Theme: {
+		Seraph: Seraph
+		Inferno: Inferno
+		Frost: Frost
+		Sakura: Sakura
+		Void: Void
+		Empress: Empress
+		Emerald: Emerald
+		Ocean: Ocean
+		BloodMoon: Blood Moon
+		Dusk: Dusk
+		Storm: Storm
+		Sun: Sun
+	}
+
+	Look: {
+		Seraph: Seraph
+		SeraphDesc: Divine light, radiant halo, rays and falling feathers
+		Inferno: Inferno
+		InfernoDesc: Living fire, thorn halo and a ribbon of flame
+		Frost: Frost
+		FrostDesc: Snowfall, icy mist and a ghostly echo
+		Sakura: Sakura
+		SakuraDesc: Cherry petals and a twin spiral ribbon
+		Void: Void
+		VoidDesc: Dark smoke, a magic sigil and phantom copies
+		Empress: Empress
+		EmpressDesc: Prism shards with rainbow tails, like the Empress of Light
+		Storm: Storm
+		StormDesc: Lightning arcs, afterimages and thunder strikes
+		Celestial: Celestial
+		CelestialDesc: A ring of runes, starry trail and a magic circle
+		Fairy: Fairy
+		FairyDesc: Butterflies, sparkles and a starry halo
+		Comet: Comet
+		CometDesc: Comets with glowing tails and a rainbow ribbon
 	}
 }

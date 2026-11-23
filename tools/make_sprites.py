@@ -449,7 +449,5 @@ if __name__ == "__main__":
     dust_sheet("PetalDust", d_petal)
     dust_sheet("StarDust", d_star)
     dust_sheet("SnowflakeDust", d_snow)
-    soft_glow()
-    ellipse_ring("Assets/Effects/Halo.png", 30, 10, 0.35)
-    ellipse_ring("Assets/Effects/Ring.png", 72, 18, 0.18)
+    # Текстуры эффектов (свечение, кольца, частицы) теперь делает tools/make_vfx.py
     icon()

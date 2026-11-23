@@ -104,12 +104,30 @@ Configs: {
 			Label: Сила эффектов
 			Tooltip: Общий множитель для всех частиц и свечения этого мода
 		}
+
+		MaxParticles: {
+			Label: Лимит частиц
+			Tooltip: Сколько частиц мода может быть одновременно. Уменьши, если игра тормозит
+		}
+
+		ShaderRibbons: {
+			Label: Шейдерные ленты
+			Tooltip: Светящиеся ленты на шейдерах Terraria (следы, хвосты комет). Выключи, если с ними что-то не так
+		}
+
+		ShowOtherPlayers: {
+			Label: Образы других игроков
+			Tooltip: Показывать ауры, следы и эффекты других игроков в мультиплеере
+		}
 	}
 }
 
 UI: {
 	Title: Beautiful Looks
 	DragHint: тащи меня
+	Effects: Эффекты
+	On: вкл
+	Off: выкл
 	Presets: Пресеты
 	Save: Сохр.
 	Load: Загр.
@@ -120,36 +138,67 @@ UI: {
 	TabAura: Аура
 	TabTrail: След
 	TabEffects: Эффекты
+	TabColors: Цвета
+	TabLooks: Образы
 	TabWardrobe: Гардероб
-	Style: Стиль
+	AuraStyle: Стиль ауры
 	Density: Плотность
-	Color: Цвет
-	EffectColor: Цвет эффектов
+	Size: Размер
+	Speed: Скорость
+	Colors: Цвета
+	ColorsHint: нажми, чтобы изменить
+	AuraHint: Частицы видны в мире, а мягкое свечение видно и в превью
+	Ribbon: Светящаяся лента
+	Width: Ширина
+	Length: Длина
+	TrailParticles: Частицы следа
+	Echo: Призрачные копии
+	TrailHint: Всё это появляется позади тебя при движении
+	Halo: Нимб
+	OnCharacter: На персонаже
+	BackGlow: Сияние
+	GodRays: Лучи
+	GroundRing: Круг
+	Sigil: Сигил
+	PulseRing: Пульсация
+	Dye: Краска
+	NoDye: без краски
+	EffectsHint: Рисуются прямо на персонаже, видны в превью
+	DyeHint: Краска перекрашивает нимб, сияние, лучи и круги шейдером ванильной краски
+	Color1: Основной цвет
+	Color2: Второй цвет
+	Themes: Цветовые темы (для выбранной части)
+	CopyToAll: Скопировать на ауру, след и эффекты
+	CopiedToAll: Цвета скопированы на весь образ!
+	SwapColors: Поменять цвета 1 и 2
+	ReadyLooks: Готовые образы
+	LooksHint: Наведи на образ, чтобы прочитать о нём
+	LooksTip: Образ заменяет текущие настройки. Сначала сохрани свои в пресет!
+	WardrobeHint: Наведи на предмет. Рецепты: Recipe Browser или Гид
 	Hue: Оттенок
 	Saturation: Насыщенность
 	Lightness: Яркость
 	Rainbow: Радуга
-	On: вкл
-	Off: выкл
-	TrailHint: Появляется позади тебя при движении
-	Halo: Нимб
-	BackGlow: Сияние
-	GroundRing: Круг
-	EffectsHint: Рисуются прямо на персонаже, видны в превью
-	WardrobeHint: Наведи на предмет. Рецепты: Recipe Browser или Гид
 
 	Aura: {
 		None: Выкл
-		Glow: Свечение
+		Glow: Сияние
 		Sparkles: Искры
-		Orbit: Орбита
+		Comets: Кометы
 		Flames: Пламя
-		Stars: Звёзды
-		Snow: Снегопад
-		Petals: Лепестки
+		Starfall: Звездопад
+		Frost: Мороз
+		Sakura: Сакура
 		Hearts: Сердечки
 		Vortex: Вихрь
-		Ring: Кольцо
+		CelestialRing: Кольцо рун
+		Storm: Гроза
+		Void: Пустота
+		Divine: Божественный свет
+		Prism: Призма
+		Butterflies: Бабочки
+		Runes: Руны
+		Fireflies: Светлячки
 	}
 
 	Trail: {
@@ -160,5 +209,73 @@ UI: {
 		Hearts: Сердечки
 		Petals: Лепестки
 		Snow: Снег
+		Feathers: Перья
+		Smoke: Дым
+		Runes: Руны
+		Prism: Призма
+		Butterflies: Бабочки
+	}
+
+	RibbonStyle: {
+		None: Выкл
+		Soft: Мягкая
+		Rainbow: Радуга
+		Flame: Пламя
+		Empress: Императрица
+		Twin: Двойная
+	}
+
+	EchoStyle: {
+		None: Выкл
+		Ghost: Призрак
+		Afterimage: Шлейф
+		Phantom: Фантом
+	}
+
+	HaloStyle: {
+		None: Выкл
+		Ring: Кольцо
+		Double: Двойной
+		Radiant: Лучистый
+		Thorns: Терновый
+		Starry: Звёздный
+	}
+
+	Theme: {
+		Seraph: Серафим
+		Inferno: Инферно
+		Frost: Мороз
+		Sakura: Сакура
+		Void: Пустота
+		Empress: Императрица
+		Emerald: Изумруд
+		Ocean: Океан
+		BloodMoon: Кровавая луна
+		Dusk: Сумерки
+		Storm: Гроза
+		Sun: Солнце
+	}
+
+	Look: {
+		Seraph: Серафим
+		SeraphDesc: Божественный свет, лучистый нимб, лучи и падающие перья
+		Inferno: Инферно
+		InfernoDesc: Живое пламя, терновый нимб и огненная лента
+		Frost: Мороз
+		FrostDesc: Снегопад, ледяной туман и призрачная копия
+		Sakura: Сакура
+		SakuraDesc: Лепестки вишни и двойная спиральная лента
+		Void: Пустота
+		VoidDesc: Тёмный дым, магический сигил и фантомные копии
+		Empress: Императрица
+		EmpressDesc: Осколки призмы с радужными хвостами, как у Императрицы Света
+		Storm: Гроза
+		StormDesc: Дуги молний, шлейф и удары грома
+		Celestial: Небесный
+		CelestialDesc: Кольцо рун, звёздный след и магический круг
+		Fairy: Фея
+		FairyDesc: Бабочки, искорки и звёздный нимб
+		Comet: Комета
+		CometDesc: Кометы со светящимися хвостами и радужная лента
 	}
 }

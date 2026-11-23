@@ -30,6 +30,15 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			return Main.hslToRgb(hue, Saturation, Lightness);
 		}
 
+		/// <summary>Смесь двух цветов палитры: t = 0 — этот, t = 1 — второй.</summary>
+		public Color Mix(ColorSetting second, float t, float offset = 0f) => Color.Lerp(Get(offset), second.Get(offset + 0.15f), t);
+
+		public void Set(Color color, bool rainbow = false)
+		{
+			SetFromColor(color);
+			Rainbow = rainbow;
+		}
+
 		public void SetFromColor(Color color)
 		{
 			Vector3 hsl = Main.rgbToHsl(color);

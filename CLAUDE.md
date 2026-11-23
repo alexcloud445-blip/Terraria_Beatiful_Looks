@@ -14,19 +14,57 @@
 - Лог сборки и ошибок: `C:\Program Files (x86)\Steam\steamapps\common\tModLoader\tModLoader-Logs\client.log`.
 - У пользователя также стоят Calamity, MagicStorage, RecipeBrowser, BossChecklist.
 
-## Архитектура (v0.2, работает в игре)
+## Архитектура (v0.3, написана, в игре ещё не проверена)
 ```
 BeautifulLooksMod.cs            Mod: сетевые пакеты (SyncLook)
-Common/Looks/                   LookSettings (весь образ: сохранение, сеть, пресеты), ColorSetting (HSL + радуга)
-Common/Players/LooksPlayer.cs   SaveData/LoadData, пресеты, SyncPlayer/CopyClientState/SendClientChanges, запуск эффектов
-Common/Effects/                 AuraEffects, TrailEffects (частицы), LooksDrawLayers (нимб/сияние/круг через PlayerDrawLayer), Fx
-Common/UI/                      LooksPanel (окно с вкладками, перетаскивание, превью UICharacter), Elements (кнопки, слайдеры, палитра, сетка предметов)
+Common/Looks/                   LookSettings (весь образ: сохранение, сеть, пресеты), ColorSetting (HSL + радуга),
+                                ColorThemes (12 тем), ReadyLooks (10 образов), EffectDyes (краски для эффектов)
+Common/Players/LooksPlayer.cs   SaveData/LoadData, 5 пресетов, история позиций (лента и копии), синхронизация,
+                                запуск аур/следов, DrawPlayer (призрачные копии), TransformDrawData (их перекраска)
+Common/VFX/                     своя система частиц:
+  Particle.cs, Particles.cs       базовые классы и виды частиц (огонёк, вспышка, искра, дым, кольцо, молния,
+                                  спрайт, руна, падающая звезда, орбитальный огонёк с хвостом)
+  ParticleSystem.cs               ModSystem: список частиц, обновление в PostUpdateEverything, лимит из конфига
+  Ribbons.cs                      шейдерные ленты: VertexStrip + GameShaders.Misc (MagicMissile/RainbowRod/FlameLash/EmpressBlade)
+  VfxRenderer.cs                  детур On_Main.DrawPlayers_AfterProjectiles: слой «позади» до orig, «спереди» после
+  VfxAssets.cs, VfxMath.cs        текстуры Assets/VFX и помощники (Additive = цвет с A = 0)
+Common/Effects/                 AuraEffects (17 аур), TrailEffects (частицы следа, ленты игроков, призрачные копии),
+                                LooksDrawLayers (BackEffectsLayer: лучи/сияние/сигил/круги/подсветка ауры; HaloLayer: 5 нимбов), Fx
+Common/UI/                      LooksPanel (760x500, справа, вкладки Аура/След/Эффекты/Цвета/Образы/Гардероб),
+                                Elements (кнопки с авто-уменьшением текста, OptionGrid, SwatchButton, LiveSwatch, слайдеры, палитра)
 Common/Systems/                 KeybindSystem (K), LooksUISystem (меню создаётся лениво при первом открытии)
-Content/Dusts/                  свои ModDust: сердечки, лепестки, звёзды, снежинки
+Content/Dusts/                  старые ModDust (больше не используются эффектами, оставлены)
 Content/Items/Wings|Vanity/     базовые классы CosmeticWings / CosmeticHat / CosmeticCape + наследники
-Assets/Effects/                 текстуры свечения
-tools/make_sprites.py, pngio.py генерация всех PNG на чистом Python (без Pillow)
+Assets/VFX/                     текстуры эффектов (tools/make_vfx.py): Bloom, Orb, Flare, Streak, Line, RingWave, GodRay,
+                                Smoke, Sprites (8 спрайтов), Runes, HaloRing/GroundRing/ThornHalo/SigilRings (уже в перспективе)
+tools/make_sprites.py, pngio.py генерация PNG предметов на чистом Python (без Pillow)
+tools/stubcheck/                проверка компиляции без игры (см. ниже)
 ```
+
+Номера в перечислениях (AuraStyle, TrailStyle, RibbonStyle, EchoStyle, HaloStyle, EffectDyes.Items) сохраняются
+в файл персонажа: новые значения добавлять только В КОНЕЦ.
+
+## Проверка сборки без игры (tools/stubcheck)
+Скачать сам tModLoader в облачной сессии не удалось (github.com закрыт прокси для чужих репозиториев,
+releases недоступны). Поэтому код проверяется против заглушек API: `tools/stubcheck/*.cs.txt`
+(лежат как .txt, иначе tModLoader скомпилирует их вместе с модом!) + настоящие XNA DLL из репозитория tModLoader.
+```
+apt-get install -y dotnet-sdk-8.0
+GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 -b stable https://github.com/tModLoader/tModLoader /home/user/tmodloader/tmodloader
+tools/stubcheck/check.sh        # должно быть "0 Error(s)"
+```
+Заглушки ловят опечатки и нестыковки внутри мода, но API игры в них написан по памяти и исходникам tML:
+если что-то используется впервые — добавить в заглушку, сверившись с `patches/tModLoader/...` в клоне tML.
+
+## Что в v0.3 не проверено в игре (если упадёт — смотреть сюда)
+- `On_Main.DrawPlayers_AfterProjectiles` (instance-метод, SpriteBatch в этот момент закрыт). Если открыт — VfxRenderer
+  просто ничего не рисует (проверка через приватное поле `beginCalled` у FNA SpriteBatch).
+- Ленты: `VertexStrip.PrepareStripWithProceduralPadding(..., includeBacksides: true)`, `uWorldViewProjection`
+  ставится вручную = `GameViewMatrix.TransformationMatrix * Ortho(viewport)`. Если ленты не видны/съехали — выключить
+  в конфиге «Шейдерные ленты» и разбираться.
+- Призрачные копии: `Main.PlayerRenderer.DrawPlayer` из `ModPlayer.DrawPlayer`, перекраска в `TransformDrawData`.
+- Имена ItemID красок в `EffectDyes` (PhaseDye, PrismaticDye, VoidDye, TwilightDye...).
+- Все ошибки отрисовки ловятся и пишутся в client.log один раз: строка `Beautiful Looks VFX error (...)`.
 
 ## Грабли, на которые уже наступили
 - **Нельзя трогать `Main.LocalPlayer` / `GetModPlayer` в конструкторах UI**: при загрузке мода ModPlayer ещё не зарегистрированы (IndexOutOfRangeException). Меню создаётся при первом открытии, тексты кнопок берутся в Update.
@@ -42,12 +80,15 @@ tools/make_sprites.py, pngio.py генерация всех PNG на чисто�
 - Роба: `[AutoloadEquip(EquipType.Body)]` + в `Load()` вызвать `EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this)` (не на сервере) + `SetMatch(bool male, ref int equipSlot, ref bool robes)` с `robes = true; equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs)`; `ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false`.
 - Лист тела 1.4: **360x224 = сетка 9x4 кадров 40x56** (торс, плечи, руки в разных позах). Ноги, голова и спина: 40x1120 (20 кадров вертикально). Шаблоны есть в ExampleMod (`Content/Items/Armor/ExampleBreastplate_Body.png`, `Vanity/ExampleRobe_Body.png`, `Vanity/ExampleRobe_Legs.png`, лицензия MIT). Цвета шаблона робы: контур (50,50,50)/(52,52,35), ткань 4 оттенка (110,96,79)…(197,183,166), золотая отделка (184,151,52)/(201,191,80)/(215,208,125). Шаблоны нагрудника, штанов и капюшона: красные рампы по яркости.
 
-## План v0.3 (VFX-версия, ещё не начата в коде)
-1. **Своя система частиц** (не Dust): список частиц в ModSystem (обновление в PostUpdateEverything), отрисовка с bloom через `color.A = 0` (аддитивно в AlphaBlend). Типы: светящаяся сфера, 4-лучевая вспышка, растянутая искра, уголёк, дым, кольцо-волна, молния, руны, спрайты (лепестки, сердечки, снежинки, бабочки, светлячки). Текстуры сгенерировать скриптом (гауссово свечение, вспышка, полоса, шум).
-2. **Шейдерные ленты** через ванильные `Terraria.Graphics.VertexStrip` + `GameShaders.Misc["RainbowRod" | "MagicMissile" | "FlameLash" | "FinalFractal" | "EmpressBlade"]` (шейдеры Императрицы Света; свои HLSL скомпилировать негде). Обязательно проверить через `TryGetValue`, после отрисовки вызвать `Main.pixelShader.CurrentTechnique.Passes[0].Apply()`. Отрисовка: детур `On_Main.DrawPlayers_AfterProjectiles` (до orig: эффекты позади, после: спереди); вне активного spriteBatch, обернуть в try/catch.
-3. **Ауры** (~17): сияние, искры, огоньки-кометы с шейдерными хвостами, небесное кольцо рун, пламя, мороз, сакура, сердечки, вихрь, звездопад, гроза (молнии), пустота, божественный свет, призма (радужные осколки с хвостами RainbowRod), бабочки, руны, светлячки. Ползунки плотности, размера и скорости.
-4. **Следы**: шейдерная лента (обычная, радужная, пламенная, Императрицы), призрачные эхо персонажа (DrawPlayer + TransformDrawData с цветом палитры), частицы.
-5. **Эффекты на персонаже** (PlayerDrawLayer): стили нимба (кольцо, двойное, корона света, терновый, звезда), сияние, божественные лучи, магический круг-сигил под ногами, пульсирующее кольцо. Опция «краска эффектов»: `DrawData.shader = GameShaders.Armor.GetShaderIdFromItemId(ItemID.XxxDye)`.
-6. **Палитра**: основной и второй цвет (+ радуга), готовые темы. **Готовые образы** (Серафим, Инферно, Мороз, Сакура, Пустота, Императрица, Буря…) + 5 слотов пресетов.
-7. **Костюмы-робы** (тело + юбка через SetMatch), перекраска шаблонов ExampleMod градиентной картой с узорами (звёзды, лепестки, пламя у подола): Серафим, Инферно, Мороз, Сакура-кимоно, Пустота; королевский комплект (камзол + брюки); капюшон пустоты. Эффект комплекта: частицы, когда роба надета.
-8. **UI**: окно шире (~760x500), по умолчанию справа, чтобы персонаж был виден; вкладки Аура / След / Эффекты / Цвета / Образы / Гардероб; выбор стилей сеткой кнопок; своя прокрутка (OverflowHidden + ScrollWheel); общий выключатель эффектов.
+## План v0.3 (VFX-версия): статус
+Сделано в коде (пункты 1–6 и 8 исходного плана): своя система частиц с bloom, шейдерные ленты, 17 аур, следы
+(лента, частицы, призрачные копии), 5 нимбов + сияние/лучи/сигил/круги/пульсация + краски, по два цвета на часть +
+12 тем, 10 готовых образов, 5 пресетов, новое меню 760x500 с 6 вкладками и общим выключателем.
+Прокрутка в меню пока не понадобилась: всё помещается.
+
+Осталось:
+- **Проверить в игре** (Build + Reload, client.log) и поправить то, что всплывёт.
+- **Пункт 7: костюмы-робы** (тело + юбка через SetMatch), перекраска шаблонов ExampleMod градиентной картой с узорами:
+  Серафим, Инферно, Мороз, Сакура-кимоно, Пустота; королевский комплект; капюшон пустоты; частицы комплекта.
+  Шаблоны ExampleMod есть в клоне tML: `ExampleMod/Content/Items/Armor/...`, `ExampleMod/Content/Items/Vanity/...`.
+- Крылья можно перевести на новые эффекты (сейчас они сыплют частицы через Fx → уже новая система).

@@ -1,9 +1,11 @@
-Beautiful Looks — a purely cosmetic mod: wings, auras, trails, halos and vanity outfits.
+Beautiful Looks — a purely cosmetic mod: auras, glowing trails, halos, magic circles and vanity outfits. No gameplay changes.
 
 Press K (rebindable in Controls) to open the Looks menu:
-- Aura: 10 styles with density, custom color (hue / saturation / brightness) and rainbow mode
-- Trail: 6 movement trail styles
-- Effects: halo, back glow and ground ring drawn on your character
+- Aura: 17 styles on a custom glowing particle system (comets with tails, storm with lightning, prism shards, butterflies, runes, divine light and more) with density, size and speed sliders
+- Trail: glowing shader ribbons (soft, rainbow, flame, Empress, twin spiral), 11 particle trails and phantom copies of your character
+- Effects: 5 halo styles, glow, god rays, ground ring, magic sigil and pulse rings, with optional vanilla dye shaders
+- Colors: two colors per part (plus rainbow) and 12 color themes
+- Looks: 10 ready-made looks (Seraph, Inferno, Frost, Sakura, Void, Empress, Storm...)
 - Wardrobe: 6 wings, 5 hats and 3 capes
-- 3 preset slots, randomize and reset
+- 5 preset slots, randomize and reset
 Looks are saved per character and synced in multiplayer.

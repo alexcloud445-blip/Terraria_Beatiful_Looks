@@ -1,6 +1,6 @@
 displayName = Beautiful Looks
 author = alexcloud445
-version = 0.2
+version = 0.3
 homepage = https://github.com/alexcloud445-blip/Terraria_Beatiful_Looks
 side = Both
 buildIgnore = *.md, tools/*, .git*, *.csproj, *.user, obj/*, bin/*, .vs/*
