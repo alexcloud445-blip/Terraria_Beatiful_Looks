@@ -19,7 +19,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 
 		private static Asset<Texture2D> _bloom, _orb, _flare, _streak, _line, _ringWave, _godRay,
 			_smoke, _runes, _haloRing, _groundRing, _thornHalo, _sigilRings,
-			_shapes, _shapesGlow, _feather, _featherGlow, _butterflyWing, _butterflyPattern, _butterflyGlow,
+			_shapes, _shapesGlow, _feather, _featherGlow, _covert, _covertGlow, _butterflyWing, _butterflyPattern, _butterflyGlow,
 			_batWing, _batBones, _flame, _blade, _glint;
 
 		/// <summary>Мягкое гауссово пятно 128x128.</summary>
@@ -45,6 +45,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Маховое перо 64x16, основание слева.</summary>
 		public static Texture2D Feather => _feather.Value;
 		public static Texture2D FeatherGlow => _featherGlow.Value;
+		/// <summary>Кроющее перо 32x16 (короткое, округлое), основание слева.</summary>
+		public static Texture2D Covert => _covert.Value;
+		public static Texture2D CovertGlow => _covertGlow.Value;
 		/// <summary>Крыло бабочки 64x64 (верхнее + нижнее), крепление в (4, 32).</summary>
 		public static Texture2D ButterflyWing => _butterflyWing.Value;
 		public static Texture2D ButterflyPattern => _butterflyPattern.Value;
@@ -157,6 +160,8 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			_shapesGlow = Request("ShapesGlow");
 			_feather = Request("Feather");
 			_featherGlow = Request("FeatherGlow");
+			_covert = Request("Covert");
+			_covertGlow = Request("CovertGlow");
 			_butterflyWing = Request("ButterflyWing");
 			_butterflyPattern = Request("ButterflyPattern");
 			_butterflyGlow = Request("ButterflyGlow");
@@ -178,7 +183,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			_prepared = false;
 			_bloom = _orb = _flare = _streak = _line = _ringWave = _godRay = null;
 			_smoke = _runes = _haloRing = _groundRing = _thornHalo = _sigilRings = null;
-			_shapes = _shapesGlow = _feather = _featherGlow = _butterflyWing = _butterflyPattern = _butterflyGlow = null;
+			_shapes = _shapesGlow = _feather = _featherGlow = _covert = _covertGlow = _butterflyWing = _butterflyPattern = _butterflyGlow = null;
 			_batWing = _batBones = _flame = _blade = _glint = null;
 		}
 

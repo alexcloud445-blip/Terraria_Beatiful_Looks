@@ -364,7 +364,9 @@ def shapes():
 
 # ======================= детали крыльев =======================
 def feather_tex():
-    """Feather 64x16: маховое перо, основание слева (x=2), кончик справа. FeatherGlow — свечение."""
+    """Feather 64x16: маховое перо — длинное, узкое, с острым кончиком; основание слева (x=2), кончик справа.
+    Светлеет к кончику, по краю тёмная кайма (чтобы соседние перья читались отдельно), стержень светлый.
+    FeatherGlow — свечение. Covert 32x16 — короткое округлое кроющее перо, CovertGlow — его свечение."""
     c = Canvas(64, 16)
 
     def fn(x, y):
@@ -372,22 +374,46 @@ def feather_tex():
         if t < 0 or t > 1:
             return 0.0
         side = y - 8
-        if abs(side) < 0.7 and t < 0.97:
-            return (1.0, 1.0)
-        if t < 0.08:
-            return 0.0
-        tt = (t - 0.08) / 0.92
-        w = 6.6 * math.sin(math.pi * min(1.0, tt * 1.02 + 0.02)) ** 0.55 * (0.72 if side < 0 else 1.0)
-        w *= 1.0 - 0.25 * tt ** 3
-        if abs(side) > w:
+        # профиль ширины: быстро расширяется, максимум на 35%, к кончику сходится в острие
+        rise = min(1.0, t / 0.35) ** 0.6
+        fall = 1.0 if t < 0.35 else ((1 - t) / 0.65) ** 0.85
+        w = 6.4 * rise * fall * (0.62 if side < 0 else 1.0)
+        if t < 0.05 or abs(side) > w + 0.01:
+            if abs(side) < 0.6 and t < 0.12:
+                return (1.0, 0.75)  # очин у основания
             return 0.0
         edge = abs(side) / max(w, 0.01)
-        barb = 0.82 + 0.18 * math.sin(t * 70 - abs(side) * 1.4)
-        return (1.0, barb * (1.0 - 0.3 * edge ** 2))
+        light = 0.62 + 0.38 * t ** 0.7          # светлее к кончику
+        light *= 1.0 - 0.18 * edge ** 3          # мягкая светотень к краю
+        if edge > 0.8:
+            light *= 0.68                        # тёмная кайма
+        if abs(side) < 0.55 and t < 0.9:
+            light = min(1.0, light + 0.25)       # стержень
+        return (1.0, light)
 
     c.paint(fn, ss=3)
     c.save("Feather")
     blur_alpha(c, 2, gain=1.5).save("FeatherGlow")
+
+    cv = Canvas(32, 16)
+
+    def fc(x, y):
+        t = (x - 1) / 30
+        if t < 0 or t > 1:
+            return 0.0
+        side = y - 8
+        w = 6.0 * math.sin(math.pi * min(1.0, 0.08 + t * 0.92)) ** 0.5
+        if abs(side) > w:
+            return 0.0
+        edge = abs(side) / max(w, 0.01)
+        light = (0.7 + 0.3 * t) * (1.0 - 0.2 * edge ** 2)
+        if edge > 0.82:
+            light *= 0.72
+        return (1.0, light)
+
+    cv.paint(fc, ss=3)
+    cv.save("Covert")
+    blur_alpha(cv, 2, gain=1.5).save("CovertGlow")
 
 
 def butterfly_wing():

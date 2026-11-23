@@ -30,10 +30,16 @@ namespace Terraria_Beatiful_Looks.Common.Players
 		public readonly Vector2[] History = new Vector2[HistoryLength];
 		public int HistoryCount;
 
-		/// <summary>Фаза и сила взмаха крыльев-эффектов.</summary>
+		/// <summary>Анимация крыльев-эффектов: фаза, скорость и сила взмаха, раскрытие, отклонение от бега.</summary>
 		public float WingPhase;
-		public float WingSpeed = 0.05f;
-		public float WingAmp = 0.25f;
+		public float WingSpeed = 0.04f;
+		public float WingAmp = 0.15f;
+		public float WingSpread = 0.2f;
+		public float WingLean;
+		/// <summary>Номер последнего цикла взмаха (для порыва частиц в начале удара вниз).</summary>
+		public int WingLastCycle;
+
+		public WingState WingState => new WingState { Phase = WingPhase, Amp = WingAmp, Spread = WingSpread, Lean = WingLean };
 
 		public override void Initialize()
 		{
@@ -187,15 +193,51 @@ namespace Terraria_Beatiful_Looks.Common.Players
 			WingEffects.Update(this);
 		}
 
-		/// <summary>Взмахи: в полёте вверх — быстро и широко, при падении — планирование, на земле — «дыхание».</summary>
+		/// <summary>
+		/// Поведение крыльев: на земле сложены и «дышат», при беге отведены назад, при взлёте и зависании машут
+		/// широко, при планировании раскрыты и почти неподвижны, при быстром падении прижаты.
+		/// </summary>
 		private void UpdateWingFlap()
 		{
 			bool air = Player.velocity.Y != 0f && !Player.mount.Active;
-			bool rising = Player.velocity.Y * Player.gravDir < 0f;
-			float targetSpeed = !air ? 0.045f : rising ? 0.3f : 0.14f;
-			float targetAmp = !air ? 0.22f : rising ? 1f : 0.5f;
-			WingSpeed = MathHelper.Lerp(WingSpeed, targetSpeed, 0.12f);
-			WingAmp = MathHelper.Lerp(WingAmp, targetAmp, 0.1f);
+			float vy = Player.velocity.Y * Player.gravDir;
+			float vx = Math.Abs(Player.velocity.X);
+			float speed, amp, spread;
+			if (!air)
+			{
+				speed = 0.035f + vx * 0.008f;
+				amp = 0.12f + Math.Min(0.15f, vx * 0.02f);
+				spread = 0.15f + Math.Min(0.2f, vx * 0.03f);
+			}
+			else if (vy < -0.5f)
+			{
+				speed = 0.28f;
+				amp = 1f;
+				spread = 1f;
+			}
+			else if (vy > 5f)
+			{
+				speed = 0.06f;
+				amp = 0.15f;
+				spread = 0.5f;
+			}
+			else if (vy > 0.5f)
+			{
+				speed = 0.1f;
+				amp = 0.3f;
+				spread = 1f;
+			}
+			else
+			{
+				speed = 0.22f;
+				amp = 0.7f;
+				spread = 1f;
+			}
+
+			WingSpeed = MathHelper.Lerp(WingSpeed, speed, 0.1f);
+			WingAmp = MathHelper.Lerp(WingAmp, amp, 0.08f);
+			WingSpread = MathHelper.Lerp(WingSpread, spread, 0.07f);
+			WingLean = MathHelper.Lerp(WingLean, MathHelper.Clamp(vx / 12f, 0f, 1f), 0.08f);
 			WingPhase = (WingPhase + WingSpeed) % (MathHelper.TwoPi * 4f);
 		}
 
