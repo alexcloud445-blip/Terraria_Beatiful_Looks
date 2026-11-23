@@ -25,6 +25,8 @@ namespace Terraria_Beatiful_Looks.Common.UI
 
 		private UIPanel _root;
 		private UIPanel _previewBox;
+		/// <summary>Копия персонажа для превью (не настоящий персонаж!).</summary>
+		private Player _previewPlayer;
 		private UIElement _content;
 		private UIElement[] _tabs;
 		private int _currentTab;
@@ -160,15 +162,51 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			_root.Append(reset);
 		}
 
-		/// <summary>Пересоздаёт превью персонажа (вызывается при открытии меню).</summary>
+		/// <summary>
+		/// Пересоздаёт превью персонажа (вызывается при открытии меню).
+		/// ВАЖНО: превью рисует КОПИЮ персонажа. UICharacter каждый кадр вызывает у своего игрока ResetEffects
+		/// и PlayerFrame и ставит ему кадры стойки — с настоящим персонажем это «замораживало» ноги при ходьбе
+		/// и сбрасывало действие аксессуаров, пока меню открыто.
+		/// </summary>
 		private void RefreshPreview()
 		{
 			_previewBox.RemoveAllChildren();
-			var character = new UICharacter(Main.LocalPlayer, false, false, 1.6f);
+			_previewPlayer = null;
+			try
+			{
+				_previewPlayer = Main.LocalPlayer.SerializedClone();
+				_previewPlayer.dead = false;
+				_previewPlayer.whoAmI = Main.myPlayer;
+				SyncPreview();
+			}
+			catch (Exception e)
+			{
+				ModContent.GetInstance<BeautifulLooksMod>().Logger.Warn("Beautiful Looks: preview clone failed: " + e.Message);
+				_previewPlayer = null;
+			}
+
+			if (_previewPlayer == null)
+				return;
+
+			var character = new UICharacter(_previewPlayer, false, false, 1.6f);
 			character.HAlign = 0.5f;
 			character.VAlign = 0.55f;
 			_previewBox.Append(character);
 			_previewBox.Recalculate();
+		}
+
+		/// <summary>Переносит в копию для превью текущий образ и взмах крыльев (чтобы превью было «живым»).</summary>
+		private void SyncPreview()
+		{
+			if (_previewPlayer == null)
+				return;
+			LooksPlayer real = Me;
+			LooksPlayer copy = _previewPlayer.GetModPlayer<LooksPlayer>();
+			copy.Look.CopyFrom(real.Look);
+			copy.WingPhase = real.WingPhase;
+			copy.WingAmp = real.WingAmp;
+			copy.WingSpread = real.WingSpread;
+			copy.WingLean = real.WingLean;
 		}
 
 		// ======================= вкладки =======================
@@ -545,6 +583,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 
 		public override void Update(GameTime gameTime)
 		{
+			SyncPreview();
 			base.Update(gameTime);
 
 			if (_dragging)

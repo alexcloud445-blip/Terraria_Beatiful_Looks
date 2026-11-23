@@ -84,6 +84,9 @@ tools/stubcheck/check.sh        # должно быть "0 Error(s)"
   а лучи — «досками» (так было в v0.3 и v0.4 до исправления). Подстраховка: `VfxAssets.Prepare()` при первой
   отрисовке проверяет все текстуры эффектов и при необходимости домножает их в памяти; в client.log строка
   `Beautiful Looks: VFX textures are premultiplied, OK` или `fixed N non-premultiplied VFX textures`.
+- **UICharacter нельзя давать настоящего персонажа**: каждый кадр он вызывает у «своего» игрока ResetEffects и
+  PlayerFrame и ставит кадры стойки → при открытом меню «замерзала» ходьба и сбрасывались аксессуары. Превью рисует
+  копию (`Player.SerializedClone()`), а LooksPanel.SyncPreview каждый кадр переносит в неё образ и взмах крыльев.
 - **Нельзя трогать `Main.LocalPlayer` / `GetModPlayer` в конструкторах UI**: при загрузке мода ModPlayer ещё не зарегистрированы (IndexOutOfRangeException). Меню создаётся при первом открытии, тексты кнопок берутся в Update.
 - Шрифт Terraria не поддерживает символы ✦ ✔ ★: использовать ASCII.
 - `[AutoloadEquip]` ставить на **каждый конкретный** класс, а не на абстрактный базовый.

@@ -58,6 +58,7 @@ namespace Terraria
 		public bool ShouldNotDraw => false;
 		public T GetModPlayer<T>() where T : ModPlayer => throw null;
 		public bool TryGetModPlayer<T>(out T result) where T : ModPlayer => throw null;
+		public Player SerializedClone() => null;
 	}
 
 	public class Mount
