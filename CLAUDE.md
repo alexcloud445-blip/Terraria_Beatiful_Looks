@@ -76,6 +76,10 @@ tools/stubcheck/check.sh        # должно быть "0 Error(s)"
 - Все ошибки отрисовки ловятся и пишутся в client.log один раз: строка `Beautiful Looks VFX error (...)`.
 
 ## Грабли, на которые уже наступили
+- **tModLoader НЕ предумножает прозрачность PNG** (ImageIO.ToRaw только обнуляет пиксели с alpha = 0), а SpriteBatch
+  смешивает как premultiplied. Поэтому PNG эффектов надо сохранять уже premultiplied (RGB = цвет * alpha) —
+  это делает `Canvas.save` в tools/make_vfx.py. Иначе мягкое свечение рисуется ровным кругом с резким краем,
+  а лучи — «досками» (так было в v0.3 и v0.4 до исправления).
 - **Нельзя трогать `Main.LocalPlayer` / `GetModPlayer` в конструкторах UI**: при загрузке мода ModPlayer ещё не зарегистрированы (IndexOutOfRangeException). Меню создаётся при первом открытии, тексты кнопок берутся в Update.
 - Шрифт Terraria не поддерживает символы ✦ ✔ ★: использовать ASCII.
 - `[AutoloadEquip]` ставить на **каждый конкретный** класс, а не на абстрактный базовый.

@@ -21,7 +21,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Случайное блуждание (светлячки).</summary>
 		public float Wander;
 		/// <summary>Сила ореола (0..1).</summary>
-		public float Halo = 0.32f;
+		public float Halo = 0.42f;
 		private readonly float _phase = Main.rand.NextFloat(MathHelper.TwoPi);
 
 		public GlowParticle(Vector2 position, Vector2 velocity, Ramp ramp, float scale = 1f, int lifetime = 40)
@@ -602,7 +602,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			float s = Scale * depth;
 			Vector2 pos = Screen(Position);
 			Texture2D bloom = VfxAssets.Bloom;
-			sb.Draw(bloom, pos, null, VfxMath.Additive(Color2, 0.4f * alpha), 0f, bloom.Size() / 2f, s * 0.45f, SpriteEffects.None, 0f);
+			sb.Draw(bloom, pos, null, VfxMath.Additive(Color2, 0.5f * alpha), 0f, bloom.Size() / 2f, s * 0.45f, SpriteEffects.None, 0f);
 
 			if (RuneHead >= 0)
 			{

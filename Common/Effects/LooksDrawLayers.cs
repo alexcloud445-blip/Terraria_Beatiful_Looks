@@ -85,9 +85,9 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				Texture2D bloom = VfxAssets.Bloom;
 				float pulse = LayerUtils.Pulse();
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.3f * pulse), 0f,
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.45f * pulse), 0f,
 					bloom.Size() / 2f, new Vector2(0.7f, 0.85f) * pulse);
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.32f), 0f,
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.45f), 0f,
 					bloom.Size() / 2f, new Vector2(0.38f, 0.5f));
 			}
 
@@ -136,7 +136,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				float length = (52f + 34f * (float)Math.Sin(time * 0.9f + i * 1.7f) * (float)Math.Sin(i * 0.9f)) * (0.85f + 0.15f * flicker);
 				float width = i % 3 == 0 ? 0.55f : 0.32f;
 				Color c = i % 3 == 0 ? hi : look.EffectColor.Mix(look.EffectColor2, (i % 5) / 4f);
-				LayerUtils.Add(ref info, shader, ray, center, null, VfxMath.Additive(c, (i % 3 == 0 ? 0.3f : 0.4f) * flicker), angle + MathHelper.PiOver2, origin,
+				LayerUtils.Add(ref info, shader, ray, center, null, VfxMath.Additive(c, (i % 3 == 0 ? 0.45f : 0.55f) * flicker), angle + MathHelper.PiOver2, origin,
 					new Vector2(width, length / ray.Height));
 			}
 		}
@@ -150,7 +150,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Color c2 = look.AuraColor2.Get();
 
 			// мягкое свечение вокруг тела
-			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c2, 0.13f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
+			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c2, 0.22f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
 				bloom.Size() / 2f, new Vector2(0.6f, 0.75f) * s);
 
 			switch (look.Aura)

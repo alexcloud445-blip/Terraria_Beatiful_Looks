@@ -2,8 +2,9 @@
 
 Запуск:  python3 tools/make_vfx.py
 Все текстуры белые: цвет задаётся при отрисовке. Свечение рисуется аддитивно
-(в коде у цвета ставится A = 0), поэтому у «светящихся» текстур важна только
-прозрачность. Результат кладётся в Assets/VFX/.
+(в коде у цвета ставится A = 0). Цвет в PNG сохраняется уже умноженным на
+прозрачность (premultiplied alpha) — tModLoader сам этого не делает.
+Результат кладётся в Assets/VFX/.
 """
 import math
 import os
@@ -67,7 +68,10 @@ class Canvas:
             for x in range(self.w):
                 i = y * self.w + x
                 a = max(0.0, min(1.0, self.a[i]))
-                v = int(255 * max(0.0, min(1.0, self.l[i])))
+                # Цвет заранее умножен на прозрачность (premultiplied alpha): tModLoader грузит PNG
+                # как есть, а SpriteBatch смешивает цвета как premultiplied. Без этого мягкое
+                # свечение превращается в ровный круг с резким краем.
+                v = int(round(255 * max(0.0, min(1.0, self.l[i])) * a))
                 img.px[y][x] = (v, v, v, int(round(255 * a)))
         path = os.path.join(ROOT, OUT + name + ".png")
         img.save(path)
