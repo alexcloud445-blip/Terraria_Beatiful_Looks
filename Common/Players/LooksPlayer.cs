@@ -39,6 +39,15 @@ namespace Terraria_Beatiful_Looks.Common.Players
 		/// <summary>Номер последнего цикла взмаха (для порыва частиц в начале удара вниз).</summary>
 		public int WingLastCycle;
 
+		/// <summary>Состояние рывка (определяется в DashEffects.Update).</summary>
+		public bool DashActive;
+		public int DashTimer;
+		public int DashCooldown;
+		public float DashFade;
+		public float DashSpeed;
+		public Vector2 DashDir = Vector2.UnitX;
+		public float PrevVelocityX;
+
 		public WingState WingState => new WingState { Phase = WingPhase, Amp = WingAmp, Spread = WingSpread, Lean = WingLean };
 
 		public override void Initialize()
@@ -184,6 +193,7 @@ namespace Terraria_Beatiful_Looks.Common.Players
 
 			RecordHistory();
 			UpdateWingFlap();
+			DashEffects.Update(this);
 
 			if (!EffectsVisible)
 				return;
@@ -266,6 +276,7 @@ namespace Terraria_Beatiful_Looks.Common.Players
 		{
 			if (TrailEffects.DrawingEcho || !EffectsVisible)
 				return;
+			DashEffects.DrawAfterimages(this, camera);
 			TrailEffects.DrawEchoes(this, camera);
 			OutlineEffect.Draw(this, camera);
 		}
@@ -280,7 +291,13 @@ namespace Terraria_Beatiful_Looks.Common.Players
 			for (int i = 0; i < cache.Count; i++)
 			{
 				DrawData data = cache[i];
-				if (TrailEffects.EchoTint)
+				if (TrailEffects.EchoDark)
+				{
+					// тёмная тень: обычное смешивание, цвет уже умножен на прозрачность
+					data.color = TrailEffects.EchoColor * TrailEffects.EchoOpacity;
+					data.shader = 0;
+				}
+				else if (TrailEffects.EchoTint)
 				{
 					data.color = VfxMath.Additive(TrailEffects.EchoColor, TrailEffects.EchoOpacity);
 					data.shader = 0;

@@ -50,6 +50,11 @@ namespace Terraria
 		public bool mouseInterface;
 		public int wings;
 		public Mount mount;
+		public int grapCount;
+		public int dashDelay;
+		public int dashType;
+		public float maxRunSpeed = 3f;
+		public float accRunSpeed;
 		public bool ShouldNotDraw => false;
 		public T GetModPlayer<T>() where T : ModPlayer => throw null;
 		public bool TryGetModPlayer<T>(out T result) where T : ModPlayer => throw null;

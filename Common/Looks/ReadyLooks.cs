@@ -48,6 +48,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Seraph;
 				l.Ribbon = RibbonStyle.Soft;
 				l.RibbonWidth = 0.8f;
+				l.Dash = DashStyle.Flash;
 			}),
 			new Entry("Inferno", new Color(255, 160, 40), l =>
 			{
@@ -56,6 +57,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Thorns;
 				l.Wings = WingStyle.Flame;
 				l.Ribbon = RibbonStyle.Flame;
+				l.Dash = DashStyle.Flame;
 			}),
 			new Entry("Frost", new Color(120, 210, 255), l =>
 			{
@@ -65,6 +67,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Starry;
 				l.Wings = WingStyle.Crystal;
 				l.Echo = EchoStyle.Ghost;
+				l.Dash = DashStyle.Flash;
 			}),
 			new Entry("Sakura", new Color(255, 140, 200), l =>
 			{
@@ -73,6 +76,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Butterfly;
 				l.Ribbon = RibbonStyle.Twin;
 				l.RibbonWidth = 0.8f;
+				l.Dash = DashStyle.Sakura;
 			}),
 			new Entry("Void", new Color(150, 70, 255), l =>
 			{
@@ -83,6 +87,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Sigil = true;
 				l.Echo = EchoStyle.Phantom;
 				l.Outline = true;
+				l.Dash = DashStyle.Void;
 			}),
 			new Entry("Empress", new Color(255, 120, 220), l =>
 			{
@@ -93,6 +98,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Radiant;
 				l.Ribbon = RibbonStyle.Empress;
 				l.RibbonWidth = 0.8f;
+				l.Dash = DashStyle.Prism;
 			}),
 			new Entry("Storm", new Color(130, 170, 255), l =>
 			{
@@ -101,6 +107,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Spirit;
 				l.Echo = EchoStyle.Afterimage;
 				l.Outline = true;
+				l.Dash = DashStyle.Thunder;
 			}),
 			new Entry("Celestial", new Color(120, 150, 255), l =>
 			{
@@ -109,6 +116,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Constellation;
 				l.Halo = HaloStyle.Ring;
 				l.Sigil = true;
+				l.Dash = DashStyle.Prism;
 			}),
 			new Entry("Fairy", new Color(120, 255, 180), l =>
 			{
@@ -117,6 +125,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Wings = WingStyle.Spirit;
 				l.Halo = HaloStyle.Starry;
 				l.Trail = TrailStyle.Sparkles;
+				l.Dash = DashStyle.Sakura;
 			}),
 			new Entry("Comet", new Color(80, 230, 255), l =>
 			{
@@ -125,6 +134,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Ribbon = RibbonStyle.Rainbow;
 				l.RibbonWidth = 0.8f;
 				l.Echo = EchoStyle.Ghost;
+				l.Dash = DashStyle.Flash;
 			})
 		};
 	}

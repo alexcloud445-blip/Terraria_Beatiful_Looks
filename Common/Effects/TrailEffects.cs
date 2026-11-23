@@ -165,6 +165,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					continue;
 				if (mp.Look.Ribbon != RibbonStyle.None)
 					DrawRibbon(mp);
+				DashEffects.DrawRibbon(mp);
 			}
 		}
 
@@ -275,6 +276,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		public static Color EchoColor;
 		public static float EchoOpacity;
 		public static bool EchoTint;
+		/// <summary>Копия рисуется тёмной полупрозрачной тенью (обычное смешивание), а не светом.</summary>
+		public static bool EchoDark;
 
 		/// <summary>Рисует копии персонажа по прошлым позициям (вызывается из ModPlayer.DrawPlayer, до самого игрока).</summary>
 		public static void DrawEchoes(LooksPlayer mp, Camera camera)

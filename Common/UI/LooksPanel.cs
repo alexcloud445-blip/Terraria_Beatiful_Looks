@@ -352,9 +352,15 @@ namespace Terraria_Beatiful_Looks.Common.UI
 				() => EffectDyes.Name(Look.EffectDye) ?? Theme.T("NoDye"),
 				dir => Look.EffectDye = LookSettings.Wrap(Look.EffectDye + dir, EffectDyes.Count)), 124f);
 
-			Place(page, ColorChips(2, () => Look.EffectColor, () => Look.EffectColor2), 166f);
-			Place(page, Hint("EffectsHint"), 198f);
-			Place(page, Hint("DyeHint"), 222f);
+			Place(page, Header("Dash"), 162f);
+			Place(page, new OptionGrid(LookSettings.DashStyleCount, 4,
+				i => Theme.T("DashStyle." + (DashStyle)i),
+				i => (int)Look.Dash == i,
+				i => Look.Dash = (DashStyle)i), 186f);
+
+			Place(page, ColorChips(2, () => Look.EffectColor, () => Look.EffectColor2), 252f);
+			Place(page, Hint("EffectsHint"), 284f);
+			Place(page, Hint("DashHint"), 306f);
 			return page;
 		}
 

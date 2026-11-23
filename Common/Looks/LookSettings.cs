@@ -93,6 +93,19 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Spirit
 	}
 
+	/// <summary>Эффект рывка (щит Ктулху, таби, рывки Calamity и т. п.).</summary>
+	public enum DashStyle
+	{
+		None,
+		Flash,
+		Shadow,
+		Flame,
+		Thunder,
+		Prism,
+		Sakura,
+		Void
+	}
+
 	/// <summary>Весь «образ» персонажа: то, что сохраняется, синхронизируется и кладётся в пресеты.</summary>
 	public class LookSettings
 	{
@@ -102,6 +115,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public static readonly int EchoStyleCount = Enum.GetValues(typeof(EchoStyle)).Length;
 		public static readonly int HaloStyleCount = Enum.GetValues(typeof(HaloStyle)).Length;
 		public static readonly int WingStyleCount = Enum.GetValues(typeof(WingStyle)).Length;
+		public static readonly int DashStyleCount = Enum.GetValues(typeof(DashStyle)).Length;
 
 		/// <summary>Общий выключатель всех эффектов образа.</summary>
 		public bool Enabled = true;
@@ -132,6 +146,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public bool PulseRing;
 		/// <summary>Светящийся контур вокруг персонажа.</summary>
 		public bool Outline;
+		/// <summary>Эффект рывка (цвета — как у эффектов).</summary>
+		public DashStyle Dash = DashStyle.None;
 		/// <summary>Номер краски из EffectDyes.Items (0 — без краски).</summary>
 		public int EffectDye;
 		public ColorSetting EffectColor = new ColorSetting(0.14f, 1f, 0.7f);
@@ -177,6 +193,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			Sigil = o.Sigil;
 			PulseRing = o.PulseRing;
 			Outline = o.Outline;
+			Dash = o.Dash;
 			EffectDye = o.EffectDye;
 			EffectColor.CopyFrom(o.EffectColor);
 			EffectColor2.CopyFrom(o.EffectColor2);
@@ -194,7 +211,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				&& Trail == o.Trail && Ribbon == o.Ribbon && RibbonWidth == o.RibbonWidth && RibbonLength == o.RibbonLength
 				&& Echo == o.Echo && TrailColor.SameAs(o.TrailColor) && TrailColor2.SameAs(o.TrailColor2)
 				&& Halo == o.Halo && BackGlow == o.BackGlow && GodRays == o.GodRays && GroundRing == o.GroundRing
-				&& Sigil == o.Sigil && PulseRing == o.PulseRing && Outline == o.Outline && EffectDye == o.EffectDye
+				&& Sigil == o.Sigil && PulseRing == o.PulseRing && Outline == o.Outline && Dash == o.Dash && EffectDye == o.EffectDye
 				&& EffectColor.SameAs(o.EffectColor) && EffectColor2.SameAs(o.EffectColor2)
 				&& Wings == o.Wings && WingSize == o.WingSize && WingColor.SameAs(o.WingColor) && WingColor2.SameAs(o.WingColor2);
 		}
@@ -220,6 +237,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			Sigil = Main.rand.NextBool(4);
 			PulseRing = Main.rand.NextBool(5);
 			Outline = Main.rand.NextBool(4);
+			Dash = Main.rand.NextBool(3) ? DashStyle.None : (DashStyle)Main.rand.Next(1, DashStyleCount);
 			EffectDye = 0;
 			Wings = Main.rand.NextBool(3) ? WingStyle.None : (WingStyle)Main.rand.Next(1, WingStyleCount);
 			WingSize = Main.rand.NextFloat(0.85f, 1.2f);
@@ -259,6 +277,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				["effectColor"] = EffectColor.Save(),
 				["effectColor2"] = EffectColor2.Save(),
 				["outline"] = Outline,
+				["dash"] = (int)Dash,
 				["wings"] = (int)Wings,
 				["wingSize"] = WingSize,
 				["wingColor"] = WingColor.Save(),
@@ -299,6 +318,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			if (tag.TryGet("effectColor", out TagCompound ec)) s.EffectColor.Load(ec);
 			if (tag.TryGet("effectColor2", out TagCompound ec2)) s.EffectColor2.Load(ec2);
 			if (tag.TryGet("outline", out bool outline)) s.Outline = outline;
+			if (tag.TryGet("dash", out int dash)) s.Dash = (DashStyle)Wrap(dash, DashStyleCount);
 			if (tag.TryGet("wings", out int wings)) s.Wings = (WingStyle)Wrap(wings, WingStyleCount);
 			if (tag.TryGet("wingSize", out float wingSize)) s.WingSize = ClampMul(wingSize);
 			if (tag.TryGet("wingColor", out TagCompound wc)) s.WingColor.Load(wc);
@@ -333,6 +353,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			EffectColor.Write(w);
 			EffectColor2.Write(w);
 			w.Write(Outline);
+			w.Write((byte)Dash);
 			w.Write((byte)Wings);
 			w.Write(WingSize);
 			WingColor.Write(w);
@@ -365,6 +386,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			EffectColor.Read(r);
 			EffectColor2.Read(r);
 			Outline = r.ReadBoolean();
+			Dash = (DashStyle)Wrap(r.ReadByte(), DashStyleCount);
 			Wings = (WingStyle)Wrap(r.ReadByte(), WingStyleCount);
 			WingSize = ClampMul(r.ReadSingle());
 			WingColor.Read(r);

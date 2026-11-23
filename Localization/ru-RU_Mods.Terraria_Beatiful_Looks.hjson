@@ -143,6 +143,8 @@ UI: {
 	TabAura: Аура
 	TabTrail: След
 	TabEffects: Эффекты
+	Dash: Рывок
+	DashHint: Работает с любым рывком: щит Ктулху, таби, рывки Calamity и другие
 	TabWings: Крылья
 	WingStyle: Стиль крыльев
 	Outline: Контур
@@ -262,6 +264,17 @@ UI: {
 		Crystal: Кристалл
 		Constellation: Созвездие
 		Spirit: Дух
+	}
+
+	DashStyle: {
+		None: Выкл
+		Flash: Вспышка
+		Shadow: Тень
+		Flame: Пламя
+		Thunder: Гроза
+		Prism: Призма
+		Sakura: Сакура
+		Void: Пустота
 	}
 
 	Theme: {

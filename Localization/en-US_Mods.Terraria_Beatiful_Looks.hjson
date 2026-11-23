@@ -143,6 +143,8 @@ UI: {
 	TabAura: Aura
 	TabTrail: Trail
 	TabEffects: Effects
+	Dash: Dash
+	DashHint: Works with any dash: Shield of Cthulhu, Tabi, Calamity dashes and more
 	TabWings: Wings
 	WingStyle: Wing style
 	Outline: Outline
@@ -262,6 +264,17 @@ UI: {
 		Crystal: Crystal
 		Constellation: Constellation
 		Spirit: Spirit
+	}
+
+	DashStyle: {
+		None: Off
+		Flash: Flash
+		Shadow: Shadow
+		Flame: Flame
+		Thunder: Thunder
+		Prism: Prism
+		Sakura: Sakura
+		Void: Void
 	}
 
 	Theme: {
