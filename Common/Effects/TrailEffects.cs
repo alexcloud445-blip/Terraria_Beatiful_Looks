@@ -27,34 +27,35 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 
 			// Чем быстрее движемся — тем гуще след
 			float chance = MathHelper.Clamp(speed / 6f, 0.25f, 1.5f) * Fx.GlobalIntensity;
-			ColorSetting c1 = look.TrailColor, c2 = look.TrailColor2;
 
 			for (int i = Fx.Rolls(chance); i > 0; i--)
 			{
 				Vector2 pos = player.Center + new Vector2(Main.rand.NextFloat(-6f, 6f), Main.rand.NextFloat(-14f, 18f))
 					- player.velocity * Main.rand.NextFloat(0.5f, 1.5f);
 				Vector2 vel = -player.velocity * 0.08f;
-				Color c = c1.Mix(c2, Main.rand.NextFloat(), Main.rand.NextFloat());
+				Palette pal = Palette.Of(look.TrailColor, look.TrailColor2, Main.rand.NextFloat());
 				bool front = Main.rand.NextBool();
+				float g = player.gravDir;
 
 				switch (look.Trail)
 				{
 					case TrailStyle.Sparkles:
 						if (Main.rand.NextBool(3))
-							ParticleSystem.Spawn(new FlareParticle(pos, vel, c, Main.rand.NextFloat(0.35f, 0.6f), 26) { Front = front });
+							ParticleSystem.Spawn(new FlareParticle(pos, vel, new Ramp(Color.White, pal.A, pal.B), Main.rand.NextFloat(0.35f, 0.6f), 26) { Front = front });
 						else
-							ParticleSystem.Spawn(new GlowParticle(pos, vel, c, Main.rand.NextFloat(0.3f, 0.5f), 30) { Front = front });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel, pal.Glow, Main.rand.NextFloat(0.25f, 0.45f), 30) { Front = front });
 						break;
 					case TrailStyle.Stars:
-						ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Star, SpriteMotion.Spin, pos, vel, c, Main.rand.NextFloat(0.6f, 0.9f), 40)
+						ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool(3) ? Shape.Star4 : Shape.Star5, SpriteMotion.Spin, pos, vel, new Ramp(pal.Hi, pal.A, pal.B), Main.rand.NextFloat(0.5f, 0.8f), 40)
 						{
 							Glowing = true,
+							GlowRamp = pal.B,
 							Spin = Main.rand.NextFloat(-0.1f, 0.1f),
 							Front = front
 						});
 						break;
 					case TrailStyle.Flames:
-						ParticleSystem.Spawn(new SmokeParticle(pos, vel + new Vector2(0f, -1.2f * player.gravDir), c1.Get(Main.rand.NextFloat()), Main.rand.NextFloat(0.4f, 0.6f), 26)
+						ParticleSystem.Spawn(new SmokeParticle(pos, vel + new Vector2(0f, -1.2f * g), pal.Hot, Main.rand.NextFloat(0.4f, 0.6f), 28)
 						{
 							Glowing = true,
 							Grow = 0.3f,
@@ -62,76 +63,84 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 							Front = front
 						});
 						if (Main.rand.NextBool(2))
-							ParticleSystem.Spawn(new GlowParticle(pos, vel + new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), -1.8f * player.gravDir),
-								Color.Lerp(Color.White, c2.Get(), 0.6f), 0.35f, 40) { EndColor = c1.Get(), Front = front });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel + new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), -1.8f * g), pal.Hot, 0.32f, 40) { Wander = 0.06f, Front = front });
 						break;
 					case TrailStyle.Hearts:
-						ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Heart, SpriteMotion.Float, pos, vel + new Vector2(0f, -0.5f * player.gravDir), c, 0.8f, 60)
+						ParticleSystem.Spawn(new ShapeParticle(Shape.Heart, SpriteMotion.Float, pos, vel + new Vector2(0f, -0.5f * g), new Ramp(pal.A, pal.B), 0.8f, 60)
 						{
-							GlowStrength = 0.4f,
+							GlowStrength = 0.55f,
+							GlowRamp = new Ramp(pal.Hi, pal.B),
 							Front = front
 						});
 						break;
 					case TrailStyle.Petals:
-						ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Petal, SpriteMotion.Fall, pos, vel, c, Main.rand.NextFloat(0.7f, 0.95f), 90)
+						ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool(3) ? Shape.PetalRound : Shape.Petal, SpriteMotion.Fall, pos, vel, new Ramp(pal.Hi, pal.A, pal.B), Main.rand.NextFloat(0.7f, 0.95f), 90)
 						{
-							GlowStrength = 0.2f,
+							GlowStrength = 0.3f,
+							GlowRamp = pal.B,
 							Front = front
 						});
 						break;
 					case TrailStyle.Snow:
-						ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Snowflake, SpriteMotion.Drift, pos, vel, c, Main.rand.NextFloat(0.6f, 0.9f), 80)
+						ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool(3) ? Shape.SnowCrystal : Shape.Snowflake, SpriteMotion.Drift, pos, vel, new Ramp(Color.White, pal.A, pal.B), Main.rand.NextFloat(0.55f, 0.85f), 80)
 						{
 							Glowing = true,
+							GlowRamp = pal.B,
 							Front = front
 						});
 						break;
 					case TrailStyle.Feathers:
 						if (Main.rand.NextBool(3))
-							ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Feather, SpriteMotion.Sway, pos, vel * 0.5f, Color.Lerp(c, Color.White, 0.4f), Main.rand.NextFloat(0.8f, 1f), 110)
+							ParticleSystem.Spawn(new ShapeParticle(Shape.Feather, SpriteMotion.Sway, pos, vel * 0.5f, new Ramp(Color.White, pal.Hi, pal.A), Main.rand.NextFloat(0.8f, 1f), 110)
 							{
-								GlowStrength = 0.25f,
+								GlowStrength = 0.4f,
+								GlowRamp = pal.B,
 								Front = front
 							});
 						else
-							ParticleSystem.Spawn(new GlowParticle(pos, vel, c, 0.3f, 30) { Front = front });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel, pal.Glow, 0.28f, 30) { Front = front });
 						break;
 					case TrailStyle.Smoke:
-						ParticleSystem.Spawn(new SmokeParticle(pos, vel * 0.5f, Color.Lerp(Color.Black, c1.Get(), 0.25f), Main.rand.NextFloat(0.6f, 0.9f), 50)
+						ParticleSystem.Spawn(new SmokeParticle(pos, vel * 0.5f, new Ramp(VfxMath.Shade(pal.A, 0.3f), new Color(8, 6, 12)), Main.rand.NextFloat(0.6f, 0.9f), 50)
 						{
 							MaxOpacity = 0.5f,
 							Front = front
 						});
 						if (Main.rand.NextBool(3))
-							ParticleSystem.Spawn(new GlowParticle(pos, vel, c2.Get(), 0.3f, 35) { Front = front });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel, new Ramp(pal.B, pal.A), 0.28f, 35) { Front = front });
 						break;
 					case TrailStyle.Runes:
 						if (Main.rand.NextBool(3))
-							ParticleSystem.Spawn(new RuneParticle(pos, new Vector2(0f, -0.4f * player.gravDir), c, 0.8f, 50) { Front = front });
+							ParticleSystem.Spawn(new RuneParticle(pos, new Vector2(0f, -0.4f * g), pal.Glow, 0.8f, 50) { Front = front });
 						else
-							ParticleSystem.Spawn(new GlowParticle(pos, vel, c, 0.3f, 30) { Front = front });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel, pal.Glow, 0.28f, 30) { Front = front });
 						break;
 					case TrailStyle.Prism:
-						Color rainbow = Main.hslToRgb(VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.5f + Main.rand.NextFloat(0.3f)), 1f, 0.72f);
+						float hue = VfxMath.Frac(Main.GlobalTimeWrappedHourly * 0.5f + Main.rand.NextFloat(0.3f));
+						Color a = Main.hslToRgb(hue, 1f, 0.75f);
+						Color b = Main.hslToRgb(VfxMath.Frac(hue + 0.3f), 1f, 0.6f);
 						if (Main.rand.NextBool(2))
-							ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Shard, SpriteMotion.Spin, pos, vel + Main.rand.NextVector2Circular(0.8f, 0.8f), rainbow, Main.rand.NextFloat(0.6f, 0.9f), 40)
+							ParticleSystem.Spawn(new ShapeParticle(Main.rand.NextBool() ? Shape.ShardA : Shape.Diamond, SpriteMotion.Spin, pos, vel + Main.rand.NextVector2Circular(0.8f, 0.8f),
+								new Ramp(Color.White, a, b), Main.rand.NextFloat(0.5f, 0.8f), 40)
 							{
 								Glowing = true,
+								GlowRamp = b,
 								Spin = Main.rand.NextFloat(-0.15f, 0.15f),
 								Front = front
 							});
 						else
-							ParticleSystem.Spawn(new FlareParticle(pos, vel, rainbow, 0.45f, 26) { Front = front });
+							ParticleSystem.Spawn(new FlareParticle(pos, vel, new Ramp(Color.White, a, b), 0.45f, 26) { Front = front });
 						break;
 					case TrailStyle.Butterflies:
 						if (Main.rand.NextBool(4))
-							ParticleSystem.Spawn(new SpriteParticle(SpriteKind.Butterfly, SpriteMotion.Flutter, pos, Main.rand.NextVector2Circular(1f, 1f), c, 0.8f, 120)
+							ParticleSystem.Spawn(new ShapeParticle(Shape.Butterfly0, SpriteMotion.Flutter, pos, Main.rand.NextVector2Circular(1f, 1f), new Ramp(pal.A, pal.B), 0.8f, 120)
 							{
-								GlowStrength = 0.3f,
+								GlowStrength = 0.45f,
+								GlowRamp = pal.B,
 								Front = front
 							});
 						else
-							ParticleSystem.Spawn(new GlowParticle(pos, vel, c2.Get(), 0.25f, 30) { Front = front, Blink = 0.25f });
+							ParticleSystem.Spawn(new GlowParticle(pos, vel, pal.Soft, 0.22f, 30) { Front = front, Blink = 0.25f });
 						break;
 				}
 			}
@@ -217,11 +226,14 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					DrawTwin(positions, rotations, count, look, opacity, width);
 					break;
 
-				default: // Soft и Flame
+				default: // Soft и Flame: от светлой головы к основному и второму цвету
+				{
+					Ramp ramp = Palette.Of(c1, c2).Glow;
 					Ribbons.Draw(positions, rotations,
-						p => VfxMath.Additive(Color.Lerp(c1.Get(p * 0.5f), c2.Get(p * 0.5f), p), opacity * (1f - p)),
+						p => VfxMath.Additive(ramp.At(p), opacity * (1f - p)),
 						widthFn, look.Ribbon);
 					break;
+				}
 			}
 		}
 
@@ -240,9 +252,10 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 					TwinPos[i] = positions[i] + normal * (float)Math.Sin(i * 0.45f - time + phase) * amp * envelope;
 				}
 
-				ColorSetting col = strand == 0 ? look.TrailColor : look.TrailColor2;
+				Palette pal = Palette.Of(look.TrailColor, look.TrailColor2);
+				Ramp ramp = strand == 0 ? new Ramp(pal.Hi, pal.A, pal.B) : new Ramp(pal.Hi, pal.B, pal.A);
 				Ribbons.Draw(Slice(TwinPos, count), rotations,
-					p => VfxMath.Additive(col.Get(p * 0.5f), opacity * (1f - p)),
+					p => VfxMath.Additive(ramp.At(p), opacity * (1f - p)),
 					p => width * 0.45f * VfxMath.Ease(p * 5f) * (1f - p * 0.5f), RibbonStyle.Soft);
 			}
 		}

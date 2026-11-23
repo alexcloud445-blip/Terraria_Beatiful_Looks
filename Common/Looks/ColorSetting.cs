@@ -31,7 +31,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		}
 
 		/// <summary>Смесь двух цветов палитры: t = 0 — этот, t = 1 — второй.</summary>
-		public Color Mix(ColorSetting second, float t, float offset = 0f) => Color.Lerp(Get(offset), second.Get(offset + 0.15f), t);
+		public Color Mix(ColorSetting second, float t, float offset = 0f) =>
+			Terraria_Beatiful_Looks.Common.VFX.VfxMath.LerpVivid(Get(offset), second.Get(offset + 0.15f), t);
 
 		public void Set(Color color, bool rainbow = false)
 		{

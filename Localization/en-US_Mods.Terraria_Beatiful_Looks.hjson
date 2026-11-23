@@ -138,6 +138,12 @@ UI: {
 	TabAura: Aura
 	TabTrail: Trail
 	TabEffects: Effects
+	TabWings: Wings
+	WingStyle: Wing style
+	Outline: Outline
+	WingsHint: Effect wings are drawn over any equipped wings, or even with no wings at all
+	WingsHint2: Wings from this mod use these effects on their own, with their own colors
+	WingsHint3: A dye in the wings dye slot recolors them too
 	TabColors: Colors
 	TabLooks: Looks
 	TabWardrobe: Wardrobe
@@ -241,6 +247,18 @@ UI: {
 		Starry: Starry
 	}
 
+	WingStyle: {
+		None: Off
+		Seraph: Seraph
+		Light: Light
+		Butterfly: Butterfly
+		Demon: Demon
+		Flame: Flame
+		Crystal: Crystal
+		Constellation: Constellation
+		Spirit: Spirit
+	}
+
 	Theme: {
 		Seraph: Seraph
 		Inferno: Inferno
@@ -258,24 +276,24 @@ UI: {
 
 	Look: {
 		Seraph: Seraph
-		SeraphDesc: Divine light, radiant halo, rays and falling feathers
+		SeraphDesc: Divine light, radiant halo, rays and feathered seraph wings
 		Inferno: Inferno
-		InfernoDesc: Living fire, thorn halo and a ribbon of flame
+		InfernoDesc: Living fire, flame wings, thorn halo and a glowing outline
 		Frost: Frost
-		FrostDesc: Snowfall, icy mist and a ghostly echo
+		FrostDesc: Snowfall, icy mist, crystal wings and a ghostly echo
 		Sakura: Sakura
-		SakuraDesc: Cherry petals and a twin spiral ribbon
+		SakuraDesc: Cherry petals, butterfly wings and a twin spiral ribbon
 		Void: Void
-		VoidDesc: Dark smoke, a magic sigil and phantom copies
+		VoidDesc: Dark smoke, demon wings, a magic sigil and phantom copies
 		Empress: Empress
-		EmpressDesc: Prism shards with rainbow tails, like the Empress of Light
+		EmpressDesc: Prism shards with rainbow tails and wings of light
 		Storm: Storm
-		StormDesc: Lightning arcs, afterimages and thunder strikes
+		StormDesc: Lightning arcs, spirit wings, afterimages and thunder strikes
 		Celestial: Celestial
-		CelestialDesc: A ring of runes, starry trail and a magic circle
+		CelestialDesc: A ring of runes, constellation wings and a magic circle
 		Fairy: Fairy
-		FairyDesc: Butterflies, sparkles and a starry halo
+		FairyDesc: Butterflies, butterfly wings, sparkles and a starry halo
 		Comet: Comet
-		CometDesc: Comets with glowing tails and a rainbow ribbon
+		CometDesc: Comets with glowing tails, spirit wings and a rainbow ribbon
 	}
 }

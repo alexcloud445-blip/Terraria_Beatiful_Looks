@@ -14,7 +14,8 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 	{
 		public Vector2 Position;
 		public Vector2 Velocity;
-		public Color Color = Color.White;
+		/// <summary>Цвет за жизнь частицы: от начала (Progress = 0) к концу (1).</summary>
+		public Ramp Ramp = Color.White;
 		public float Scale = 1f;
 		public float Rotation;
 		public float Opacity = 1f;
@@ -23,6 +24,13 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>true — рисуется перед игроками, false — позади.</summary>
 		public bool Front = true;
 		public bool Dead;
+
+		/// <summary>Начальный цвет; присваивание делает градиент из одного цвета.</summary>
+		public Color Color
+		{
+			get => Ramp.Start;
+			set => Ramp = value;
+		}
 
 		/// <summary>0 в начале жизни, 1 в конце.</summary>
 		public float Progress => Lifetime <= 0 ? 1f : MathHelper.Clamp(Time / (float)Lifetime, 0f, 1f);

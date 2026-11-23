@@ -79,6 +79,20 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		Starry
 	}
 
+	/// <summary>Крылья из эффектов (рисуются поверх/вместо надетых крыльев).</summary>
+	public enum WingStyle
+	{
+		None,
+		Seraph,
+		Light,
+		Butterfly,
+		Demon,
+		Flame,
+		Crystal,
+		Constellation,
+		Spirit
+	}
+
 	/// <summary>Весь «образ» персонажа: то, что сохраняется, синхронизируется и кладётся в пресеты.</summary>
 	public class LookSettings
 	{
@@ -87,6 +101,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public static readonly int RibbonStyleCount = Enum.GetValues(typeof(RibbonStyle)).Length;
 		public static readonly int EchoStyleCount = Enum.GetValues(typeof(EchoStyle)).Length;
 		public static readonly int HaloStyleCount = Enum.GetValues(typeof(HaloStyle)).Length;
+		public static readonly int WingStyleCount = Enum.GetValues(typeof(WingStyle)).Length;
 
 		/// <summary>Общий выключатель всех эффектов образа.</summary>
 		public bool Enabled = true;
@@ -115,10 +130,18 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		public bool GroundRing;
 		public bool Sigil;
 		public bool PulseRing;
+		/// <summary>Светящийся контур вокруг персонажа.</summary>
+		public bool Outline;
 		/// <summary>Номер краски из EffectDyes.Items (0 — без краски).</summary>
 		public int EffectDye;
 		public ColorSetting EffectColor = new ColorSetting(0.14f, 1f, 0.7f);
-		public ColorSetting EffectColor2 = new ColorSetting(0.12f, 0.6f, 0.92f);
+		public ColorSetting EffectColor2 = new ColorSetting(0.05f, 0.9f, 0.68f);
+
+		// ---------- крылья ----------
+		public WingStyle Wings = WingStyle.None;
+		public float WingSize = 1f;
+		public ColorSetting WingColor = new ColorSetting(0.13f, 0.9f, 0.75f);
+		public ColorSetting WingColor2 = new ColorSetting(0.55f, 0.8f, 0.8f);
 
 		public void CycleAura(int dir) => Aura = (AuraStyle)Wrap((int)Aura + dir, AuraStyleCount);
 
@@ -153,9 +176,14 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			GroundRing = o.GroundRing;
 			Sigil = o.Sigil;
 			PulseRing = o.PulseRing;
+			Outline = o.Outline;
 			EffectDye = o.EffectDye;
 			EffectColor.CopyFrom(o.EffectColor);
 			EffectColor2.CopyFrom(o.EffectColor2);
+			Wings = o.Wings;
+			WingSize = o.WingSize;
+			WingColor.CopyFrom(o.WingColor);
+			WingColor2.CopyFrom(o.WingColor2);
 		}
 
 		public bool SameAs(LookSettings o)
@@ -166,8 +194,9 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				&& Trail == o.Trail && Ribbon == o.Ribbon && RibbonWidth == o.RibbonWidth && RibbonLength == o.RibbonLength
 				&& Echo == o.Echo && TrailColor.SameAs(o.TrailColor) && TrailColor2.SameAs(o.TrailColor2)
 				&& Halo == o.Halo && BackGlow == o.BackGlow && GodRays == o.GodRays && GroundRing == o.GroundRing
-				&& Sigil == o.Sigil && PulseRing == o.PulseRing && EffectDye == o.EffectDye
-				&& EffectColor.SameAs(o.EffectColor) && EffectColor2.SameAs(o.EffectColor2);
+				&& Sigil == o.Sigil && PulseRing == o.PulseRing && Outline == o.Outline && EffectDye == o.EffectDye
+				&& EffectColor.SameAs(o.EffectColor) && EffectColor2.SameAs(o.EffectColor2)
+				&& Wings == o.Wings && WingSize == o.WingSize && WingColor.SameAs(o.WingColor) && WingColor2.SameAs(o.WingColor2);
 		}
 
 		public void Reset() => CopyFrom(new LookSettings());
@@ -190,7 +219,10 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			GroundRing = Main.rand.NextBool(5);
 			Sigil = Main.rand.NextBool(4);
 			PulseRing = Main.rand.NextBool(5);
+			Outline = Main.rand.NextBool(4);
 			EffectDye = 0;
+			Wings = Main.rand.NextBool(3) ? WingStyle.None : (WingStyle)Main.rand.Next(1, WingStyleCount);
+			WingSize = Main.rand.NextFloat(0.85f, 1.2f);
 
 			// Одна случайная тема на весь образ, чтобы цвета сочетались
 			ColorTheme theme = ColorThemes.All[Main.rand.Next(ColorThemes.All.Length)];
@@ -225,7 +257,12 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				["pulseRing"] = PulseRing,
 				["dye"] = EffectDye,
 				["effectColor"] = EffectColor.Save(),
-				["effectColor2"] = EffectColor2.Save()
+				["effectColor2"] = EffectColor2.Save(),
+				["outline"] = Outline,
+				["wings"] = (int)Wings,
+				["wingSize"] = WingSize,
+				["wingColor"] = WingColor.Save(),
+				["wingColor2"] = WingColor2.Save()
 			};
 		}
 
@@ -261,6 +298,11 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			if (tag.TryGet("dye", out int dye)) s.EffectDye = Wrap(dye, EffectDyes.Count);
 			if (tag.TryGet("effectColor", out TagCompound ec)) s.EffectColor.Load(ec);
 			if (tag.TryGet("effectColor2", out TagCompound ec2)) s.EffectColor2.Load(ec2);
+			if (tag.TryGet("outline", out bool outline)) s.Outline = outline;
+			if (tag.TryGet("wings", out int wings)) s.Wings = (WingStyle)Wrap(wings, WingStyleCount);
+			if (tag.TryGet("wingSize", out float wingSize)) s.WingSize = ClampMul(wingSize);
+			if (tag.TryGet("wingColor", out TagCompound wc)) s.WingColor.Load(wc);
+			if (tag.TryGet("wingColor2", out TagCompound wc2)) s.WingColor2.Load(wc2);
 			return s;
 		}
 
@@ -290,6 +332,11 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			w.Write((byte)EffectDye);
 			EffectColor.Write(w);
 			EffectColor2.Write(w);
+			w.Write(Outline);
+			w.Write((byte)Wings);
+			w.Write(WingSize);
+			WingColor.Write(w);
+			WingColor2.Write(w);
 		}
 
 		public void Read(BinaryReader r)
@@ -317,6 +364,11 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 			EffectDye = Wrap(r.ReadByte(), EffectDyes.Count);
 			EffectColor.Read(r);
 			EffectColor2.Read(r);
+			Outline = r.ReadBoolean();
+			Wings = (WingStyle)Wrap(r.ReadByte(), WingStyleCount);
+			WingSize = ClampMul(r.ReadSingle());
+			WingColor.Read(r);
+			WingColor2.Read(r);
 		}
 
 		/// <summary>Множители (плотность, размер, скорость, ширина) живут в пределах 0.2..2.</summary>

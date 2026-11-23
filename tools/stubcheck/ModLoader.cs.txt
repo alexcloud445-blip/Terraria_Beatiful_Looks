@@ -102,6 +102,7 @@ namespace Terraria.ModLoader
 		public virtual void TransformDrawData(ref PlayerDrawSet drawInfo) { }
 		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) { }
 		public virtual void DrawPlayer(Camera camera) { }
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) { }
 	}
 
 	public abstract class ModItem : ModType, ILoadable
@@ -134,6 +135,7 @@ namespace Terraria.ModLoader
 		public class BeforeParent : Position { public BeforeParent(PlayerDrawLayer parent) { } }
 		public virtual bool GetDefaultVisibility(PlayerDrawSet drawInfo) => true;
 		public abstract Position GetDefaultPosition();
+		public void Hide() { }
 		protected abstract void Draw(ref PlayerDrawSet drawInfo);
 	}
 
@@ -145,7 +147,7 @@ namespace Terraria.ModLoader
 
 	public static class PlayerDrawLayers
 	{
-		public static readonly PlayerDrawLayer JimsCloak, MountBack, Head, Torso, Wings, BackAcc, FrontAccFront;
+		public static readonly PlayerDrawLayer JimsCloak, MountBack, Head, Torso, Wings, HairBack, Tails, BackAcc, FrontAccFront;
 	}
 
 	public class ModKeybind

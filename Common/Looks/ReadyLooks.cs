@@ -39,17 +39,18 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		{
 			new Entry("Seraph", new Color(255, 214, 110), l =>
 			{
-				Colors(l, new Color(255, 214, 110), new Color(255, 250, 235));
+				Colors(l, new Color(255, 214, 110), new Color(255, 150, 90));
 				l.Aura = AuraStyle.Divine;
 				l.Halo = HaloStyle.Radiant;
 				l.GodRays = true;
 				l.BackGlow = true;
 				l.Ribbon = RibbonStyle.Soft;
 				l.Trail = TrailStyle.Feathers;
+				l.Wings = WingStyle.Seraph;
 			}),
 			new Entry("Inferno", new Color(255, 110, 30), l =>
 			{
-				Colors(l, new Color(255, 110, 30), new Color(255, 225, 110));
+				Colors(l, new Color(255, 160, 40), new Color(235, 40, 40));
 				l.Aura = AuraStyle.Flames;
 				l.AuraDensity = 1.3f;
 				l.Halo = HaloStyle.Thorns;
@@ -57,25 +58,29 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Trail = TrailStyle.Flames;
 				l.PulseRing = true;
 				l.EffectDye = 5; // Living Flame
+				l.Wings = WingStyle.Flame;
+				l.Outline = true;
 			}),
 			new Entry("Frost", new Color(110, 205, 255), l =>
 			{
-				Colors(l, new Color(110, 205, 255), new Color(235, 250, 255));
+				Colors(l, new Color(120, 210, 255), new Color(130, 130, 255));
 				l.Aura = AuraStyle.Frost;
 				l.Halo = HaloStyle.Starry;
 				l.Ribbon = RibbonStyle.Soft;
 				l.Trail = TrailStyle.Snow;
 				l.Echo = EchoStyle.Ghost;
 				l.GroundRing = true;
+				l.Wings = WingStyle.Crystal;
 			}),
 			new Entry("Sakura", new Color(255, 140, 200), l =>
 			{
-				Colors(l, new Color(255, 140, 200), new Color(255, 235, 245));
+				Colors(l, new Color(255, 140, 200), new Color(190, 140, 255));
 				l.Aura = AuraStyle.Sakura;
 				l.AuraDensity = 1.2f;
 				l.Trail = TrailStyle.Petals;
 				l.Ribbon = RibbonStyle.Twin;
 				l.BackGlow = true;
+				l.Wings = WingStyle.Butterfly;
 			}),
 			new Entry("Void", new Color(150, 70, 255), l =>
 			{
@@ -85,6 +90,8 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Echo = EchoStyle.Phantom;
 				l.Trail = TrailStyle.Smoke;
 				l.Halo = HaloStyle.Double;
+				l.Wings = WingStyle.Demon;
+				l.Outline = true;
 			}),
 			new Entry("Empress", new Color(255, 120, 220), l =>
 			{
@@ -95,15 +102,18 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Radiant;
 				l.BackGlow = true;
 				l.EffectDye = 3; // Living Rainbow
+				l.Wings = WingStyle.Light;
 			}),
 			new Entry("Storm", new Color(130, 165, 255), l =>
 			{
-				Colors(l, new Color(130, 165, 255), new Color(245, 250, 255));
+				Colors(l, new Color(130, 170, 255), new Color(190, 120, 255));
 				l.Aura = AuraStyle.Storm;
 				l.Echo = EchoStyle.Afterimage;
 				l.Ribbon = RibbonStyle.Soft;
 				l.RibbonWidth = 0.7f;
 				l.PulseRing = true;
+				l.Wings = WingStyle.Spirit;
+				l.Outline = true;
 			}),
 			new Entry("Celestial", new Color(120, 150, 255), l =>
 			{
@@ -113,6 +123,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Halo = HaloStyle.Ring;
 				l.Trail = TrailStyle.Stars;
 				l.Ribbon = RibbonStyle.Rainbow;
+				l.Wings = WingStyle.Constellation;
 			}),
 			new Entry("Fairy", new Color(120, 255, 180), l =>
 			{
@@ -121,6 +132,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Trail = TrailStyle.Sparkles;
 				l.Halo = HaloStyle.Starry;
 				l.BackGlow = true;
+				l.Wings = WingStyle.Butterfly;
 			}),
 			new Entry("Comet", new Color(80, 230, 255), l =>
 			{
@@ -129,6 +141,7 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 				l.Ribbon = RibbonStyle.Rainbow;
 				l.Echo = EchoStyle.Ghost;
 				l.GroundRing = true;
+				l.Wings = WingStyle.Spirit;
 			})
 		};
 	}

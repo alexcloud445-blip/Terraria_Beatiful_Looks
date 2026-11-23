@@ -20,8 +20,8 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		private const float WindowHeight = 500f;
 		private const float LeftColumn = 180f;
 
-		private static readonly string[] TabNames = { "TabAura", "TabTrail", "TabEffects", "TabColors", "TabLooks", "TabWardrobe" };
-		private const int ColorsTab = 3;
+		private static readonly string[] TabNames = { "TabAura", "TabTrail", "TabEffects", "TabWings", "TabColors", "TabLooks", "TabWardrobe" };
+		private const int ColorsTab = 4;
 
 		private UIPanel _root;
 		private UIPanel _previewBox;
@@ -32,7 +32,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		private bool _dragging;
 		private Vector2 _dragOffset;
 
-		/// <summary>Какие цвета правит вкладка «Цвета»: 0 аура, 1 след, 2 эффекты; слот 0 — основной, 1 — второй.</summary>
+		/// <summary>Какие цвета правит вкладка «Цвета»: 0 аура, 1 след, 2 эффекты, 3 крылья; слот 0 — основной, 1 — второй.</summary>
 		private int _colorTarget;
 		private int _colorSlot;
 		private int _hoverLook = -1;
@@ -198,7 +198,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			_content.Height.Set(0f, 1f);
 			contentPanel.Append(_content);
 
-			_tabs = new[] { BuildAuraTab(), BuildTrailTab(), BuildEffectsTab(), BuildColorsTab(), BuildLooksTab(), BuildWardrobeTab() };
+			_tabs = new[] { BuildAuraTab(), BuildTrailTab(), BuildEffectsTab(), BuildWingsTab(), BuildColorsTab(), BuildLooksTab(), BuildWardrobeTab() };
 			SelectTab(0);
 		}
 
@@ -340,9 +340,10 @@ namespace Terraria_Beatiful_Looks.Common.UI
 				("GodRays", () => Look.GodRays, () => Look.GodRays = !Look.GodRays),
 				("GroundRing", () => Look.GroundRing, () => Look.GroundRing = !Look.GroundRing),
 				("Sigil", () => Look.Sigil, () => Look.Sigil = !Look.Sigil),
-				("PulseRing", () => Look.PulseRing, () => Look.PulseRing = !Look.PulseRing)
+				("PulseRing", () => Look.PulseRing, () => Look.PulseRing = !Look.PulseRing),
+				("Outline", () => Look.Outline, () => Look.Outline = !Look.Outline)
 			};
-			Place(page, new OptionGrid(toggles.Length, 5,
+			Place(page, new OptionGrid(toggles.Length, 6,
 				i => (toggles[i].get() ? "> " : "") + Theme.T(toggles[i].key),
 				i => toggles[i].get(),
 				i => toggles[i].toggle()), 84f);
@@ -357,6 +358,25 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			return page;
 		}
 
+		// ---------- Крылья ----------
+		private UIElement BuildWingsTab()
+		{
+			UIElement page = NewPage();
+			Place(page, Header("WingStyle"), 0f);
+			Place(page, new OptionGrid(LookSettings.WingStyleCount, 3,
+				i => Theme.T("WingStyle." + (WingStyle)i),
+				i => (int)Look.Wings == i,
+				i => Look.Wings = (WingStyle)i,
+				buttonHeight: 28f), 24f);
+
+			Place(page, MulSlider("Size", () => Look.WingSize, v => Look.WingSize = v), 124f);
+			Place(page, ColorChips(3, () => Look.WingColor, () => Look.WingColor2), 158f);
+			Place(page, Hint("WingsHint"), 192f);
+			Place(page, Hint("WingsHint2"), 216f);
+			Place(page, Hint("WingsHint3"), 240f);
+			return page;
+		}
+
 		// ---------- Цвета ----------
 		private ColorSetting CurrentColor()
 		{
@@ -365,6 +385,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			{
 				1 => _colorSlot == 0 ? l.TrailColor : l.TrailColor2,
 				2 => _colorSlot == 0 ? l.EffectColor : l.EffectColor2,
+				3 => _colorSlot == 0 ? l.WingColor : l.WingColor2,
 				_ => _colorSlot == 0 ? l.AuraColor : l.AuraColor2
 			};
 		}
@@ -376,6 +397,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			{
 				1 => (l.TrailColor, l.TrailColor2),
 				2 => (l.EffectColor, l.EffectColor2),
+				3 => (l.WingColor, l.WingColor2),
 				_ => (l.AuraColor, l.AuraColor2)
 			};
 		}
@@ -384,8 +406,8 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		{
 			UIElement page = NewPage();
 
-			string[] targets = { "TabAura", "TabTrail", "TabEffects" };
-			var targetGrid = new OptionGrid(3, 3, i => Theme.T(targets[i]), i => _colorTarget == i, i => _colorTarget = i);
+			string[] targets = { "TabAura", "TabTrail", "TabEffects", "TabWings" };
+			var targetGrid = new OptionGrid(4, 4, i => Theme.T(targets[i]), i => _colorTarget == i, i => _colorTarget = i);
 			targetGrid.Width.Set(-4f, 0.6f);
 			Place(page, targetGrid, 0f);
 
@@ -423,7 +445,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 			{
 				(ColorSetting a, ColorSetting b) = CurrentPair();
 				LookSettings l = Look;
-				foreach ((ColorSetting x, ColorSetting y) in new[] { (l.AuraColor, l.AuraColor2), (l.TrailColor, l.TrailColor2), (l.EffectColor, l.EffectColor2) })
+				foreach ((ColorSetting x, ColorSetting y) in new[] { (l.AuraColor, l.AuraColor2), (l.TrailColor, l.TrailColor2), (l.EffectColor, l.EffectColor2), (l.WingColor, l.WingColor2) })
 				{
 					if (x != a)
 					{

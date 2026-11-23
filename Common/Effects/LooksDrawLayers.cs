@@ -85,10 +85,10 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			{
 				Texture2D bloom = VfxAssets.Bloom;
 				float pulse = LayerUtils.Pulse();
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.5f * pulse), 0f,
-					bloom.Size() / 2f, new Vector2(0.6f, 0.75f) * pulse);
-				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.35f), 0f,
-					bloom.Size() / 2f, new Vector2(0.35f, 0.45f));
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor2.Get(), 0.3f * pulse), 0f,
+					bloom.Size() / 2f, new Vector2(0.7f, 0.85f) * pulse);
+				LayerUtils.Add(ref drawInfo, shader, bloom, center, null, VfxMath.Additive(look.EffectColor.Get(), 0.32f), 0f,
+					bloom.Size() / 2f, new Vector2(0.38f, 0.5f));
 			}
 
 			if (look.Aura != AuraStyle.None)
@@ -122,24 +122,23 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			}
 		}
 
-		/// <summary>Вращающиеся лучи света из-за спины.</summary>
+		/// <summary>Вращающиеся тонкие лучи света из-за спины: разная длина и ширина, цвета чередуются.</summary>
 		private static void GodRays(ref PlayerDrawSet info, LookSettings look, Vector2 center, int shader, float time)
 		{
 			Texture2D ray = VfxAssets.GodRay;
 			var origin = new Vector2(ray.Width / 2f, ray.Height);
-			const int count = 10;
+			Color hi = Color.Lerp(look.EffectColor.Get(), Color.White, 0.55f);
+			const int count = 14;
 			for (int i = 0; i < count; i++)
 			{
-				float angle = time * 0.25f + i * MathHelper.TwoPi / count;
-				float flicker = 0.75f + 0.25f * (float)Math.Sin(time * 1.7f + i * 2.3f);
-				float length = (70f + 25f * (float)Math.Sin(time * 1.1f + i * 1.7f)) * flicker;
-				Color color = VfxMath.Additive(look.EffectColor.Mix(look.EffectColor2, (i % 3) / 2f), 0.32f * flicker);
-				LayerUtils.Add(ref info, shader, ray, center, null, color, angle + MathHelper.PiOver2, origin,
-					new Vector2(0.9f, length / ray.Height));
+				float angle = time * (i % 2 == 0 ? 0.22f : -0.15f) + i * MathHelper.TwoPi / count + (i % 3) * 0.2f;
+				float flicker = 0.7f + 0.3f * (float)Math.Sin(time * 1.9f + i * 2.3f);
+				float length = (52f + 34f * (float)Math.Sin(time * 0.9f + i * 1.7f) * (float)Math.Sin(i * 0.9f)) * (0.85f + 0.15f * flicker);
+				float width = i % 3 == 0 ? 0.55f : 0.32f;
+				Color c = i % 3 == 0 ? hi : look.EffectColor.Mix(look.EffectColor2, (i % 5) / 4f);
+				LayerUtils.Add(ref info, shader, ray, center, null, VfxMath.Additive(c, (i % 3 == 0 ? 0.3f : 0.4f) * flicker), angle + MathHelper.PiOver2, origin,
+					new Vector2(width, length / ray.Height));
 			}
-
-			Texture2D bloom = VfxAssets.Bloom;
-			LayerUtils.Add(ref info, shader, bloom, center, VfxMath.Additive(look.EffectColor.Get(), 0.45f), 0.5f);
 		}
 
 		/// <summary>Подсветка, которая показывает ауру и в превью меню, плюс постоянные детали некоторых аур.</summary>
@@ -151,8 +150,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Color c2 = look.AuraColor2.Get();
 
 			// мягкое свечение вокруг тела
-			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c1, 0.2f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
-				bloom.Size() / 2f, new Vector2(0.55f, 0.7f) * s);
+			LayerUtils.Add(ref info, 0, bloom, center, null, VfxMath.Additive(c2, 0.13f * LayerUtils.Pulse(1.5f, 0.3f)), 0f,
+				bloom.Size() / 2f, new Vector2(0.6f, 0.75f) * s);
 
 			switch (look.Aura)
 			{
@@ -209,7 +208,9 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				new Vector2(width, width * squash) / bloom.Width * 1.1f);
 
 			Texture2D rings = VfxAssets.SigilRings;
-			LayerUtils.Add(ref info, shader, rings, feet, null, VfxMath.Additive(c1, 0.9f * pulse), 0f, rings.Size() / 2f,
+			LayerUtils.Add(ref info, shader, rings, feet, null, VfxMath.Additive(c2, 0.45f * pulse), 0f, rings.Size() / 2f,
+				new Vector2(width / 124f * 1.03f, width / 124f * 1.08f));
+			LayerUtils.Add(ref info, shader, rings, feet, null, VfxMath.Additive(c1, 0.85f * pulse), 0f, rings.Size() / 2f,
 				new Vector2(width / 124f));
 
 			// внешний эллипс текстуры: 124x37 при размере 128x40
@@ -223,7 +224,8 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				float a = time * 0.45f + i * MathHelper.TwoPi / runes;
 				Vector2 pos = feet + VfxMath.OnEllipse(a, rx * 0.755f, ry * 0.755f);
 				float depth = 0.65f + 0.35f * (float)Math.Sin(a) * grav;
-				LayerUtils.Add(ref info, shader, VfxAssets.Runes, pos, VfxAssets.RuneFrame(i), VfxMath.Additive(c2, depth * pulse), 0f,
+				Color runeColor = VfxMath.LerpVivid(c2, Color.Lerp(c1, Color.White, 0.4f), 0.5f + 0.5f * (float)Math.Sin(a * 2f));
+				LayerUtils.Add(ref info, shader, VfxAssets.Runes, pos, VfxAssets.RuneFrame(i), VfxMath.Additive(runeColor, depth * pulse), 0f,
 					new Vector2(16f, 16f), new Vector2(0.42f, 0.28f));
 			}
 
@@ -231,7 +233,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Vector2[] pts = new Vector2[6];
 			for (int k = 0; k < 6; k++)
 				pts[k] = feet + VfxMath.OnEllipse(-time * 0.3f + k * MathHelper.TwoPi / 6f, rx * 0.56f, ry * 0.56f);
-			Color lineColor = VfxMath.Additive(Color.Lerp(c1, c2, 0.4f), 0.85f * pulse);
+			Color lineColor = VfxMath.Additive(VfxMath.LerpVivid(c1, c2, 0.5f), 0.85f * pulse);
 			for (int k = 0; k < 6; k++)
 				LayerUtils.Line(ref info, shader, pts[k], pts[(k + 2) % 6], lineColor, 2.2f);
 		}
@@ -260,7 +262,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Texture2D flare = VfxAssets.Flare;
 
 			// общий ореол
-			LayerUtils.Add(ref drawInfo, shader, bloom, pos, null, VfxMath.Additive(c1, 0.35f), 0f, bloom.Size() / 2f, new Vector2(0.32f, 0.12f));
+			LayerUtils.Add(ref drawInfo, shader, bloom, pos, null, VfxMath.Additive(c2, 0.32f), 0f, bloom.Size() / 2f, new Vector2(0.34f, 0.13f));
 
 			switch (look.Halo)
 			{
@@ -337,7 +339,7 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			Texture2D ring = VfxAssets.HaloRing;
 			Vector2 scale = new Vector2(width / 27f);
 			LayerUtils.Add(ref info, shader, ring, pos, null, VfxMath.Additive(color, 0.95f * opacity), 0f, ring.Size() / 2f, scale);
-			LayerUtils.Add(ref info, shader, ring, pos, null, VfxMath.Additive(Color.White, 0.45f * opacity), 0f, ring.Size() / 2f, scale * 0.97f);
+			LayerUtils.Add(ref info, shader, ring, pos, null, VfxMath.Additive(Color.Lerp(color, Color.White, 0.6f), 0.4f * opacity), 0f, ring.Size() / 2f, scale * 0.97f);
 		}
 	}
 }

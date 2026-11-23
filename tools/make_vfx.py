@@ -1,4 +1,4 @@
-"""Генератор текстур для визуальных эффектов (v0.3), чистый Python без библиотек.
+"""Генератор текстур для визуальных эффектов (v0.3+, вызывает make_vfx_shapes для v0.4), чистый Python без библиотек.
 
 Запуск:  python3 tools/make_vfx.py
 Все текстуры белые: цвет задаётся при отрисовке. Свечение рисуется аддитивно
@@ -554,14 +554,16 @@ def main():
     streak()
     line_tex()
     ring_wave()
-    god_ray()
     smoke()
-    sprites()
     runes()
     halo_ring()
     ground_ring()
     thorn_halo()
     sigil_rings()
+
+    # v0.4: формы, детали крыльев, блики, новый луч (GodRay)
+    import make_vfx_shapes
+    make_vfx_shapes.main()
 
 
 if __name__ == "__main__":

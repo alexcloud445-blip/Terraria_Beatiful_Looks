@@ -11,6 +11,7 @@ using Terraria_Beatiful_Looks.Common.Effects;
 using Terraria_Beatiful_Looks.Common.Looks;
 using Terraria_Beatiful_Looks.Common.Systems;
 using Terraria_Beatiful_Looks.Common.VFX;
+using Terraria_Beatiful_Looks.Content.Items.Wings;
 
 namespace Terraria_Beatiful_Looks.Common.Players
 {
@@ -28,6 +29,11 @@ namespace Terraria_Beatiful_Looks.Common.Players
 		/// <summary>Центр персонажа в прошлые тики: [0] — сейчас, [1] — тик назад...</summary>
 		public readonly Vector2[] History = new Vector2[HistoryLength];
 		public int HistoryCount;
+
+		/// <summary>Фаза и сила взмаха крыльев-эффектов.</summary>
+		public float WingPhase;
+		public float WingSpeed = 0.05f;
+		public float WingAmp = 0.25f;
 
 		public override void Initialize()
 		{
@@ -60,6 +66,36 @@ namespace Terraria_Beatiful_Looks.Common.Players
 					return false;
 				return true;
 			}
+		}
+
+		/// <summary>
+		/// Какие крылья-эффекты показывать: стиль из меню, а если он не выбран —
+		/// стиль надетых крыльев этого мода (со своими цветами).
+		/// </summary>
+		public bool TryGetWings(out WingLook wings)
+		{
+			wings = default;
+			if (!Look.Enabled)
+				return false;
+
+			if (Look.Wings != WingStyle.None)
+			{
+				wings.Style = Look.Wings;
+				wings.Pal = Palette.Of(Look.WingColor, Look.WingColor2);
+				wings.Size = Look.WingSize;
+				wings.Rainbow = Look.WingColor.Rainbow;
+				return true;
+			}
+
+			if (Player.wings > 0 && CosmeticWings.BySlot.TryGetValue(Player.wings, out CosmeticWings item))
+			{
+				wings.Style = item.VfxStyle;
+				wings.Pal = new Palette(item.WingPrimary, item.WingSecondary);
+				wings.Size = 1f;
+				return true;
+			}
+
+			return false;
 		}
 
 		// ---------- сохранение вместе с персонажем ----------
@@ -141,12 +177,33 @@ namespace Terraria_Beatiful_Looks.Common.Players
 				return;
 
 			RecordHistory();
+			UpdateWingFlap();
 
 			if (!EffectsVisible)
 				return;
 
 			AuraEffects.Update(Player, Look);
 			TrailEffects.Update(Player, Look);
+			WingEffects.Update(this);
+		}
+
+		/// <summary>Взмахи: в полёте вверх — быстро и широко, при падении — планирование, на земле — «дыхание».</summary>
+		private void UpdateWingFlap()
+		{
+			bool air = Player.velocity.Y != 0f && !Player.mount.Active;
+			bool rising = Player.velocity.Y * Player.gravDir < 0f;
+			float targetSpeed = !air ? 0.045f : rising ? 0.3f : 0.14f;
+			float targetAmp = !air ? 0.22f : rising ? 1f : 0.5f;
+			WingSpeed = MathHelper.Lerp(WingSpeed, targetSpeed, 0.12f);
+			WingAmp = MathHelper.Lerp(WingAmp, targetAmp, 0.1f);
+			WingPhase = (WingPhase + WingSpeed) % (MathHelper.TwoPi * 4f);
+		}
+
+		/// <summary>Обычные крылья прячем, если вместо них рисуются крылья-эффекты.</summary>
+		public override void HideDrawLayers(PlayerDrawSet drawInfo)
+		{
+			if (EffectsVisibleInDraw && TryGetWings(out _))
+				PlayerDrawLayers.Wings.Hide();
 		}
 
 		private void RecordHistory()
@@ -162,11 +219,13 @@ namespace Terraria_Beatiful_Looks.Common.Players
 				HistoryCount++;
 		}
 
-		/// <summary>Призрачные копии рисуются перед самим игроком (позади него).</summary>
+		/// <summary>Призрачные копии и контур рисуются перед самим игроком (то есть позади него).</summary>
 		public override void DrawPlayer(Camera camera)
 		{
-			if (!TrailEffects.DrawingEcho && EffectsVisible)
-				TrailEffects.DrawEchoes(this, camera);
+			if (TrailEffects.DrawingEcho || !EffectsVisible)
+				return;
+			TrailEffects.DrawEchoes(this, camera);
+			OutlineEffect.Draw(this, camera);
 		}
 
 		/// <summary>Перекрашивает призрачные копии (вызывается для каждой отрисовки игрока).</summary>

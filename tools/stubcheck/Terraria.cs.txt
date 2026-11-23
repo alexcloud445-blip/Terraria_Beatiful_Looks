@@ -48,9 +48,16 @@ namespace Terraria
 		public float fullRotation;
 		public Vector2 fullRotationOrigin;
 		public bool mouseInterface;
+		public int wings;
+		public Mount mount;
 		public bool ShouldNotDraw => false;
 		public T GetModPlayer<T>() where T : ModPlayer => throw null;
 		public bool TryGetModPlayer<T>(out T result) where T : ModPlayer => throw null;
+	}
+
+	public class Mount
+	{
+		public bool Active => false;
 	}
 
 	public class Item : Entity
@@ -189,6 +196,7 @@ namespace Terraria.DataStructures
 		public Player drawPlayer;
 		public float shadow;
 		public Vector2 Position;
+		public int cWings;
 	}
 
 	public struct WingStats

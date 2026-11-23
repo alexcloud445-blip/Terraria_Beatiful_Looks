@@ -15,7 +15,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		private const string Folder = "Terraria_Beatiful_Looks/Assets/VFX/";
 
 		private static Asset<Texture2D> _bloom, _orb, _flare, _streak, _line, _ringWave, _godRay,
-			_smoke, _sprites, _runes, _haloRing, _groundRing, _thornHalo, _sigilRings;
+			_smoke, _runes, _haloRing, _groundRing, _thornHalo, _sigilRings,
+			_shapes, _shapesGlow, _feather, _featherGlow, _butterflyWing, _butterflyPattern, _butterflyGlow,
+			_batWing, _batBones, _flame, _blade, _glint;
 
 		/// <summary>Мягкое гауссово пятно 128x128.</summary>
 		public static Texture2D Bloom => _bloom.Value;
@@ -33,8 +35,26 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public static Texture2D GodRay => _godRay.Value;
 		/// <summary>4 кадра дыма 64x64 слева направо.</summary>
 		public static Texture2D Smoke => _smoke.Value;
-		/// <summary>8 спрайтов 32x32: сердце, лепесток, снежинка, звезда, осколок, перо, бабочка x2.</summary>
-		public static Texture2D Sprites => _sprites.Value;
+		/// <summary>Атлас форм 384x64 (enum Shape), заливка с серой светотенью.</summary>
+		public static Texture2D Shapes => _shapes.Value;
+		/// <summary>Свечение форм (тот же атлас, размытый).</summary>
+		public static Texture2D ShapesGlow => _shapesGlow.Value;
+		/// <summary>Маховое перо 64x16, основание слева.</summary>
+		public static Texture2D Feather => _feather.Value;
+		public static Texture2D FeatherGlow => _featherGlow.Value;
+		/// <summary>Крыло бабочки 64x64 (верхнее + нижнее), крепление в (4, 32).</summary>
+		public static Texture2D ButterflyWing => _butterflyWing.Value;
+		public static Texture2D ButterflyPattern => _butterflyPattern.Value;
+		public static Texture2D ButterflyGlow => _butterflyGlow.Value;
+		/// <summary>Крыло летучей мыши 96x64, крепление в (4, 22); кости отдельно.</summary>
+		public static Texture2D BatWing => _batWing.Value;
+		public static Texture2D BatBones => _batBones.Value;
+		/// <summary>4 кадра язычка пламени 32x48, основание внизу по центру.</summary>
+		public static Texture2D Flame => _flame.Value;
+		/// <summary>Клинок света 128x16, основание слева.</summary>
+		public static Texture2D Blade => _blade.Value;
+		/// <summary>Острый блик 64x64.</summary>
+		public static Texture2D Glint => _glint.Value;
 		/// <summary>8 рун 32x32.</summary>
 		public static Texture2D Runes => _runes.Value;
 		/// <summary>Кольцо нимба в перспективе 32x12 (эллипс 27x7.6, рисовать почти 1:1).</summary>
@@ -46,7 +66,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		/// <summary>Кольца магического круга в перспективе 128x40 (внешний эллипс 124x37).</summary>
 		public static Texture2D SigilRings => _sigilRings.Value;
 
-		public static Rectangle SpriteFrame(int index) => new Rectangle(index * 32, 0, 32, 32);
+		public static Rectangle FlameFrame(int index) => new Rectangle((index & 3) * 32, 0, 32, 48);
 
 		public static Rectangle RuneFrame(int index) => new Rectangle((index & 7) * 32, 0, 32, 32);
 
@@ -62,7 +82,18 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 			_ringWave = Request("RingWave");
 			_godRay = Request("GodRay");
 			_smoke = Request("Smoke");
-			_sprites = Request("Sprites");
+			_shapes = Request("Shapes");
+			_shapesGlow = Request("ShapesGlow");
+			_feather = Request("Feather");
+			_featherGlow = Request("FeatherGlow");
+			_butterflyWing = Request("ButterflyWing");
+			_butterflyPattern = Request("ButterflyPattern");
+			_butterflyGlow = Request("ButterflyGlow");
+			_batWing = Request("BatWing");
+			_batBones = Request("BatBones");
+			_flame = Request("Flame");
+			_blade = Request("Blade");
+			_glint = Request("Glint");
 			_runes = Request("Runes");
 			_haloRing = Request("HaloRing");
 			_groundRing = Request("GroundRing");
@@ -73,7 +104,9 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 		public override void Unload()
 		{
 			_bloom = _orb = _flare = _streak = _line = _ringWave = _godRay = null;
-			_smoke = _sprites = _runes = _haloRing = _groundRing = _thornHalo = _sigilRings = null;
+			_smoke = _runes = _haloRing = _groundRing = _thornHalo = _sigilRings = null;
+			_shapes = _shapesGlow = _feather = _featherGlow = _butterflyWing = _butterflyPattern = _butterflyGlow = null;
+			_batWing = _batBones = _flame = _blade = _glint = null;
 		}
 
 		private static Asset<Texture2D> Request(string name) => ModContent.Request<Texture2D>(Folder + name);
