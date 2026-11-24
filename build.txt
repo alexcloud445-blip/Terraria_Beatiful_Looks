@@ -3,4 +3,4 @@ author = alexcloud445
 version = 0.6
 homepage = https://github.com/alexcloud445-blip/Terraria_Beatiful_Looks
 side = Both
-buildIgnore = *.md, tools/*, .git*, *.csproj, *.user, obj/*, bin/*, .vs/*
+buildIgnore = *.md, tools/*, .git*, *.csproj, *.user, obj/*, bin/*, .vs/*, icon_workshop.png

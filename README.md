@@ -46,6 +46,7 @@ Localization/                    тексты (en-US, ru-RU)
 tools/make_sprites.py            генератор спрайтов предметов
 tools/make_vfx.py                генератор текстур эффектов (+ make_vfx_shapes.py: формы, крылья, блики; make_vfx_v6.py: сияние, галактика, корона, мандала, туманность, лисица)
 tools/make_robes.py              робы: перекраска шаблона ExampleMod, узор и маска свечения подола
+tools/make_icon.py               иконки мода: icon.png (80x80), icon_small.png (30x30), icon_workshop.png (480x480, для Steam)
 tools/sim/                       симуляции эффектов на Python (крылья, ауры, нимбы, спутники) — посмотреть без игры
 tools/stubcheck/                 проверка компиляции без игры (для разработки)
 ```

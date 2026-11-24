@@ -56,6 +56,8 @@ Assets/VFX/                     текстуры эффектов (tools/make_vf
                                 v0.6 (make_vfx_v6.py): AuroraStrip, Galaxy (32 кадра), Corona, Disc, MandalaOuter/Inner,
                                 NebulaWing/Rim/StarsA/B, Fox/FoxGlow
 tools/make_robes.py             робы из шаблона ExampleMod (MIT): перекраска по ролям цветов, узор и маска свечения подола
+tools/make_icon.py              иконки мода (numpy + Pillow): icon.png 80x80 (обязательно ровно 80x80), icon_small.png 30x30,
+                                icon_workshop.png 480x480 — превью в Steam, tML берёт его при Publish сам (в buildIgnore)
 tools/sim/                      симуляции на Python: wingsim2 (крылья v2), v6sim (новые крылья/ауры/нимбы), companions_sim
 tools/make_sprites.py, pngio.py генерация PNG предметов на чистом Python (без Pillow)
 tools/stubcheck/                проверка компиляции без игры (см. ниже)
