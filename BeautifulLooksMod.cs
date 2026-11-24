@@ -2,11 +2,11 @@ using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Players;
+using BeautifulLooks.Common.Players;
 
-// Пространство имён должно совпадать с именем папки мода (Terraria_Beatiful_Looks),
+// Пространство имён должно совпадать с именем папки мода (BeautifulLooks),
 // иначе tModLoader не найдёт текстуры.
-namespace Terraria_Beatiful_Looks
+namespace BeautifulLooks
 {
 	public class BeautifulLooksMod : Mod
 	{

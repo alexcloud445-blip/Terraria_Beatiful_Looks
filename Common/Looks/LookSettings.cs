@@ -3,7 +3,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader.IO;
 
-namespace Terraria_Beatiful_Looks.Common.Looks
+namespace BeautifulLooks.Common.Looks
 {
 	/// <summary>
 	/// Стили ауры. Новый стиль: добавить В КОНЕЦ (номера сохраняются в файл персонажа)

@@ -5,9 +5,9 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria_Beatiful_Looks.Common.UI;
+using BeautifulLooks.Common.UI;
 
-namespace Terraria_Beatiful_Looks.Common.Systems
+namespace BeautifulLooks.Common.Systems
 {
 	/// <summary>Показывает/прячет меню и вставляет его в слои интерфейса игры.</summary>
 	[Autoload(Side = ModSide.Client)]
@@ -77,7 +77,7 @@ namespace Terraria_Beatiful_Looks.Common.Systems
 				return;
 
 			layers.Insert(index, new LegacyGameInterfaceLayer(
-				"Terraria_Beatiful_Looks: Looks Panel",
+				"BeautifulLooks: Looks Panel",
 				delegate
 				{
 					if (Visible && _lastGameTime != null)

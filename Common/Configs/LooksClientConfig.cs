@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace Terraria_Beatiful_Looks.Common.Configs
+namespace BeautifulLooks.Common.Configs
 {
 	/// <summary>Настройки на стороне игрока (Настройки → Конфигурация модов).</summary>
 	public class LooksClientConfig : ModConfig

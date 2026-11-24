@@ -6,7 +6,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Текстуры эффектов из Assets/VFX (генерируются скриптом tools/make_vfx.py).
@@ -15,7 +15,7 @@ namespace Terraria_Beatiful_Looks.Common.VFX
 	[Autoload(Side = ModSide.Client)]
 	public class VfxAssets : ModSystem
 	{
-		private const string Folder = "Terraria_Beatiful_Looks/Assets/VFX/";
+		private const string Folder = "BeautifulLooks/Assets/VFX/";
 
 		private static Asset<Texture2D> _bloom, _orb, _flare, _streak, _line, _ringWave, _godRay,
 			_smoke, _runes, _haloRing, _groundRing, _thornHalo, _sigilRings,

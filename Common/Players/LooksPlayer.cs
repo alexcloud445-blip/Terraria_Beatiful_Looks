@@ -6,15 +6,15 @@ using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria_Beatiful_Looks.Common.Configs;
-using Terraria_Beatiful_Looks.Common.Effects;
-using Terraria_Beatiful_Looks.Common.Looks;
-using Terraria_Beatiful_Looks.Common.Systems;
-using Terraria_Beatiful_Looks.Common.VFX;
-using Terraria_Beatiful_Looks.Content.Items.Vanity;
-using Terraria_Beatiful_Looks.Content.Items.Wings;
+using BeautifulLooks.Common.Configs;
+using BeautifulLooks.Common.Effects;
+using BeautifulLooks.Common.Looks;
+using BeautifulLooks.Common.Systems;
+using BeautifulLooks.Common.VFX;
+using BeautifulLooks.Content.Items.Vanity;
+using BeautifulLooks.Content.Items.Wings;
 
-namespace Terraria_Beatiful_Looks.Common.Players
+namespace BeautifulLooks.Common.Players
 {
 	/// <summary>Хранит образ персонажа, пресеты, историю движения; синхронизирует их и запускает эффекты.</summary>
 	public class LooksPlayer : ModPlayer

@@ -8,8 +8,12 @@
 - Приоритет пользователя: **уровень VFX как в Wrath of the Gods / Daybreak**, широкий выбор эффектов и кастомизации, красивые костюмы.
 
 ## Как собирается и тестируется
-- Собирает пользователь на Windows-ПК: папка `Документы\My Games\Terraria\tModLoader\ModSources\Terraria_Beatiful_Looks` → в игре **Workshop → Develop Mods → Build + Reload**.
-- **Имя папки обязано совпадать с пространством имён `Terraria_Beatiful_Looks`.** ZIP с GitHub распаковывается как `...-main`, и мод падает с ошибкой «Пространство имён и название папки не совпадают».
+- Собирает пользователь на Windows-ПК: папка `Документы\My Games\Terraria\tModLoader\ModSources\BeautifulLooks` → в игре **Workshop → Develop Mods → Build + Reload**.
+- **Внутреннее имя мода — `BeautifulLooks`** (до v0.6.1 было `Terraria_Beatiful_Looks` с опечаткой; переименовано ДО первой
+  публикации в Steam). Имя папки обязано совпадать с пространством имён `BeautifulLooks`. Репозиторий на GitHub по-прежнему
+  называется `Terraria_Beatiful_Looks`, поэтому ZIP с GitHub распаковывается под другим именем — папку надо переименовать,
+  иначе ошибка «Пространство имён и название папки не совпадают». После публикации внутреннее имя менять НЕЛЬЗЯ
+  (Steam посчитает это другим модом, у игроков пропадут образы и предметы).
 - В папке мода не должно быть посторонних модов: tModLoader компилирует всё, что лежит внутри.
 - Лог сборки и ошибок: `C:\Program Files (x86)\Steam\steamapps\common\tModLoader\tModLoader-Logs\client.log`.
 - У пользователя также стоят Calamity, MagicStorage, RecipeBrowser, BossChecklist.

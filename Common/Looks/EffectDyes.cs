@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 
-namespace Terraria_Beatiful_Looks.Common.Looks
+namespace BeautifulLooks.Common.Looks
 {
 	/// <summary>
 	/// Краски, которыми можно перекрасить эффекты на персонаже (нимб, сияние, круги).

@@ -4,10 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Looks;
-using Terraria_Beatiful_Looks.Common.VFX;
+using BeautifulLooks.Common.Looks;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Common.Effects
+namespace BeautifulLooks.Common.Effects
 {
 	/// <summary>
 	/// Нимбы v0.6: венец из рун, звёздная диадема, рога из света, нимб-затмение.

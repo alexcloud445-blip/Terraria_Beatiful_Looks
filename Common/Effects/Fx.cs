@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Configs;
-using Terraria_Beatiful_Looks.Common.VFX;
+using BeautifulLooks.Common.Configs;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Common.Effects
+namespace BeautifulLooks.Common.Effects
 {
 	/// <summary>Короткие помощники для частиц (используются крыльями и костюмами).</summary>
 	public static class Fx

@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
-using Terraria_Beatiful_Looks.Common.Looks;
+using BeautifulLooks.Common.Looks;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Светящиеся ленты на ванильных шейдерах (те же, что у Радужного жезла, Огненного хлыста,

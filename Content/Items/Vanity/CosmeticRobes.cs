@@ -8,10 +8,10 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Effects;
-using Terraria_Beatiful_Looks.Common.VFX;
+using BeautifulLooks.Common.Effects;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Content.Items.Vanity
+namespace BeautifulLooks.Content.Items.Vanity
 {
 	/// <summary>
 	/// Робы (декоративное тело + юбка). Новая роба: наследник + [AutoloadEquip(EquipType.Body)]

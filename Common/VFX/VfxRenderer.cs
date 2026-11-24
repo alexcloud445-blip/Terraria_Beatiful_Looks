@@ -4,10 +4,10 @@ using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Configs;
-using Terraria_Beatiful_Looks.Common.Effects;
+using BeautifulLooks.Common.Configs;
+using BeautifulLooks.Common.Effects;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Встраивает отрисовку эффектов в кадр игры: перехватывает Main.DrawPlayers_AfterProjectiles.

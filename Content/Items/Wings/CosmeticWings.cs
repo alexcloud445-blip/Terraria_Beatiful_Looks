@@ -4,10 +4,10 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Effects;
-using Terraria_Beatiful_Looks.Common.Looks;
+using BeautifulLooks.Common.Effects;
+using BeautifulLooks.Common.Looks;
 
-namespace Terraria_Beatiful_Looks.Content.Items.Wings
+namespace BeautifulLooks.Content.Items.Wings
 {
 	/// <summary>
 	/// Основа для всех крыльев мода. Новые крылья: наследник + [AutoloadEquip(EquipType.Wings)]

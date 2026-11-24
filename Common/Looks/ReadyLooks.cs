@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace Terraria_Beatiful_Looks.Common.Looks
+namespace BeautifulLooks.Common.Looks
 {
 	/// <summary>
 	/// Готовые образы для вкладки «Образы». Название и описание: UI.Look.Key и UI.Look.KeyDesc.

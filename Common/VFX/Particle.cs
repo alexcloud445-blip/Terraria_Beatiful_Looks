@@ -2,9 +2,9 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria_Beatiful_Looks.Common.Looks;
+using BeautifulLooks.Common.Looks;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Частица собственной системы (не Dust). Живёт Lifetime тиков, рисуется в мировых координатах.

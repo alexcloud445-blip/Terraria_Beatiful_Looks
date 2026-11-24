@@ -25,7 +25,8 @@
 1. Установить **tModLoader** (Steam, бесплатно) и запустить его хотя бы раз.
 2. Склонировать репозиторий в папку
    `Документы\My Games\Terraria\tModLoader\ModSources\`
-   (папка мода должна называться `Terraria_Beatiful_Looks`).
+   (папка мода должна называться `BeautifulLooks` — так зовут мод внутри игры; ZIP с GitHub распаковывается
+   под другим именем, папку нужно переименовать).
 3. В игре: **Workshop → Develop Mods → Build + Reload**.
 
 ## Структура

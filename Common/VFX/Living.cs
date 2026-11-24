@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Configs;
+using BeautifulLooks.Common.Configs;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// «Живые» частицы: лепестки и снежинки ложатся на землю, угольки отскакивают от блоков.

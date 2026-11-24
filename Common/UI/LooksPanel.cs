@@ -4,12 +4,12 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria_Beatiful_Looks.Common.Effects;
-using Terraria_Beatiful_Looks.Common.Looks;
-using Terraria_Beatiful_Looks.Common.Players;
-using Terraria_Beatiful_Looks.Common.Systems;
+using BeautifulLooks.Common.Effects;
+using BeautifulLooks.Common.Looks;
+using BeautifulLooks.Common.Players;
+using BeautifulLooks.Common.Systems;
 
-namespace Terraria_Beatiful_Looks.Common.UI
+namespace BeautifulLooks.Common.UI
 {
 	/// <summary>
 	/// Главное окно: заголовок (за него можно тащить), слева превью и пресеты, справа вкладки.

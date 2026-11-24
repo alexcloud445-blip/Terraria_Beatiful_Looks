@@ -4,11 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Looks;
-using Terraria_Beatiful_Looks.Common.Players;
-using Terraria_Beatiful_Looks.Common.VFX;
+using BeautifulLooks.Common.Looks;
+using BeautifulLooks.Common.Players;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Common.Effects
+namespace BeautifulLooks.Common.Effects
 {
 	/// <summary>
 	/// Скрытность разбойника Calamity (работает, только если Calamity установлен; без него ничего не делает).

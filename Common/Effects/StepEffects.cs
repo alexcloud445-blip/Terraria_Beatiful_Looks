@@ -1,11 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria_Beatiful_Looks.Common.Looks;
-using Terraria_Beatiful_Looks.Common.Players;
-using Terraria_Beatiful_Looks.Common.VFX;
+using BeautifulLooks.Common.Looks;
+using BeautifulLooks.Common.Players;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Common.Effects
+namespace BeautifulLooks.Common.Effects
 {
 	/// <summary>
 	/// Следы шагов, прыжок и приземление (StepStyle). Цвета — из вкладки «Движение».

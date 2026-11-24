@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace Terraria_Beatiful_Looks.Content.Dusts
+namespace BeautifulLooks.Content.Dusts
 {
 	/// <summary>
 	/// Базовая частица мода: белая текстура из 3 вариантов 10x10 (сверху вниз),

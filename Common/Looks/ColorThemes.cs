@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Terraria_Beatiful_Looks.Common.Looks
+namespace BeautifulLooks.Common.Looks
 {
 	/// <summary>Готовая пара цветов (основной + второй). Название берётся из локализации UI.Theme.Key.</summary>
 	public class ColorTheme

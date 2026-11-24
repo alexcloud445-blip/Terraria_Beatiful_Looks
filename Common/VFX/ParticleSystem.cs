@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Configs;
+using BeautifulLooks.Common.Configs;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Своя система частиц: список частиц обновляется раз в тик (после всего остального),

@@ -11,9 +11,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria_Beatiful_Looks.Common.Looks;
+using BeautifulLooks.Common.Looks;
 
-namespace Terraria_Beatiful_Looks.Common.UI
+namespace BeautifulLooks.Common.UI
 {
 	/// <summary>Цвета и мелкие помощники оформления меню.</summary>
 	public static class Theme
@@ -26,7 +26,7 @@ namespace Terraria_Beatiful_Looks.Common.UI
 		public static readonly Color Accent = new Color(255, 215, 110);
 		public static readonly Color TextDim = new Color(190, 185, 220);
 
-		public static string T(string key) => Language.GetTextValue("Mods.Terraria_Beatiful_Looks.UI." + key);
+		public static string T(string key) => Language.GetTextValue("Mods.BeautifulLooks.UI." + key);
 
 		public static void Rect(SpriteBatch sb, Rectangle r, Color c) => sb.Draw(TextureAssets.MagicPixel.Value, r, c);
 

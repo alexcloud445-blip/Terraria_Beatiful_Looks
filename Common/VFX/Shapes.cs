@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Формы из атласа Shapes.png / ShapesGlow.png (ячейки 32x32, 12 в ряд).

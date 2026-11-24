@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
-using Terraria_Beatiful_Looks.Common.Looks;
+using BeautifulLooks.Common.Looks;
 
-namespace Terraria_Beatiful_Looks.Common.VFX
+namespace BeautifulLooks.Common.VFX
 {
 	/// <summary>
 	/// Градиент из 2–4 цветов. Цвета смешиваются по цветовому кругу (HSV), а не по RGB,
