@@ -68,10 +68,11 @@ class Target:
                 ix, iy = int(math.floor(fx)), int(math.floor(fy))
                 ax, ay = fx - ix, fy - iy
                 acc = [0.0, 0.0, 0.0, 0.0]
+                # как на видеокарте (LinearClamp): у края кусочка атласа берутся соседние пиксели всей текстуры
                 for oy, wy in ((0, 1 - ay), (1, ay)):
-                    yy = min(max(iy + oy, 0), sh - 1) + sy0
+                    yy = min(max(iy + oy + sy0, 0), im.h - 1)
                     for ox, wx in ((0, 1 - ax), (1, ax)):
-                        xx = min(max(ix + ox, 0), sw - 1) + sx0
+                        xx = min(max(ix + ox + sx0, 0), im.w - 1)
                         p = px[yy][xx]
                         w = wx * wy
                         acc[0] += p[0] * w

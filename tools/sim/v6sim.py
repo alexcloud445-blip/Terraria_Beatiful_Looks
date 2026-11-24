@@ -297,19 +297,26 @@ def aurora(cv, pal, center, t):
 
 
 def galaxy(cv, pal, center, t, front):
+    """Как CelestialDraw.Galaxy: ближняя половина — 16 полосок, яркость плавно падает от середины к краю."""
     f = t * 2
     i0 = int(math.floor(f)) % 32
     bl = f - math.floor(f)
     pos = (center[0], center[1] + 6)
-    alpha = 0.55 if front else 1.0
     for k in range(2):
         idx = (i0 + k) % 32
         fx, fy = (idx & 7) * 160, ((idx >> 3) & 3) * 64
         w = 1 - bl if k == 0 else bl
-        half = (fx, fy + 32, 160, 32) if front else (fx, fy, 160, 32)
-        org = (80, 0 if front else 32)
-        cv.draw('Galaxy', pos, org, 0, 0.9 * 1.08, add(pal.B, alpha * w * 0.45), True, src=half)
-        cv.draw('Galaxy', pos, org, 0, 0.9, add(pal.A, alpha * w), True, src=half)
+        if not front:
+            cv.draw('Galaxy', pos, (80, 32), 0, 1.08, add(pal.B, 0.9 * w * 0.45), True, src=(fx, fy, 160, 32))
+            cv.draw('Galaxy', pos, (80, 32), 0, 1.0, add(pal.A, 0.9 * w), True, src=(fx, fy, 160, 32))
+            continue
+        for j in range(16):
+            e = (j + 0.5) / 16
+            e = e * e * (3 - 2 * e)
+            a = (0.9 + (0.45 - 0.9) * e) * w
+            src = (fx, fy + 32 + j * 2, 160, 2)
+            cv.draw('Galaxy', pos, (80, -j * 2), 0, 1.08, add(pal.B, a * 0.45), True, src=src)
+            cv.draw('Galaxy', pos, (80, -j * 2), 0, 1.0, add(pal.A, a), True, src=src)
     if not front:
         cv.draw('Bloom', pos, (64, 64), 0, (1.1, 0.42), add(pal.B, 0.25), True)
         cv.draw('Bloom', pos, (64, 64), 0, 0.22, add(pal.Hi, 0.4), True)

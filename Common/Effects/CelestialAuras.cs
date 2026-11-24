@@ -324,8 +324,11 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 		// ======================= Галактика =======================
 
 		/// <summary>
-		/// Диск галактики в перспективе: дальняя половина позади персонажа, ближняя — перед ним (полупрозрачно).
+		/// Диск галактики в перспективе: дальняя половина позади персонажа, ближняя — перед ним.
 		/// 32 кадра вращения плавно смешиваются.
+		/// Ближняя половина рисуется 16 полосками по 2 px: у середины диска она такой же яркости, как дальняя,
+		/// а к переднему краю плавно бледнеет (чтобы не засвечивать персонажа). Если нарисовать её одним
+		/// спрайтом с меньшей яркостью, посередине диска видна резкая линия-ступенька.
 		/// </summary>
 		public static void Galaxy(ref PlayerDrawSet info, LookSettings look, Vector2 center, bool front, float grav)
 		{
@@ -336,9 +339,11 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 			int i0 = ((int)Math.Floor(f) % frames + frames) % frames;
 			float blend = f - (float)Math.Floor(f);
 			Vector2 pos = center + new Vector2(0f, 6f * grav * s);
-			float scale = s;
-			float alpha = front ? 0.55f : 1f;
 			Texture2D tex = VfxAssets.Galaxy;
+			const float backAlpha = 0.9f;
+			const float nearEdgeAlpha = 0.45f;
+			const int strips = 16;
+			const int stripHeight = 32 / strips;
 
 			for (int k = 0; k < 2; k++)
 			{
@@ -346,10 +351,26 @@ namespace Terraria_Beatiful_Looks.Common.Effects
 				float w = k == 0 ? 1f - blend : blend;
 				if (w <= 0.01f)
 					continue;
-				Rectangle half = front ? new Rectangle(frame.X, frame.Y + 32, 160, 32) : new Rectangle(frame.X, frame.Y, 160, 32);
-				var origin = new Vector2(80f, front ? 0f : 32f);
-				Add(ref info, tex, pos, half, VfxMath.Additive(pal.B, alpha * w * 0.45f), 0f, origin, new Vector2(scale * 1.08f));
-				Add(ref info, tex, pos, half, VfxMath.Additive(pal.A, alpha * w), 0f, origin, new Vector2(scale));
+
+				if (!front)
+				{
+					var half = new Rectangle(frame.X, frame.Y, 160, 32);
+					var origin = new Vector2(80f, 32f);
+					Add(ref info, tex, pos, half, VfxMath.Additive(pal.B, backAlpha * w * 0.45f), 0f, origin, new Vector2(s * 1.08f));
+					Add(ref info, tex, pos, half, VfxMath.Additive(pal.A, backAlpha * w), 0f, origin, new Vector2(s));
+					continue;
+				}
+
+				for (int j = 0; j < strips; j++)
+				{
+					float depth = VfxMath.Ease((j + 0.5f) / strips);
+					float alpha = MathHelper.Lerp(backAlpha, nearEdgeAlpha, depth) * w;
+					var strip = new Rectangle(frame.X, frame.Y + 32 + j * stripHeight, 160, stripHeight);
+					// отрицательное смещение origin ставит полоску на своё место под серединой диска
+					var origin = new Vector2(80f, -j * stripHeight);
+					Add(ref info, tex, pos, strip, VfxMath.Additive(pal.B, alpha * 0.45f), 0f, origin, new Vector2(s * 1.08f));
+					Add(ref info, tex, pos, strip, VfxMath.Additive(pal.A, alpha), 0f, origin, new Vector2(s));
+				}
 			}
 
 			if (!front)
