@@ -1,9 +1,15 @@
-Beautiful Looks — a purely cosmetic mod: wings, auras, trails, halos and vanity outfits.
+Beautiful Looks — a purely cosmetic mod: auras, glowing trails, halos, wings, companions and vanity outfits. No gameplay changes.
 
 Press K (rebindable in Controls) to open the Looks menu:
-- Aura: 10 styles with density, custom color (hue / saturation / brightness) and rainbow mode
-- Trail: 6 movement trail styles
-- Effects: halo, back glow and ground ring drawn on your character
-- Wardrobe: 6 wings, 5 hats and 3 capes
-- 3 preset slots, randomize and reset
+- Aura: 22 styles on a custom glowing particle system, including celestial ones: an Astrolabe of rotating 3D rings, Northern lights, a spinning Galaxy, an Eclipse with a blazing corona and a giant Mandala
+- Trail: glowing shader ribbons (soft, rainbow, flame, Empress, twin spiral), 11 particle trails and phantom copies of your character
+- Motion: 7 dash effects for any dash (including modded ones), footsteps with jump and landing effects, glowing trails for thrown weapons, and Calamity rogue stealth effects (dark haze, glowing eye, outline, stealth strike flash)
+- Effects: 9 halo styles (rune crown, starry diadem, horns of light, eclipse...), glow, god rays, ground ring, magic sigil, pulse rings and a glowing outline, with optional vanilla dye shaders
+- Wings: 12 animated effect wings (seraph, light, butterfly, demon, flame, crystal, constellation, spirit, phoenix, aurora, nebula, floral) over any wings or none
+- Companion: a pet made of light (wisp, spirit fox, butterfly, celestial serpent) that does not take your pet slot
+- Colors: every effect shifts through a gradient of your two colors (plus rainbow), 12 color themes
+- Looks: 16 ready-made looks
+- Wardrobe: 6 wings, 5 hats, 3 capes and 5 robes with glowing hems
+- Living particles: petals and snowflakes settle on the ground, embers bounce off blocks
+- 5 preset slots, randomize and reset
 Looks are saved per character and synced in multiplayer.

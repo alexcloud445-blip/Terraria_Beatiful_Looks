@@ -1,0 +1,440 @@
+Items: {
+	StarlightWings: {
+		DisplayName: Звёздные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Оставляют за собой звёздную пыль
+			'''
+	}
+
+	EmberWings: {
+		DisplayName: Пламенные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Рассыпают искры живого огня
+			'''
+	}
+
+	FrostWings: {
+		DisplayName: Морозные крылья
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			С каждым взмахом летят снежинки
+			'''
+	}
+
+	SakuraWings: {
+		DisplayName: Крылья сакуры
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Осыпают лепестками вишни
+			'''
+	}
+
+	VoidWings: {
+		DisplayName: Крылья пустоты
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Сотканы из ночи между звёздами
+			'''
+	}
+
+	FairyWings: {
+		DisplayName: Крылья феи
+		Tooltip:
+			'''
+			Позволяют летать и медленно падать
+			Лёгкие, как весенний ветер
+			'''
+	}
+
+	StarlightCrown: {
+		DisplayName: Звёздная корона
+		Tooltip: Корона, сияющая как ночное небо
+	}
+
+	CatEars: {
+		DisplayName: Кошачьи ушки
+		Tooltip: Ня~
+	}
+
+	DemonHorns: {
+		DisplayName: Демонические рожки
+		Tooltip: Совсем чуть-чуть злой
+	}
+
+	FlowerWreath: {
+		DisplayName: Цветочный венок
+		Tooltip: Пахнет летним лугом
+	}
+
+	FrostTiara: {
+		DisplayName: Ледяная тиара
+		Tooltip: Никогда не тает
+	}
+
+	StarlightCape: {
+		DisplayName: Звёздный плащ
+		Tooltip: Сшит из ночного неба
+	}
+
+	RoyalCape: {
+		DisplayName: Королевский плащ
+		Tooltip: Достоин короля
+	}
+
+	ShadowCape: {
+		DisplayName: Теневой плащ
+		Tooltip: Загадочно и драматично
+	}
+
+	SeraphRobe: {
+		DisplayName: Роба серафима
+		Tooltip:
+			'''
+			Подол светится тёплым золотом
+			Светящийся узор: огоньки бегут по подолу
+			'''
+	}
+
+	InfernoRobe: {
+		DisplayName: Роба инферно
+		Tooltip:
+			'''
+			По подолу бегут огненные языки
+			Светящийся узор: огоньки бегут по подолу
+			'''
+	}
+
+	FrostRobe: {
+		DisplayName: Морозная роба
+		Tooltip:
+			'''
+			С подола слетают снежинки
+			Светящийся узор: огоньки бегут по подолу
+			'''
+	}
+
+	SakuraKimono: {
+		DisplayName: Кимоно сакуры
+		Tooltip:
+			'''
+			Роняет лепестки при каждом шаге
+			Светящийся узор: огоньки бегут по подолу
+			'''
+	}
+
+	VoidRobe: {
+		DisplayName: Роба пустоты
+		Tooltip:
+			'''
+			Подол мерцает звёздами из ночи между мирами
+			Светящийся узор: огоньки бегут по подолу
+			'''
+	}
+}
+
+Keybinds.ToggleLooksUI.DisplayName: Открыть меню Beautiful Looks
+
+Configs: {
+	LooksClientConfig: {
+		DisplayName: Beautiful Looks
+
+		AuraIntensity: {
+			Label: Сила эффектов
+			Tooltip: Общий множитель для всех частиц и свечения этого мода
+		}
+
+		EffectBrightness: {
+			Label: Яркость эффектов
+			Tooltip: Яркость всех свечений мода. Уменьши, если эффекты режут глаза
+		}
+
+		MaxParticles: {
+			Label: Лимит частиц
+			Tooltip: Сколько частиц мода может быть одновременно. Уменьши, если игра тормозит
+		}
+
+		ShaderRibbons: {
+			Label: Шейдерные ленты
+			Tooltip: Светящиеся ленты на шейдерах Terraria (следы, хвосты комет). Выключи, если с ними что-то не так
+		}
+
+		LivingParticles: {
+			Label: Живые частицы
+			Tooltip: Лепестки и снежинки ложатся на землю, угольки отскакивают от блоков
+		}
+
+		ShowOtherPlayers: {
+			Label: Образы других игроков
+			Tooltip: Показывать ауры, следы и эффекты других игроков в мультиплеере
+		}
+	}
+}
+
+UI: {
+	Title: Beautiful Looks
+	DragHint: тащи меня
+	Effects: Эффекты
+	On: вкл
+	Off: выкл
+	Presets: Пресеты
+	Save: Сохр.
+	Load: Загр.
+	PresetSaved: Пресет {0} сохранён!
+	PresetEmpty: Этот слот пресета пуст
+	Random: Случайно
+	Reset: Сброс
+	TabAura: Аура
+	TabTrail: След
+	TabEffects: Эффекты
+	TabMotion: Движение
+	TabCompanion: Спутник
+	Steps: Шаги, прыжок и приземление
+	WeaponTrail: След брошенного оружия
+	WeaponTrailAll: Все снаряды
+	StealthFx: Скрытность
+	MotionHint: Рывок, шаги, след оружия и скрытность — в этих цветах
+	StealthHintOn: Скрытность Calamity: дымка, светящийся глаз, контур и вспышка удара
+	StealthHintOff: Эффекты скрытности работают вместе с Calamity (сейчас его нет)
+	Companion: Спутник из света
+	CompanionHint: Летает рядом с тобой и виден в превью. Только для красоты
+	CompanionHint2: Не занимает слот питомца — можно взять и обычного питомца
+	Dash: Рывок
+	DashHint: Работает с любым рывком: щит Ктулху, таби, рывки Calamity и другие
+	TabWings: Крылья
+	WingStyle: Стиль крыльев
+	Outline: Контур
+	WingsHint: Крылья-эффекты рисуются поверх любых надетых крыльев и даже без крыльев
+	WingsHint2: Крылья этого мода сами используют эти эффекты, со своими цветами
+	WingsHint3: Краска в слоте краски крыльев тоже их перекрашивает
+	TabColors: Цвета
+	TabLooks: Образы
+	TabWardrobe: Гардероб
+	AuraStyle: Стиль ауры
+	Density: Плотность
+	Size: Размер
+	Speed: Скорость
+	Colors: Цвета
+	ColorsHint: нажми, чтобы изменить
+	AuraHint: Частицы видны в мире, а мягкое свечение видно и в превью
+	Ribbon: Светящаяся лента
+	Width: Ширина
+	Length: Длина
+	TrailParticles: Частицы следа
+	Echo: Призрачные копии
+	TrailHint: Всё это появляется позади тебя при движении
+	Halo: Нимб
+	OnCharacter: На персонаже
+	BackGlow: Сияние
+	GodRays: Лучи
+	GroundRing: Круг
+	Sigil: Сигил
+	PulseRing: Пульсация
+	Dye: Краска
+	NoDye: без краски
+	EffectsHint: Рисуются прямо на персонаже, видны в превью
+	DyeHint: Краска перекрашивает нимб, сияние, лучи и круги шейдером ванильной краски
+	Color1: Основной цвет
+	Color2: Второй цвет
+	Themes: Цветовые темы (для выбранной части)
+	CopyToAll: Скопировать на весь образ
+	CopiedToAll: Цвета скопированы на весь образ!
+	SwapColors: Поменять цвета 1 и 2
+	ReadyLooks: Готовые образы
+	LooksHint: Наведи на образ, чтобы прочитать о нём
+	LooksTip: Образ заменяет текущие настройки. Сначала сохрани свои в пресет!
+	WardrobeHint: Наведи на предмет. Рецепты: Recipe Browser или Гид
+	Hue: Оттенок
+	Saturation: Насыщенность
+	Lightness: Яркость
+	Rainbow: Радуга
+
+	Aura: {
+		None: Выкл
+		Glow: Сияние
+		Sparkles: Искры
+		Comets: Кометы
+		Flames: Пламя
+		Starfall: Звездопад
+		Frost: Мороз
+		Sakura: Сакура
+		Hearts: Сердечки
+		Vortex: Вихрь
+		CelestialRing: Кольцо рун
+		Storm: Гроза
+		Void: Пустота
+		Divine: Божественный свет
+		Prism: Призма
+		Butterflies: Бабочки
+		Runes: Руны
+		Fireflies: Светлячки
+		Astrolabe: Астролябия
+		Aurora: Северное сияние
+		Galaxy: Галактика
+		Eclipse: Затмение
+		Mandala: Мандала
+	}
+
+	Trail: {
+		None: Выкл
+		Sparkles: Искры
+		Stars: Звёзды
+		Flames: Пламя
+		Hearts: Сердечки
+		Petals: Лепестки
+		Snow: Снег
+		Feathers: Перья
+		Smoke: Дым
+		Runes: Руны
+		Prism: Призма
+		Butterflies: Бабочки
+	}
+
+	RibbonStyle: {
+		None: Выкл
+		Soft: Мягкая
+		Rainbow: Радуга
+		Flame: Пламя
+		Empress: Императрица
+		Twin: Двойная
+	}
+
+	EchoStyle: {
+		None: Выкл
+		Ghost: Призрак
+		Afterimage: Шлейф
+		Phantom: Фантом
+	}
+
+	HaloStyle: {
+		None: Выкл
+		Ring: Кольцо
+		Double: Двойной
+		Radiant: Лучистый
+		Thorns: Терновый
+		Starry: Звёздный
+		RuneCrown: Венец рун
+		Diadem: Диадема
+		Horns: Рога света
+		Eclipse: Затмение
+	}
+
+	WingStyle: {
+		None: Выкл
+		Seraph: Серафим
+		Light: Свет
+		Butterfly: Бабочка
+		Demon: Демон
+		Flame: Пламя
+		Crystal: Кристалл
+		Constellation: Созвездие
+		Spirit: Дух
+		Phoenix: Феникс
+		Aurora: Аврора
+		Nebula: Туманность
+		Floral: Цветы
+	}
+
+	DashStyle: {
+		None: Выкл
+		Flash: Вспышка
+		Shadow: Тень
+		Flame: Пламя
+		Thunder: Гроза
+		Prism: Призма
+		Sakura: Сакура
+		Void: Пустота
+	}
+
+	StepStyle: {
+		None: Выкл
+		Flowers: Цветы
+		Frost: Иней
+		Embers: Угольки
+		Stardust: Звёзды
+		Shadow: Тень
+		Ripple: Круги
+	}
+
+	WeaponTrailStyle: {
+		None: Выкл
+		Soft: Свет
+		Sparkle: Искры
+		Flame: Пламя
+		Prism: Призма
+		Shadow: Тень
+		Stardust: Звёзды
+	}
+
+	CompanionStyle: {
+		None: Нет
+		Wisp: Огонёк
+		Fox: Лисица
+		Butterfly: Бабочка
+		Serpent: Змей
+	}
+
+	CompanionDesc: {
+		None: Выбери спутника — он будет летать рядом
+		Wisp: Дух-огонёк с глазками и хвостом пламени
+		Fox: Призрачная лисица с тремя пушистыми хвостами
+		Butterfly: Большая бабочка, роняющая светящуюся пыльцу
+		Serpent: Небесный змей, вьющийся вокруг тебя восьмёркой
+	}
+
+	Theme: {
+		Seraph: Серафим
+		Inferno: Инферно
+		Frost: Мороз
+		Sakura: Сакура
+		Void: Пустота
+		Empress: Императрица
+		Emerald: Изумруд
+		Ocean: Океан
+		BloodMoon: Кровавая луна
+		Dusk: Сумерки
+		Storm: Гроза
+		Sun: Солнце
+	}
+
+	Look: {
+		Seraph: Серафим
+		SeraphDesc: Божественный свет, лучистый нимб, лучи и перьевые крылья серафима
+		Inferno: Инферно
+		InfernoDesc: Живое пламя, огненные крылья, терновый нимб и огненная лента
+		Frost: Мороз
+		FrostDesc: Снегопад, кристальные крылья, звёздный нимб и призрачная копия
+		Sakura: Сакура
+		SakuraDesc: Лепестки вишни, крылья бабочки и двойная спиральная лента
+		Void: Пустота
+		VoidDesc: Тёмный дым, крылья демона, сигил, фантомные копии и светящийся контур
+		Empress: Императрица
+		EmpressDesc: Осколки призмы с радужными хвостами, крылья из света и лента Императрицы
+		Storm: Гроза
+		StormDesc: Дуги молний, крылья духа, шлейф и светящийся контур
+		Celestial: Небесный
+		CelestialDesc: Кольцо рун, крылья-созвездие, нимб и магический круг
+		Fairy: Фея
+		FairyDesc: Бабочки, крылья духа, искорки и звёздный нимб
+		Comet: Комета
+		CometDesc: Кометы со светящимися хвостами, радужная лента и призрачная копия
+		Astral: Астролог
+		AstralDesc: Астролябия, звёздная диадема, крылья-созвездие и огонёк-спутник
+		Phoenix: Феникс
+		PhoenixDesc: Огненные крылья с хвостом пламени, следы-угольки и огненный след оружия
+		Aurora: Северное сияние
+		AuroraDesc: Сияние над головой, крылья-аврора, иней под ногами и лисица-дух
+		Galaxy: Галактика
+		GalaxyDesc: Вращающаяся галактика, крылья-туманность и небесный змей
+		Eclipse: Затмение
+		EclipseDesc: Тёмное солнце с короной, рога из света, крылья демона и тень
+		Lotus: Лотос
+		LotusDesc: Мандала, цветочные крылья, венец рун, цветы под ногами и бабочка
+	}
+}

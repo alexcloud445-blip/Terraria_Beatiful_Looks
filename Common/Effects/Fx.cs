@@ -1,35 +1,37 @@
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria_Beatiful_Looks.Common.Configs;
-using Terraria_Beatiful_Looks.Content.Dusts;
+using BeautifulLooks.Common.Configs;
+using BeautifulLooks.Common.VFX;
 
-namespace Terraria_Beatiful_Looks.Common.Effects
+namespace BeautifulLooks.Common.Effects
 {
-	/// <summary>Вспомогательные функции для частиц.</summary>
+	/// <summary>Короткие помощники для частиц (используются крыльями и костюмами).</summary>
 	public static class Fx
 	{
 		/// <summary>Общий множитель из настроек мода.</summary>
-		public static float GlobalIntensity => ModContent.GetInstance<LooksClientConfig>().AuraIntensity;
+		public static float GlobalIntensity => ModContent.GetInstance<LooksClientConfig>()?.AuraIntensity ?? 1f;
 
-		/// <summary>Цветная светящаяся искра (ванильная пыль RainbowMk2).</summary>
-		public static Dust Spark(Vector2 pos, Vector2 vel, Color color, float scale = 0.9f)
-		{
-			Dust d = Dust.NewDustPerfect(pos, DustID.RainbowMk2, vel, 0, color, scale);
-			d.noGravity = true;
-			return d;
-		}
+		/// <summary>Светящаяся искорка (градиент от светлого к цвету).</summary>
+		public static void Spark(Vector2 pos, Vector2 vel, Color color, float scale = 0.9f) =>
+			ParticleSystem.Spawn(new GlowParticle(pos, vel, new Ramp(Color.Lerp(color, Color.White, 0.5f), color), scale * 0.45f, Main.rand.Next(30, 45)) { Front = Main.rand.NextBool() });
 
-		public static Dust Custom<T>(Vector2 pos, Vector2 vel, Color color, float scale = 1f) where T : ModDust
-		{
-			return Dust.NewDustPerfect(pos, ModContent.DustType<T>(), vel, 0, color, scale);
-		}
+		public static void Star(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Star4, SpriteMotion.Spin, pos, vel, new Ramp(Color.White, color), scale * 0.7f, 40)
+			{
+				Glowing = true,
+				Spin = Main.rand.NextFloat(-0.08f, 0.08f),
+				Front = Main.rand.NextBool()
+			});
 
-		public static Dust Star(Vector2 pos, Vector2 vel, Color color, float scale = 1f) => Custom<StarDust>(pos, vel, color, scale);
-		public static Dust Heart(Vector2 pos, Vector2 vel, Color color, float scale = 1f) => Custom<HeartDust>(pos, vel, color, scale);
-		public static Dust Petal(Vector2 pos, Vector2 vel, Color color, float scale = 1f) => Custom<PetalDust>(pos, vel, color, scale);
-		public static Dust Snow(Vector2 pos, Vector2 vel, Color color, float scale = 1f) => Custom<SnowflakeDust>(pos, vel, color, scale);
+		public static void Heart(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Heart, SpriteMotion.Float, pos, vel, color, scale * 0.8f, 70) { GlowStrength = 0.5f });
+
+		public static void Petal(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Petal, SpriteMotion.Fall, pos, vel, color, scale * 0.85f, 100) { GlowStrength = 0.3f, Settle = true });
+
+		public static void Snow(Vector2 pos, Vector2 vel, Color color, float scale = 1f) =>
+			ParticleSystem.Spawn(new ShapeParticle(Shape.Snowflake, SpriteMotion.Drift, pos, vel, new Ramp(Color.White, color), scale * 0.75f, 90) { Glowing = true, Settle = true });
 
 		/// <summary>Срабатывает с вероятностью chance (может быть больше 1 — тогда иногда несколько раз).</summary>
 		public static int Rolls(float chance)

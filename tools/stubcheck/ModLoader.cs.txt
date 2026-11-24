@@ -1,0 +1,230 @@
+#pragma warning disable
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria.DataStructures;
+using Terraria.GameInput;
+using Terraria.Graphics;
+using Terraria.UI;
+
+namespace ReLogic.Content
+{
+	public enum AssetRequestMode { DoNotLoad, AsyncLoad, ImmediateLoad }
+	public sealed class Asset<T> where T : class
+	{
+		public T Value => null;
+		public bool IsLoaded => true;
+		public string Name => null;
+	}
+}
+
+namespace log4net
+{
+	public interface ILog
+	{
+		void Warn(object message);
+		void Info(object message);
+		void Error(object message);
+	}
+}
+
+namespace Terraria.ModLoader
+{
+	public enum ModSide { Both, Client, Server, NoSync }
+	public enum EquipType { Head, Body, Legs, HandsOn, HandsOff, Back, Front, Shoe, Waist, Wings, Shield, Neck, Face, Balloon, Beard }
+
+	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
+	public sealed class AutoloadAttribute : Attribute
+	{
+		public bool Value;
+		public ModSide Side { get; set; }
+		public AutoloadAttribute(bool value = true) { }
+	}
+
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	public class AutoloadEquip : Attribute
+	{
+		public AutoloadEquip(params EquipType[] equipTypes) { }
+	}
+
+	public abstract class ModType
+	{
+		public Mod Mod => null;
+		public virtual string Name => null;
+		public virtual void Load() { }
+		public virtual void Unload() { }
+		public virtual void SetStaticDefaults() { }
+	}
+
+	public class Mod
+	{
+		public log4net.ILog Logger => null;
+		public object Call(params object[] args) => null;
+		public virtual void HandlePacket(BinaryReader reader, int whoAmI) { }
+		public ModPacket GetPacket(int capacity = 256) => null;
+		public IEnumerable<T> GetContent<T>() where T : ILoadable => null;
+	}
+
+	public interface ILoadable { }
+
+	public static class ModLoader
+	{
+		public static bool TryGetMod(string name, out Mod result) { result = null; return false; }
+	}
+
+	public abstract class DamageClass : ModType
+	{
+		public static DamageClass Throwing => null;
+		public static DamageClass Generic => null;
+	}
+
+	public abstract class GlobalProjectile : ModType
+	{
+		public virtual bool InstancePerEntity => false;
+		public virtual void PostAI(Projectile projectile) { }
+	}
+
+	public sealed class ModPacket : BinaryWriter
+	{
+		public void Send(int toClient = -1, int ignoreClient = -1) { }
+	}
+
+	public static class ModContent
+	{
+		public static T GetInstance<T>() where T : class => null;
+		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class => null;
+		public static int DustType<T>() where T : ModDust => 0;
+	}
+
+	public abstract class ModSystem : ModType
+	{
+		public virtual void OnWorldUnload() { }
+		public virtual void UpdateUI(GameTime gameTime) { }
+		public virtual void PostUpdateEverything() { }
+		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
+	}
+
+	public abstract class ModPlayer : ModType
+	{
+		public Player Player => null;
+		public virtual void Initialize() { }
+		public virtual void SaveData(IO.TagCompound tag) { }
+		public virtual void LoadData(IO.TagCompound tag) { }
+		public virtual void SyncPlayer(int toWho, int fromWho, bool newPlayer) { }
+		public virtual void CopyClientState(ModPlayer targetCopy) { }
+		public virtual void SendClientChanges(ModPlayer clientPlayer) { }
+		public virtual void ProcessTriggers(TriggersSet triggersSet) { }
+		public virtual void PostUpdate() { }
+		public virtual void TransformDrawData(ref PlayerDrawSet drawInfo) { }
+		public virtual void ModifyDrawInfo(ref PlayerDrawSet drawInfo) { }
+		public virtual void DrawPlayer(Camera camera) { }
+		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) { }
+	}
+
+	public abstract class ModItem : ModType, ILoadable
+	{
+		public Item Item => null;
+		public int Type => 0;
+		public virtual string Texture => null;
+		public virtual void SetDefaults() { }
+		public virtual void AddRecipes() { }
+		public virtual void UpdateAccessory(Player player, bool hideVisual) { }
+		public virtual void UpdateVanity(Player player) { }
+		public virtual void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) { }
+		public virtual void SetMatch(bool male, ref int equipSlot, ref bool robes) { }
+		public Recipe CreateRecipe(int amount = 1) => null;
+	}
+
+	public abstract class ModDust : ModType
+	{
+		public int Type => 0;
+		public virtual void OnSpawn(Dust dust) { }
+		public virtual bool Update(Dust dust) => true;
+		public virtual Color? GetAlpha(Dust dust, Color lightColor) => null;
+	}
+
+	public abstract class PlayerDrawLayer : ModType
+	{
+		public abstract class Position { }
+		public sealed class Between : Position { public Between(PlayerDrawLayer layer1, PlayerDrawLayer layer2) { } }
+		public class AfterParent : Position { public AfterParent(PlayerDrawLayer parent) { } }
+		public class BeforeParent : Position { public BeforeParent(PlayerDrawLayer parent) { } }
+		public virtual bool GetDefaultVisibility(PlayerDrawSet drawInfo) => true;
+		public abstract Position GetDefaultPosition();
+		public void Hide() { }
+		protected abstract void Draw(ref PlayerDrawSet drawInfo);
+	}
+
+	public class VanillaPlayerDrawLayer : PlayerDrawLayer
+	{
+		public override Position GetDefaultPosition() => null;
+		protected override void Draw(ref PlayerDrawSet drawInfo) { }
+	}
+
+	public static class PlayerDrawLayers
+	{
+		public static readonly PlayerDrawLayer JimsCloak, MountBack, Carpet, Head, Torso, Wings, HairBack, Tails, BackAcc, FrontAccFront,
+			Leggings, Robe, Shoes, BeetleBuff, EyebrellaCloud;
+	}
+
+	public class ModKeybind
+	{
+		public bool JustPressed => false;
+	}
+
+	public static class KeybindLoader
+	{
+		public static ModKeybind RegisterKeybind(Mod mod, string name, string defaultBinding) => null;
+	}
+
+	public static class EquipLoader
+	{
+		public static int GetEquipSlot(Mod mod, string name, EquipType type) => 0;
+		public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null) => 0;
+	}
+}
+
+namespace Terraria.ModLoader.IO
+{
+	public class TagCompound : IEnumerable<KeyValuePair<string, object>>
+	{
+		public bool TryGet<T>(string key, out T value) { value = default; return false; }
+		public int GetInt(string key) => 0;
+		public object this[string key] { get => null; set { } }
+		public void Add(string key, object value) { }
+		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => null;
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => null;
+	}
+}
+
+namespace Terraria.ModLoader.Config
+{
+	public enum ConfigScope { ServerSide, ClientSide }
+	public abstract class ModConfig : ModType
+	{
+		public abstract ConfigScope Mode { get; }
+	}
+	public class RangeAttribute : Attribute
+	{
+		public RangeAttribute(int min, int max) { }
+		public RangeAttribute(float min, float max) { }
+	}
+	public class IncrementAttribute : Attribute
+	{
+		public IncrementAttribute(int increment) { }
+		public IncrementAttribute(float increment) { }
+	}
+}
+
+namespace Terraria
+{
+	public static class On_Main
+	{
+		public delegate void orig_DrawPlayers_AfterProjectiles(Main self);
+		public delegate void hook_DrawPlayers_AfterProjectiles(orig_DrawPlayers_AfterProjectiles orig, Main self);
+		public static event hook_DrawPlayers_AfterProjectiles DrawPlayers_AfterProjectiles;
+	}
+}

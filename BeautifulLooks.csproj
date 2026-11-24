@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
-    <AssemblyName>Terraria_Beatiful_Looks</AssemblyName>
+    <AssemblyName>BeautifulLooks</AssemblyName>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 </Project>

@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace Terraria_Beatiful_Looks.Content.Items.Vanity
+namespace BeautifulLooks.Content.Items.Vanity
 {
 	/// <summary>
 	/// Основа для плащей (аксессуар на спину). Новый плащ: наследник + [AutoloadEquip(EquipType.Back)]

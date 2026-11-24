@@ -1,6 +1,6 @@
 using Terraria.ModLoader;
 
-namespace Terraria_Beatiful_Looks.Common.Systems
+namespace BeautifulLooks.Common.Systems
 {
 	public class KeybindSystem : ModSystem
 	{

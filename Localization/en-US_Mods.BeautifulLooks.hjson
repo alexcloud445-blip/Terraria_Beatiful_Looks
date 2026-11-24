@@ -1,0 +1,440 @@
+Items: {
+	StarlightWings: {
+		DisplayName: Starlight Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Sheds glittering stardust
+			'''
+	}
+
+	EmberWings: {
+		DisplayName: Ember Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Trails sparks of living flame
+			'''
+	}
+
+	FrostWings: {
+		DisplayName: Frost Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Snowflakes drift from every flap
+			'''
+	}
+
+	SakuraWings: {
+		DisplayName: Sakura Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Scatters cherry blossom petals
+			'''
+	}
+
+	VoidWings: {
+		DisplayName: Void Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Woven from the night between stars
+			'''
+	}
+
+	FairyWings: {
+		DisplayName: Fairy Wings
+		Tooltip:
+			'''
+			Allows flight and slow fall
+			Light as a spring breeze
+			'''
+	}
+
+	StarlightCrown: {
+		DisplayName: Starlight Crown
+		Tooltip: A crown that shines like the night sky
+	}
+
+	CatEars: {
+		DisplayName: Cat Ears
+		Tooltip: Nya~
+	}
+
+	DemonHorns: {
+		DisplayName: Demon Horns
+		Tooltip: Just a little bit evil
+	}
+
+	FlowerWreath: {
+		DisplayName: Flower Wreath
+		Tooltip: Smells like a summer meadow
+	}
+
+	FrostTiara: {
+		DisplayName: Frost Tiara
+		Tooltip: Never melts
+	}
+
+	StarlightCape: {
+		DisplayName: Starlight Cape
+		Tooltip: A cape sewn from the night sky
+	}
+
+	RoyalCape: {
+		DisplayName: Royal Cape
+		Tooltip: Fit for a king
+	}
+
+	ShadowCape: {
+		DisplayName: Shadow Cape
+		Tooltip: Mysterious and dramatic
+	}
+
+	SeraphRobe: {
+		DisplayName: Seraph Robe
+		Tooltip:
+			'''
+			The hem glows with warm gold
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	InfernoRobe: {
+		DisplayName: Inferno Robe
+		Tooltip:
+			'''
+			Tongues of fire run along the hem
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	FrostRobe: {
+		DisplayName: Frost Robe
+		Tooltip:
+			'''
+			Snowflakes drift from the hem
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	SakuraKimono: {
+		DisplayName: Sakura Kimono
+		Tooltip:
+			'''
+			Drops petals with every step
+			Glowing pattern: lights run along the hem
+			'''
+	}
+
+	VoidRobe: {
+		DisplayName: Void Robe
+		Tooltip:
+			'''
+			The hem shimmers with stars from the night between worlds
+			Glowing pattern: lights run along the hem
+			'''
+	}
+}
+
+Keybinds.ToggleLooksUI.DisplayName: Open Beautiful Looks menu
+
+Configs: {
+	LooksClientConfig: {
+		DisplayName: Beautiful Looks
+
+		AuraIntensity: {
+			Label: Effects intensity
+			Tooltip: Global multiplier for all particles and glow from this mod
+		}
+
+		EffectBrightness: {
+			Label: Effects brightness
+			Tooltip: Brightness of all glows from this mod. Lower it if effects are too harsh
+		}
+
+		MaxParticles: {
+			Label: Particle limit
+			Tooltip: How many particles from this mod can exist at once. Lower it if the game slows down
+		}
+
+		ShaderRibbons: {
+			Label: Shader ribbons
+			Tooltip: Glowing ribbons on Terraria's own shaders (trails, comet tails). Turn off if something looks wrong
+		}
+
+		LivingParticles: {
+			Label: Living particles
+			Tooltip: Petals and snowflakes settle on the ground, embers bounce off blocks
+		}
+
+		ShowOtherPlayers: {
+			Label: Show other players' looks
+			Tooltip: Show auras, trails and effects of other players in multiplayer
+		}
+	}
+}
+
+UI: {
+	Title: Beautiful Looks
+	DragHint: drag me
+	Effects: Effects
+	On: on
+	Off: off
+	Presets: Presets
+	Save: Save
+	Load: Load
+	PresetSaved: Preset {0} saved!
+	PresetEmpty: This preset slot is empty
+	Random: Random
+	Reset: Reset
+	TabAura: Aura
+	TabTrail: Trail
+	TabEffects: Effects
+	TabMotion: Motion
+	TabCompanion: Companion
+	Steps: Steps, jumps and landings
+	WeaponTrail: Thrown weapon trail
+	WeaponTrailAll: All projectiles
+	StealthFx: Stealth
+	MotionHint: Dash, steps, weapon trail and stealth use these colors
+	StealthHintOn: Calamity stealth: dark haze, glowing eye, outline and a strike flash
+	StealthHintOff: Stealth effects work together with Calamity (not loaded now)
+	Companion: Companion of light
+	CompanionHint: Flies next to you and shows in the preview. Purely cosmetic
+	CompanionHint2: Does not take the pet slot: you can still have a normal pet
+	Dash: Dash
+	DashHint: Works with any dash: Shield of Cthulhu, Tabi, Calamity dashes and more
+	TabWings: Wings
+	WingStyle: Wing style
+	Outline: Outline
+	WingsHint: Effect wings are drawn over any equipped wings, or even with no wings at all
+	WingsHint2: Wings from this mod use these effects on their own, with their own colors
+	WingsHint3: A dye in the wings dye slot recolors them too
+	TabColors: Colors
+	TabLooks: Looks
+	TabWardrobe: Wardrobe
+	AuraStyle: Aura style
+	Density: Density
+	Size: Size
+	Speed: Speed
+	Colors: Colors
+	ColorsHint: click to change
+	AuraHint: Particles are seen in the world; the soft glow is also shown in the preview
+	Ribbon: Glowing ribbon
+	Width: Width
+	Length: Length
+	TrailParticles: Trail particles
+	Echo: Phantom copies
+	TrailHint: Everything here appears behind you while moving
+	Halo: Halo
+	OnCharacter: On the character
+	BackGlow: Glow
+	GodRays: Rays
+	GroundRing: Ring
+	Sigil: Sigil
+	PulseRing: Pulse
+	Dye: Dye
+	NoDye: no dye
+	EffectsHint: Drawn right on the character, visible in the preview
+	DyeHint: Dye recolors the halo, glow, rays and circles with a vanilla dye shader
+	Color1: Main color
+	Color2: Second color
+	Themes: Color themes (for the selected part)
+	CopyToAll: Copy to the whole look
+	CopiedToAll: Colors copied to the whole look!
+	SwapColors: Swap colors 1 and 2
+	ReadyLooks: Ready looks
+	LooksHint: Hover a look to read about it
+	LooksTip: A look replaces your current settings. Save yours to a preset first!
+	WardrobeHint: Hover an item. Recipes: Recipe Browser or the Guide
+	Hue: Hue
+	Saturation: Saturation
+	Lightness: Brightness
+	Rainbow: Rainbow
+
+	Aura: {
+		None: Off
+		Glow: Radiance
+		Sparkles: Sparkles
+		Comets: Comets
+		Flames: Flames
+		Starfall: Starfall
+		Frost: Frost
+		Sakura: Sakura
+		Hearts: Hearts
+		Vortex: Vortex
+		CelestialRing: Rune ring
+		Storm: Storm
+		Void: Void
+		Divine: Divine light
+		Prism: Prism
+		Butterflies: Butterflies
+		Runes: Runes
+		Fireflies: Fireflies
+		Astrolabe: Astrolabe
+		Aurora: Northern lights
+		Galaxy: Galaxy
+		Eclipse: Eclipse
+		Mandala: Mandala
+	}
+
+	Trail: {
+		None: Off
+		Sparkles: Sparkles
+		Stars: Stars
+		Flames: Flames
+		Hearts: Hearts
+		Petals: Petals
+		Snow: Snow
+		Feathers: Feathers
+		Smoke: Smoke
+		Runes: Runes
+		Prism: Prism
+		Butterflies: Butterflies
+	}
+
+	RibbonStyle: {
+		None: Off
+		Soft: Soft
+		Rainbow: Rainbow
+		Flame: Flame
+		Empress: Empress
+		Twin: Twin
+	}
+
+	EchoStyle: {
+		None: Off
+		Ghost: Ghost
+		Afterimage: Afterimage
+		Phantom: Phantom
+	}
+
+	HaloStyle: {
+		None: Off
+		Ring: Ring
+		Double: Double
+		Radiant: Radiant
+		Thorns: Thorns
+		Starry: Starry
+		RuneCrown: Rune crown
+		Diadem: Diadem
+		Horns: Light horns
+		Eclipse: Eclipse
+	}
+
+	WingStyle: {
+		None: Off
+		Seraph: Seraph
+		Light: Light
+		Butterfly: Butterfly
+		Demon: Demon
+		Flame: Flame
+		Crystal: Crystal
+		Constellation: Constellation
+		Spirit: Spirit
+		Phoenix: Phoenix
+		Aurora: Aurora
+		Nebula: Nebula
+		Floral: Floral
+	}
+
+	DashStyle: {
+		None: Off
+		Flash: Flash
+		Shadow: Shadow
+		Flame: Flame
+		Thunder: Thunder
+		Prism: Prism
+		Sakura: Sakura
+		Void: Void
+	}
+
+	StepStyle: {
+		None: Off
+		Flowers: Flowers
+		Frost: Frost
+		Embers: Embers
+		Stardust: Stardust
+		Shadow: Shadow
+		Ripple: Ripples
+	}
+
+	WeaponTrailStyle: {
+		None: Off
+		Soft: Light
+		Sparkle: Sparkle
+		Flame: Flame
+		Prism: Prism
+		Shadow: Shadow
+		Stardust: Stardust
+	}
+
+	CompanionStyle: {
+		None: None
+		Wisp: Wisp
+		Fox: Fox
+		Butterfly: Butterfly
+		Serpent: Serpent
+	}
+
+	CompanionDesc: {
+		None: Pick a companion and it will fly next to you
+		Wisp: A little spirit flame with eyes and a fiery tail
+		Fox: A ghostly fox with three fluffy tails
+		Butterfly: A large butterfly dropping glowing pollen
+		Serpent: A celestial serpent weaving figure eights around you
+	}
+
+	Theme: {
+		Seraph: Seraph
+		Inferno: Inferno
+		Frost: Frost
+		Sakura: Sakura
+		Void: Void
+		Empress: Empress
+		Emerald: Emerald
+		Ocean: Ocean
+		BloodMoon: Blood Moon
+		Dusk: Dusk
+		Storm: Storm
+		Sun: Sun
+	}
+
+	Look: {
+		Seraph: Seraph
+		SeraphDesc: Divine light, radiant halo, god rays and feathered seraph wings
+		Inferno: Inferno
+		InfernoDesc: Living fire, flame wings, a thorn halo and a ribbon of flame
+		Frost: Frost
+		FrostDesc: Snowfall, crystal wings, a starry halo and a ghostly echo
+		Sakura: Sakura
+		SakuraDesc: Cherry petals, butterfly wings and a twin spiral ribbon
+		Void: Void
+		VoidDesc: Dark smoke, demon wings, a magic sigil, phantom copies and a glowing outline
+		Empress: Empress
+		EmpressDesc: Prism shards with rainbow tails, wings of light and the Empress ribbon
+		Storm: Storm
+		StormDesc: Lightning arcs, spirit wings, afterimages and a glowing outline
+		Celestial: Celestial
+		CelestialDesc: A ring of runes, constellation wings, a halo and a magic circle
+		Fairy: Fairy
+		FairyDesc: Butterflies, spirit wings, sparkles and a starry halo
+		Comet: Comet
+		CometDesc: Comets with glowing tails, a rainbow ribbon and a ghostly echo
+		Astral: Astral
+		AstralDesc: An astrolabe, a starry diadem, constellation wings and a wisp companion
+		Phoenix: Phoenix
+		PhoenixDesc: Fire wings with a flaming tail, ember steps and a flaming weapon trail
+		Aurora: Aurora
+		AuroraDesc: Northern lights overhead, aurora wings, frost steps and a spirit fox
+		Galaxy: Galaxy
+		GalaxyDesc: A spinning galaxy, nebula wings and a celestial serpent
+		Eclipse: Eclipse
+		EclipseDesc: A dark sun with a corona, horns of light, demon wings and shadow
+		Lotus: Lotus
+		LotusDesc: A mandala, floral wings, a rune crown, flower steps and a butterfly
+	}
+}

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.IO;
 
-namespace Terraria_Beatiful_Looks.Common.Looks
+namespace BeautifulLooks.Common.Looks
 {
 	/// <summary>Цвет в формате HSL + режим «радуга». Используется аурой, следами и эффектами.</summary>
 	public class ColorSetting
@@ -28,6 +28,16 @@ namespace Terraria_Beatiful_Looks.Common.Looks
 		{
 			float hue = Rainbow ? Wrap(Main.GlobalTimeWrappedHourly * 0.25f + offset) : Hue;
 			return Main.hslToRgb(hue, Saturation, Lightness);
+		}
+
+		/// <summary>Смесь двух цветов палитры: t = 0 — этот, t = 1 — второй.</summary>
+		public Color Mix(ColorSetting second, float t, float offset = 0f) =>
+			BeautifulLooks.Common.VFX.VfxMath.LerpVivid(Get(offset), second.Get(offset + 0.15f), t);
+
+		public void Set(Color color, bool rainbow = false)
+		{
+			SetFromColor(color);
+			Rainbow = rainbow;
 		}
 
 		public void SetFromColor(Color color)

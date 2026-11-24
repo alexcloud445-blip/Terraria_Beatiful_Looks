@@ -1,0 +1,137 @@
+#pragma warning disable
+using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+
+namespace ReLogic.Graphics
+{
+	public class DynamicSpriteFont
+	{
+		public Vector2 MeasureString(string text) => default;
+	}
+}
+
+namespace Terraria.GameContent
+{
+	public static class FontAssets
+	{
+		public static Asset<ReLogic.Graphics.DynamicSpriteFont> MouseText;
+	}
+	public static class TextureAssets
+	{
+		public static Asset<Texture2D> MagicPixel;
+		public static Asset<Texture2D>[] ArmorLeg;
+	}
+}
+
+namespace Terraria.UI
+{
+	public struct StyleDimension
+	{
+		public float Pixels;
+		public float Percent;
+		public void Set(float pixels, float precent) { }
+	}
+
+	public struct CalculatedStyle
+	{
+		public float X, Y, Width, Height;
+		public Rectangle ToRectangle() => default;
+		public Vector2 Center() => default;
+	}
+
+	public class UIMouseEvent
+	{
+		public UIElement Target;
+	}
+
+	public class UIScrollWheelEvent : UIMouseEvent
+	{
+		public int ScrollWheelValue;
+	}
+
+	public class UIElement
+	{
+		public delegate void MouseEvent(UIMouseEvent evt, UIElement listeningElement);
+		public StyleDimension Top, Left, Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight;
+		public float PaddingTop, PaddingLeft, PaddingRight, PaddingBottom;
+		public float HAlign, VAlign;
+		public bool IgnoresMouseInteraction;
+		public bool OverflowHidden;
+		public bool IsMouseHovering => false;
+		public event MouseEvent OnLeftClick, OnLeftMouseDown, OnLeftMouseUp, OnMouseOver, OnMouseOut, OnRightClick;
+		public virtual void OnInitialize() { }
+		public void Activate() { }
+		public void Append(UIElement element) { }
+		public void RemoveAllChildren() { }
+		public void RemoveChild(UIElement child) { }
+		public virtual void Recalculate() { }
+		public CalculatedStyle GetDimensions() => default;
+		public CalculatedStyle GetInnerDimensions() => default;
+		public virtual bool ContainsPoint(Vector2 point) => false;
+		public void SetPadding(float pixels) { }
+		public virtual void Update(GameTime gameTime) { }
+		protected virtual void DrawSelf(SpriteBatch spriteBatch) { }
+		public virtual void Draw(SpriteBatch spriteBatch) { }
+		public virtual void LeftMouseDown(UIMouseEvent evt) { }
+		public virtual void LeftClick(UIMouseEvent evt) { }
+		public virtual void MouseOver(UIMouseEvent evt) { }
+		public virtual void MouseOut(UIMouseEvent evt) { }
+		public virtual void ScrollWheel(UIScrollWheelEvent evt) { }
+	}
+
+	public class UIState : UIElement { }
+
+	public class UserInterface
+	{
+		public UIState CurrentState => null;
+		public void SetState(UIState state) { }
+		public void Update(GameTime time) { }
+		public void Draw(SpriteBatch spriteBatch, GameTime time) { }
+	}
+
+	public enum InterfaceScaleType { Game, UI, None }
+
+	public delegate bool GameInterfaceDrawMethod();
+
+	public class GameInterfaceLayer
+	{
+		public readonly string Name;
+	}
+
+	public class LegacyGameInterfaceLayer : GameInterfaceLayer
+	{
+		public LegacyGameInterfaceLayer(string name, GameInterfaceDrawMethod drawMethod, InterfaceScaleType scaleType = InterfaceScaleType.Game) { }
+	}
+
+	public static class ItemSlot
+	{
+		public static class Context { public const int InventoryItem = 0; }
+		public static float DrawItemIcon(Item item, int context, SpriteBatch spriteBatch, Vector2 screenPositionForItemCenter, float scale, float sizeLimit, Color environmentColor) => 0f;
+	}
+}
+
+namespace Terraria.GameContent.UI.Elements
+{
+	public class UIPanel : Terraria.UI.UIElement
+	{
+		public Color BackgroundColor;
+		public Color BorderColor;
+		protected override void DrawSelf(SpriteBatch spriteBatch) { }
+	}
+
+	public class UITextPanel<T> : UIPanel
+	{
+		public float TextScale { get; set; }
+		public UITextPanel(T text, float textScale = 1f, bool large = false) { }
+		public virtual void SetText(T text) { }
+		public virtual void SetText(T text, float textScale, bool large) { }
+		protected override void DrawSelf(SpriteBatch spriteBatch) { }
+	}
+
+	public class UICharacter : Terraria.UI.UIElement
+	{
+		public UICharacter(Player player, bool animated = false, bool hasBackPanel = true, float characterScale = 1f, bool useAClone = false) { }
+	}
+}
